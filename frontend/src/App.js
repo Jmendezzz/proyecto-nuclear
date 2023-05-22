@@ -1,10 +1,15 @@
 import { Login } from './components/login/Login';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css';
-//TODO: Routing the url paths.
 function App() {
   return (
     <div className="App">
-      <Login></Login>
+      <BrowserRouter>
+        <Routes >
+          <Route path="/login" element={<Login/>}></Route>
+
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

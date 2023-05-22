@@ -3,6 +3,7 @@ import { Flex } from "../../UI/flex/Flex";
 import style from "./Login.module.css";
 import { Input } from "../../UI/inputs/Input";
 import { useInput } from "../../hooks/use-input";
+import logo from '../../assets/images/logo-cue-avh.png';
 
 export const Login = ()=>{
     const {
@@ -17,10 +18,13 @@ export const Login = ()=>{
     return (
         <Flex className={style.div} direction={"column"}  width={"100%"} height={"120vh"}>
 
-            <Flex  className={style["login-div"]} width={"70%"} height={"95%"}>
+            <Flex className={style["login-div"]} width={"70%"} height={"80vh"}>
 
-                <Flex width={"50%"} className={style["login-div__header"]}>
-                    <h2>INICIAR SESIÓN</h2>
+                <Flex direction={"column"} justifyContent={"space-between"}  width={"50%"} height={"100%"}>
+                    <img  className={style.logo} src={logo}></img>
+                    <Flex height="70%" alignItems={"none"} className={style["login-div__header"]}> 
+                        <h2>INICIAR SESIÓN</h2>
+                    </Flex>
                 </Flex>
 
                 <Flex width={"50%"} direction={"column"} height={"50%"} className={style["login-div__inputs"]}>
@@ -30,9 +34,8 @@ export const Login = ()=>{
 
                 </Flex>
 
-
-
             </Flex>
+
             <footer className={style.footer}>
                 <div className={style["footer__item-1"]}>
                     <h3>
@@ -60,8 +63,6 @@ export const Login = ()=>{
                 </div>
 
             </footer>
-     
-
 
         </Flex>
     );
