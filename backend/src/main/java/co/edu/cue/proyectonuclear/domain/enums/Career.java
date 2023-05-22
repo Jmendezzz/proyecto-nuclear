@@ -1,0 +1,15 @@
+package co.edu.cue.proyectonuclear.domain.enums;
+
+public enum Career {
+    INGENIERIA_DE_SOFTWARE,
+    INGENIERIA_INDUSTRIAL,
+    INGENIERIA_CIVIL,
+    ADMINISTRACION_DE_EMPRESAS,
+    MEDICINA,
+    ENFERMERIA,
+    PSICOLOGIA,
+    MEDICINA_VERTERINARIA,
+    MARKETING_DIGITAL,
+
+
+}
