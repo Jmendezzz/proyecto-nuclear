@@ -22,7 +22,6 @@ public class Student extends User {
     @OneToMany
     private List<Subject> subjects;
     private Integer semester;
-
     @Enumerated(EnumType.STRING)
     private Career career;
 

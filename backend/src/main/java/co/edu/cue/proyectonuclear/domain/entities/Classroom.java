@@ -20,9 +20,7 @@ public class Classroom {
     private  Long id;
     @Enumerated(EnumType.STRING)
     private Location location;
-
     private  Integer capability;
-
     @ElementCollection
     @CollectionTable(name = "classroom_elements")
     @Column(name = "element")
