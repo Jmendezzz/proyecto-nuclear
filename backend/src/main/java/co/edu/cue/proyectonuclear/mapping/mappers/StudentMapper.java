@@ -7,5 +7,4 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
-    @Mapping(target = "name", source )
 }
