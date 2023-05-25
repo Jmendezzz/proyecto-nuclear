@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-public class ClassromController {
+public class ClassroomController {
     ClassroomService classroomService;
 
     @GetMapping("/classroom")
