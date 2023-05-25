@@ -16,7 +16,6 @@ import java.util.List;
 public class Professor extends User {
 
     @OneToMany
-    @JoinTable(name = "professor_schedule")
     private List<ProfessorSchedule> schedule;
 
     @OneToMany

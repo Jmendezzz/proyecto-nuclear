@@ -18,7 +18,6 @@ import java.util.List;
 public class ProfessorSchedule {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
     @Enumerated(EnumType.STRING)
     private DayOfWeek day;
