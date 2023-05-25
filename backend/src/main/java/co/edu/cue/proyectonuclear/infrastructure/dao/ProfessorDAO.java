@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProfessorDAO {
     List<Professor> getAllProfessors();
-    Professor saveProfessor(Professor professor);
+    Professor createProfessor(Professor professor);
     Professor getProfessorById(Long id);
 
 }

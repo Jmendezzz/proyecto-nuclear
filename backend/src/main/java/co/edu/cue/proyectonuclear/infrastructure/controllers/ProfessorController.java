@@ -1,33 +1,32 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/professors")
 @AllArgsConstructor
 public class ProfessorController {
     ProfessorService professorService;
 
-    @GetMapping("/professors")
-    public List<Professor> getAllProfessor(){
-        return professorService.getAllProfessor();
+    @GetMapping("/get-all")
+    public List<ProfessorDTO> getAllProfessor(){
+        return professorService.getAllProfessors();
     }
 
-    @GetMapping("/professors/{id}")
-    public Optional<Professor> getProfessorById(Long id){
+    @GetMapping("/get-by-id/{id}")
+    public Optional<Professor> getProfessorById(@PathVariable @Size(max = 20) Long id){
         return professorService.getProfessorById(id);
-        //Ojo falta validar
     }
 
-    @PostMapping("/professors")
+    @PostMapping("/save")
     public Professor saveProfessor(@RequestBody Professor professor){
         return professorService.saveProfessor(professor);
     }

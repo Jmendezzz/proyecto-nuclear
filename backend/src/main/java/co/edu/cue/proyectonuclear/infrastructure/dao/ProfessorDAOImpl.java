@@ -19,7 +19,7 @@ public class ProfessorDAOImpl implements ProfessorDAO{
     }
 
     @Override
-    public Professor saveProfessor(Professor professor) {
+    public Professor createProfessor(Professor professor) {
         return entityManager.merge(professor);
     }
 

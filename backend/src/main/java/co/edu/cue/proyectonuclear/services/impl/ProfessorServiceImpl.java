@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,11 @@ public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorDAO professorDAO;
     @Override
     public Professor saveProfessor(Professor professor) {
-        return professorDAO.saveProfessor(professor);
+        return professorDAO.createProfessor(professor);
     }
 
     @Override
-    public List<Professor> getAllProfessor() {
+    public List<ProfessorDTO> getAllProfessors() {
         return null;
     }
 
