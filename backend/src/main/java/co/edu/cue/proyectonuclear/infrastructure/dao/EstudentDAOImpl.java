@@ -1,2 +1,5 @@
-package co.edu.cue.proyectonuclear.infrastructure.dao;public class EstudentDAOImpl {
+package co.edu.cue.proyectonuclear.infrastructure.dao;
+
+public class EstudentDAOImpl implements EstudentDAO {
+
 }
