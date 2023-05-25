@@ -15,6 +15,11 @@ public class CourseDAOImpl  implements CourseDAO{
     EntityManager entityManager;
 
     @Override
+    public Course saveCourse(Course course) {
+        return entityManager.merge(course);
+    }
+
+    @Override
     public List<Course> getAllCourses() {
         String query = "FROM Course";
         return entityManager.createQuery(query).getResultList();
@@ -29,6 +34,13 @@ public class CourseDAOImpl  implements CourseDAO{
     @Override
     public Course findCourseById(Long id) {
         return entityManager.find(Course.class,id);
+    }
+
+    @Override
+    public List<Course> getCoursesByProfessorId(Long id) {
+        String query = "SELECT * FROM course WHERE professor_id = :professorId";
+
+        return entityManager.createNativeQuery(query).getResultList();
     }
 
 }
