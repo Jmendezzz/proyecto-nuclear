@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface StudentDAO {
     List<Student> getAllStudent();
     Optional<Student> getStudentById(Long id);
+    Student saveStudent(Student student);
 }

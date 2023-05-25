@@ -6,8 +6,9 @@ import co.edu.cue.proyectonuclear.domain.enums.Career;
 import java.util.List;
 
 public record StudentDTO(
-        List<Subject> subjects,
+        Long id,
+        String name,
+        Career career,
         Integer semester,
-        Career career
-) {
+        List<Subject> subjects) {
 }
