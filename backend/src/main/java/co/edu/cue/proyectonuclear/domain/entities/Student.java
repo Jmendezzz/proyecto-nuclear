@@ -24,6 +24,4 @@ public class Student extends User {
     private Integer semester;
     @Enumerated(EnumType.STRING)
     private Career career;
-
-
 }
