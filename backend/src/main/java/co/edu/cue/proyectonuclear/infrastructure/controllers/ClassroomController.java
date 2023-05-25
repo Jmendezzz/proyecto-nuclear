@@ -24,7 +24,7 @@ public class ClassroomController {
         return course.get();
     }
     @PostMapping("/classroom")
-    public Classroom create(@RequestBody Classroom classroom){
+    public Classroom createClassroom(@RequestBody Classroom classroom){
         return classroomService.saveClassroom(classroom);
     }
 

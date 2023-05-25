@@ -14,15 +14,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "professor_schedule")
 public class ProfessorSchedule {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
+    @Enumerated(EnumType.STRING)
     private DayOfWeek day;
 
-    @ElementCollection
-    @CollectionTable(name = "timeslots", joinColumns = @JoinColumn(name = "schedule_id"))
+    @OneToMany
     private List<TimeSlot> timeSlots;
 
 }
