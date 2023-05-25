@@ -11,19 +11,19 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor//crea el contructor e inyecta depencia
 public class ClassroomServiceImpl implements ClassroomService {
-    private ClassroomDAO classrromDAO;
+    private ClassroomDAO classroomDAO;
     @Override
     public Classroom saveClassroom(Classroom classroom) {
-        return classroom;
+        return classroomDAO.createClassroom(classroom);
     }
     @Override
     public List<Classroom> getAllClassroom() {
-        return classrromDAO.getAllClassrrom();
+        return classroomDAO.getAllClassrrom();
     }
 
     @Override
     public Optional<Classroom> getAllById(Long id) {
-        return Optional.of(classrromDAO.findCourseById(id));
+        return Optional.of(classroomDAO.findCourseById(id));
     }
 
 

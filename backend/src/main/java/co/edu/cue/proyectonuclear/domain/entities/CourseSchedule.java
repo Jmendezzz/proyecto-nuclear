@@ -14,7 +14,7 @@ import lombok.Setter;
 @Entity
 public class CourseSchedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
     @OneToOne
     private Classroom classroom;

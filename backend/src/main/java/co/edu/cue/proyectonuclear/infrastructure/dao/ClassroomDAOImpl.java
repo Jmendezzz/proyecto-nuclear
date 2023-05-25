@@ -25,6 +25,12 @@ public class ClassroomDAOImpl implements ClassroomDAO {
         return entityManager.find(Classroom.class,id);
     }
 
+
+    @Override
+    public Classroom saveCourse(Classroom classroom) {
+        return entityManager.merge(classroom);
+    }
+
     @Override
     public List<Classroom> getAllClassrrom() {
         String query = "FROM Classroom";
