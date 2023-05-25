@@ -1,10 +1,7 @@
 package co.edu.cue.proyectonuclear.domain.entities;
 
 import co.edu.cue.proyectonuclear.domain.enums.Career;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +10,7 @@ import lombok.Setter;
 @Entity
 public class Subject {
     @Id
+    @GeneratedValue
     private  Long id;
     private String name;
 
