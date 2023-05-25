@@ -5,7 +5,7 @@ import co.edu.cue.proyectonuclear.domain.enums.Career;
 
 import java.util.List;
 
-public record StudentDto(
+public record StudentDTO(
         List<Subject> subjects,
         Integer semester,
         Career career
