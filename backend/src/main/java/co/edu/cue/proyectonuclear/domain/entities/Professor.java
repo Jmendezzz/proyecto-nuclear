@@ -16,6 +16,10 @@ import java.util.List;
 public class Professor extends User {
 
     @OneToMany
+    @JoinTable(name = "professor_schedule")
+    private List<ProfessorSchedule> schedule;
+
+    @OneToMany
     @JoinTable(name = "professor_subjects")
     private List<Subject> subjects;
 

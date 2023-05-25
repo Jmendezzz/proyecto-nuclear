@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 public class Classroom {
     @Id
+    @GeneratedValue
     private  Long id;
     @Enumerated(EnumType.STRING)
     private Location location;

@@ -14,6 +14,7 @@ import lombok.Setter;
 @Entity
 public class CourseSchedule {
     @Id
+    @GeneratedValue
     private  Long id;
     @OneToOne
     private Classroom classroom;
