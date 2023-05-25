@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
+import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +14,19 @@ import java.util.Optional;
 public class StudentController {
     StudentService studentService;
     @GetMapping("/students")
-    public List<Student> getAllStudent(){return studentService.getAllStudent();}
+    public List<StudentDTO> getAllStudent(){return studentService.getAllStudent();}
 
     @GetMapping("/students/{id}")
-    public Student getById(@PathVariable Long id){
-        Optional<Student> student = studentService.getStudentById(id);
+    public StudentDTO getById(@PathVariable Long id){
+        Optional<StudentDTO> student = studentService.getStudentById(id);
         //TODO: Do a validation if the student exists
         return student.get();
     }
 
+    @GetMapping("/students/semester/{semesterNumber}")
+    public List<StudentDTO> getStudentsBySemester(@PathVariable Integer semesterNumber){return studentService.getBySemester(semesterNumber);}
+
     @PostMapping("/students")
-    public Student createStudents(@RequestBody Student student){return studentService.saveStudent(student);}
+    public StudentDTO createStudent(@RequestBody StudentDTO student){return studentService.saveStudent(student);}
+
 }

@@ -1,13 +1,15 @@
 package co.edu.cue.proyectonuclear.services;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
+import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
-    List<Student> getAllStudent();
-    Optional<Student> getStudentById(Long id);
+    List<StudentDTO> getAllStudent();
+    Optional<StudentDTO> getStudentById(Long id);
 
-    Student saveStudent(Student student);
+    StudentDTO saveStudent(StudentDTO student);
+    List<StudentDTO> getBySemester( Integer semester);
 }
