@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 public class Course {
     @Id
+    @GeneratedValue
     private Long id;
 
     @OneToOne
