@@ -1,6 +1,6 @@
 package co.edu.cue.proyectonuclear.services;
 
-import co.edu.cue.proyectonuclear.dao.CourseDAO;
+import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.domain.entities.Course;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

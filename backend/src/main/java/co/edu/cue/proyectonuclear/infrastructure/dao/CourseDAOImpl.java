@@ -1,4 +1,4 @@
-package co.edu.cue.proyectonuclear.dao;
+package co.edu.cue.proyectonuclear.infrastructure.dao;
 
 import co.edu.cue.proyectonuclear.domain.entities.Course;
 import jakarta.persistence.EntityManager;
