@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,16 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDao;
     @Override
-    public List<Student> getAllStudent(){return studentDao.getAllStudent();}
+    public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
     @Override
-    public Optional<Student> getStudentById(Long id){return studentDao.getStudentById(id);}
+    public Optional<StudentDTO> getStudentById(Long id){return studentDao.getStudentById(id);}
 
     @Override
-    public Student saveStudent(Student student) {return studentDao.saveStudent(student);}
+    public StudentDTO saveStudent(StudentDTO student) {return studentDao.saveStudent(student);}
+
+    @Override
+    public List<StudentDTO> getBySemester(Integer semester) {
+        return studentDao.getBySemester(semester);
+    }
 }
