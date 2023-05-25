@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
+import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -23,11 +24,17 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public Optional<Student> getStudentById(Long id) {
-        return Optional.of(entityManager.find(Student.class, id))
+        return Optional.of(entityManager.find(Student.class, id));
     }
 
     @Override
     public Student saveStudent(Student student) {
         return entityManager.merge(student);
+    }
+
+    @Override
+    public List<Student> getBySemester(Integer semester) {
+        String query = "SELECT * FROM student WHERE student_semester= :studentSemester";
+        return entityManager.createNativeQuery(query).getResultList();
     }
 }

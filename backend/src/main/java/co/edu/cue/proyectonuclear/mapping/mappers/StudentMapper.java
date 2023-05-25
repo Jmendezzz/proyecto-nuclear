@@ -1,5 +1,11 @@
 package co.edu.cue.proyectonuclear.mapping.mappers;
 
-public interface StudentMapper {
+import co.edu.cue.proyectonuclear.domain.entities.Student;
+import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
+@Mapper(componentModel = "spring")
+public interface StudentMapper {
+    @Mapping(target = "name", source )
 }
