@@ -23,6 +23,11 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public Optional<Student> getStudentById(Long id) {
-        return Optional.of(entityManager.find(Student.class, id));
+        return Optional.of(entityManager.find(Student.class, id))
+    }
+
+    @Override
+    public Student saveStudent(Student student) {
+        return entityManager.merge(student);
     }
 }

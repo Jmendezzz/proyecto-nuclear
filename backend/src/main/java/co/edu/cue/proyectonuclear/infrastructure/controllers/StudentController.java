@@ -3,9 +3,7 @@ package co.edu.cue.proyectonuclear.infrastructure.controllers;
 import co.edu.cue.proyectonuclear.domain.entities.Student;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +21,7 @@ public class StudentController {
         //TODO: Do a validation if the student exists
         return student.get();
     }
+
+    @PostMapping("/students")
+    public Student createStudents(@RequestBody Student student){return studentService.saveStudent(student);}
 }
