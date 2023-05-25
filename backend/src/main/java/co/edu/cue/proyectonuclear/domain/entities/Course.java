@@ -1,9 +1,6 @@
 package co.edu.cue.proyectonuclear.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +26,7 @@ public class Course {
     private List<Student> students;
 
     @OneToMany
+    @JoinColumn(name = "course_id")
     private List<CourseSchedule> courseSchedule;
 
 }
