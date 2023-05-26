@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StudentDAO {
-    List<Student> getAllStudent();
-    Optional<Student> getStudentById(Long id);
-    Student saveStudent(Student student);
-    //List<StudentDTO> getBySemester(Integer semester);
+    List<StudentDTO> getAllStudent();
+    StudentDTO getStudentById(Long id);
+    StudentDTO saveStudent(StudentDTO studentDTO);
+    List<StudentDTO> getBySemester(Integer semester);
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public record StudentDTO(
         Long id,
         String name,
+        String lastName,
         Career career,
         Integer semester,
         List<Subject> subjects) {
