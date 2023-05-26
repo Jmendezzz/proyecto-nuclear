@@ -19,13 +19,13 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
     @Override
-    public Optional<StudentDTO> getStudentById(Long id){return studentDao.getStudentById(id);}
+    public Optional<StudentDTO> getStudentById(Long id){
+        return Optional.of(studentDao.getStudentById(id));
+    }
 
     @Override
     public StudentDTO saveStudent(StudentDTO student) {return studentDao.saveStudent(student);}
 
     @Override
-    public List<StudentDTO> getBySemester(Integer semester) {
-        return studentDao.getBySemester(semester);
-    }
+    public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
 }
