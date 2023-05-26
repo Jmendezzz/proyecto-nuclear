@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.stream.Stream;
 
 @Repository
 @Transactional
+@AllArgsConstructor
 public class StudentDAOImpl implements StudentDAO {
 
     @PersistenceContext

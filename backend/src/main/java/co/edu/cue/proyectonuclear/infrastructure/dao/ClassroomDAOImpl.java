@@ -1,11 +1,8 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao;
 
 import co.edu.cue.proyectonuclear.domain.entities.Classroom;
-import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ClassroomMapper;
-import co.edu.cue.proyectonuclear.mapping.mappers.CourseMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

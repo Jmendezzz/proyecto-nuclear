@@ -1,9 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
-import co.edu.cue.proyectonuclear.domain.entities.Classroom;
 import co.edu.cue.proyectonuclear.exceptions.CourseNotFoundException;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +26,7 @@ public class ClassroomController {
     @GetMapping("/classroom/{id}")
     public ClassroomDTO getById(@PathVariable Long id){
 
-        Optional<ClassroomDTO> classroom = classroomService.getAllById(id);
+        Optional<ClassroomDTO> classroom = classroomService.getClassroomById(id);
 
         if(classroom.isEmpty()) throw  new CourseNotFoundException("Classroom not found with the ID:"+id);
 
