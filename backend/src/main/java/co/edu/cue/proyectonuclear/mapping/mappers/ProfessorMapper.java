@@ -7,6 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProfessorMapper {
-    @Mapping(target = "name", source = "source.name", qualifiedByName = "createName")
     ProfessorDTO mapFrom(Professor source);
+    Professor mapFrom(ProfessorDTO source);
 }

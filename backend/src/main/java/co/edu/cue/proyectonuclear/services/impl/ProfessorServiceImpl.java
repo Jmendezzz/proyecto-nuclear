@@ -3,6 +3,7 @@ package co.edu.cue.proyectonuclear.services.impl;
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
+import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,23 +15,19 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorDAO professorDAO;
-    @Override
-    public Professor saveProfessor(Professor professor) {
-        return professorDAO.createProfessor(professor);
-    }
 
     @Override
     public List<ProfessorDTO> getAllProfessors() {
-        return null;
+        return professorDAO.getAllProfessors();
     }
 
     @Override
-    public Optional<Professor> getProfessorById(Long id) {
-        return Optional.empty();
+    public Optional<ProfessorDTO> getProfessorById(Long id) {
+        return Optional.of(professorDAO.getProfessorById(id));
     }
 
     @Override
-    public void createCourses() {
-
+    public ProfessorDTO saveProfessor(ProfessorDTO professor) {
+        return professorDAO.createProfessor(professor);
     }
 }
