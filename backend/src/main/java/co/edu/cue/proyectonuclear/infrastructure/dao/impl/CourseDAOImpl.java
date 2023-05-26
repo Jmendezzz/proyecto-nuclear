@@ -1,6 +1,7 @@
-package co.edu.cue.proyectonuclear.infrastructure.dao;
+package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Course;
+import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.CourseMapper;
 import jakarta.persistence.EntityManager;
@@ -16,7 +17,7 @@ import java.util.List;
 @Repository
 @Transactional
 @AllArgsConstructor
-public class CourseDAOImpl  implements CourseDAO{
+public class CourseDAOImpl  implements CourseDAO {
     @PersistenceContext
     EntityManager entityManager;
     CourseMapper courseMapper;

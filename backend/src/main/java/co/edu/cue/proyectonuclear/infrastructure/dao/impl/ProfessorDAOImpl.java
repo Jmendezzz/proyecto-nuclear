@@ -1,6 +1,7 @@
-package co.edu.cue.proyectonuclear.infrastructure.dao;
+package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
+import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import jakarta.persistence.EntityManager;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 @Transactional
-public class ProfessorDAOImpl implements ProfessorDAO{
+public class ProfessorDAOImpl implements ProfessorDAO {
     @PersistenceContext
     EntityManager entityManager;
     ProfessorMapper mapper;
@@ -27,7 +28,7 @@ public class ProfessorDAOImpl implements ProfessorDAO{
     @Override
     public ProfessorDTO createProfessor(ProfessorDTO professor) {
         Professor professorEntity = mapper.mapFrom(professor);
-        entityManager.merge(professor);
+        entityManager.merge(professorEntity);
         return mapper.mapFrom(professorEntity);
     }
 
