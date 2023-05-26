@@ -1,15 +1,16 @@
 package co.edu.cue.proyectonuclear.services;
 
 import co.edu.cue.proyectonuclear.domain.entities.Course;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CourseService {
-    Course saveCourse(Course course);
-    List<Course> getAllCourses();
-    Optional<Course> getCourseById(Long id);
-    List<Course> getCoursesByProfessorId(Long professorId);
+    CourseDTO saveCourse(CourseDTO course);
+    List<CourseDTO> getAllCourses();
+    Optional<CourseDTO> getCourseById(Long id);
+    List<CourseDTO> getCoursesByProfessorId(Long professorId);
 
     void createCourses();
 
