@@ -1,12 +1,13 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 
 import java.util.List;
 
 public interface ProfessorDAO {
-    List<Professor> getAllProfessors();
-    Professor createProfessor(Professor professor);
-    Professor getProfessorById(Long id);
+    List<ProfessorDTO> getAllProfessors();
+    ProfessorDTO createProfessor(ProfessorDTO professor);
+    ProfessorDTO getProfessorById(Long id);
 
 }

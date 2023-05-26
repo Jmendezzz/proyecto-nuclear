@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProfessorService {
-    Professor saveProfessor(Professor professor);
+    ProfessorDTO saveProfessor(ProfessorDTO professor);
     List<ProfessorDTO> getAllProfessors();
-    Optional<Professor> getProfessorById(Long id);
-    void createCourses();
-
+    Optional<ProfessorDTO> getProfessorById(Long id);
 }
