@@ -14,16 +14,16 @@ import java.util.Optional;
 public class ClassroomController {
     ClassroomService classroomService;
 
-    @GetMapping("/classroom")
+    @GetMapping("/classrooms")
     public List<ClassroomDTO> getAllCourses(){
         return classroomService.getAllClassroom();
 
     }
-    @PostMapping("/classroom")
+    @PostMapping("/classrooms")
     public ClassroomDTO createCourse(@RequestBody ClassroomDTO classroomDTO){
         return classroomService.saveClassroom(classroomDTO);
     }
-    @GetMapping("/classroom/{id}")
+    @GetMapping("/classrooms/{id}")
     public ClassroomDTO getById(@PathVariable Long id){
 
         Optional<ClassroomDTO> classroom = classroomService.getClassroomById(id);

@@ -24,7 +24,7 @@ public class SubjectController {
         return subjectService.getSubjectById(id);
     }
 
-    @PostMapping("/subject")
+    @PostMapping("/subjects")
     public SubjectDTO createSubject(@RequestBody SubjectDTO subjectDTO) {
         return subjectService.createSubject(subjectDTO);
     }

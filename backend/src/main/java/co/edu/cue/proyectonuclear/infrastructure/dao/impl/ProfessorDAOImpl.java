@@ -7,11 +7,13 @@ import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
 @Transactional
+@AllArgsConstructor
 public class ProfessorDAOImpl implements ProfessorDAO {
     @PersistenceContext
     EntityManager entityManager;

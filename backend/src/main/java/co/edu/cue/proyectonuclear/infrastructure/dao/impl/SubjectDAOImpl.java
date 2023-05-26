@@ -7,12 +7,14 @@ import co.edu.cue.proyectonuclear.mapping.mappers.SubjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 @Transactional
+@AllArgsConstructor
 public class SubjectDAOImpl implements SubjectDAO {
 
     @PersistenceContext
@@ -37,7 +39,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     @Override
     public SubjectDTO createSubject(SubjectDTO subject) {
         Subject subjectEntity = mapper.mapFrom(subject);
-        entityManager.merge(subjectEntity);
-        return mapper.mapFrom(subjectEntity);
+        Subject subjectSaved=entityManager.merge(subjectEntity);
+        return mapper.mapFrom(subjectSaved);
     }
 }
