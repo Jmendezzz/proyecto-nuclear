@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
 import jakarta.persistence.EntityManager;
@@ -12,8 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Repository
 @Transactional
@@ -30,9 +29,9 @@ public class StudentDAOImpl implements StudentDAO {
         return studentMapper.mapFromEntity(student);
     }
 
-    @Override
-    public StudentDTO saveStudent(StudentDTO studentDTO) {
-        Student student = studentMapper.mapFromDTO(studentDTO);
+    @Override // El DAO recibe el DTO para crear el student y lo mapea y lo guarda en la base de datos para luego hacer otro mappeo de otro DTO como respuesta.
+    public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
+        Student student = studentMapper.mapFromDTO(createStudentRequestDTO);
         Student studentSave = entityManager.merge(student);
         return studentMapper.mapFromEntity(studentSave);
     }

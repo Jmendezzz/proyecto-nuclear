@@ -1,7 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
-import co.edu.cue.proyectonuclear.domain.entities.Student;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import lombok.AllArgsConstructor;
@@ -23,8 +23,8 @@ public class StudentServiceImpl implements StudentService {
         return Optional.of(studentDao.getStudentById(id));
     }
 
-    @Override
-    public StudentDTO saveStudent(StudentDTO student) {return studentDao.saveStudent(student);}
+    @Override //Recibimos el DTO para crear y se lo pasamos al DAO
+    public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {return studentDao.saveStudent(createStudentRequestDTO);}
 
     @Override
     public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}

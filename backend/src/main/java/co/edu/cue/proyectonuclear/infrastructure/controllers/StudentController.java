@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
+import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class StudentController {
     @GetMapping("/students/semester/{semesterNumber}")
     public List<StudentDTO> getStudentsBySemester(@PathVariable Integer semesterNumber){return studentService.getBySemester(semesterNumber);}
 
-    @PostMapping("/students")
-    public StudentDTO createStudent(@RequestBody StudentDTO student){return studentService.saveStudent(student);}
+    @PostMapping("/students") // Acá es donde deberiamos recibir el DTO para crear estudiante
+    public StudentDTO createStudent(@RequestBody CreateStudentRequestDTO student){return studentService.saveStudent(student);}
 
 }
