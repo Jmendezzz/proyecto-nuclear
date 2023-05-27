@@ -1,5 +1,6 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
+import co.edu.cue.proyectonuclear.domain.enums.Career;
 import co.edu.cue.proyectonuclear.infrastructure.dao.SubjectDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.SubjectService;
@@ -27,5 +28,15 @@ public class SubjectServiceImpl implements SubjectService{
     @Override
     public Optional<SubjectDTO> getSubjectById(Long id) {
         return Optional.of(subjectDAO.getSubjectById(id));
+    }
+
+    @Override
+    public List<SubjectDTO> getSubjectByCareer(Career career){
+        return subjectDAO.getSubjectByCareer(career);
+    }
+
+    @Override
+    public List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber) {
+        return subjectDAO.getSubjectByCareerAndSemester(career,semesterNumber);
     }
 }

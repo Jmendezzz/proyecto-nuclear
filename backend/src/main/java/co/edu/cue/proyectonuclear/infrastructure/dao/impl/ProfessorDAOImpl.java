@@ -31,8 +31,8 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     @Override
     public ProfessorDTO createProfessor(CreateProfessorRequestDTO professor) {
         Professor professorEntity = mapper.mapFromDTO(professor);
-        entityManager.merge(professorEntity);
-        return mapper.mapFrom(professorEntity);
+        Professor professorSaved =  entityManager.merge(professorEntity);
+        return mapper.mapFrom(professorSaved);
     }
 
     @Override

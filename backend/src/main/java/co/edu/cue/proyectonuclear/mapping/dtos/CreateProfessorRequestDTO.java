@@ -14,6 +14,6 @@ public record CreateProfessorRequestDTO(
         Role role,
         String email,
         String password,
-        List<Subject> subjects
+        List<Subject> subjects //TODO: Preguntar si esto es válido o toca crear un DTO para esto. (subjects).
 ) {
 }
