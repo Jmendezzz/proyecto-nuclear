@@ -14,7 +14,6 @@ public record CreateProfessorRequestDTO(
         Role role,
         String email,
         String password,
-        List<ProfessorSchedule> schedule,
         List<Subject> subjects
 ) {
 }
