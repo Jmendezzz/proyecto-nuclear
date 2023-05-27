@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
@@ -27,7 +28,7 @@ public class ProfessorServiceImpl implements ProfessorService {
     }
 
     @Override
-    public ProfessorDTO saveProfessor(ProfessorDTO professor) {
+    public ProfessorDTO saveProfessor(CreateProfessorRequestDTO professor) {
         return professorDAO.createProfessor(professor);
     }
 }

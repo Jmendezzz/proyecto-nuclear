@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
+import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import jakarta.validation.constraints.Size;
@@ -26,7 +27,7 @@ public class ProfessorController {
     }
 
     @PostMapping("/professors")
-    public ProfessorDTO saveProfessor(@RequestBody ProfessorDTO professor){
+    public ProfessorDTO saveProfessor(@RequestBody CreateProfessorRequestDTO professor){
         return professorService.saveProfessor(professor);
     }
 }
