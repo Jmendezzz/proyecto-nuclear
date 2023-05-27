@@ -1,6 +1,5 @@
 package co.edu.cue.proyectonuclear.domain.entities;
 
-import co.edu.cue.proyectonuclear.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
