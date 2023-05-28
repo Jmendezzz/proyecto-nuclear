@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
+import co.edu.cue.proyectonuclear.exceptions.UserCreationException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
@@ -23,12 +24,17 @@ public class ProfessorServiceImpl implements ProfessorService {
     }
 
     @Override
-    public Optional<ProfessorDTO> getProfessorById(Long id) {
-        return Optional.of(professorDAO.getProfessorById(id));
+    public ProfessorDTO getProfessorById(Long id) {
+        return professorDAO.getProfessorById(id);
     }
 
     @Override
     public ProfessorDTO saveProfessor(CreateProfessorRequestDTO professor) {
-        return professorDAO.createProfessor(professor);
+        if(professorDAO.getProfessorById(professor.id()) == null) {
+            return professorDAO.createProfessor(professor);
+        }
+        else{
+            throw new UserCreationException("The id is unavailable");
+        }
     }
 }
