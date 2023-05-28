@@ -8,6 +8,7 @@ import java.util.List;
 
 public record ClassroomDTO (
         Long id,
+        String name,
         Location location,
         Integer capability,
         List<Element> elements,
