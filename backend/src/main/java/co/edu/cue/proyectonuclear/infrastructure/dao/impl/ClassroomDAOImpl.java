@@ -64,6 +64,14 @@ public class ClassroomDAOImpl implements ClassroomDAO {
         return classroomMapper.mapFromEntity(classroom);
 
     }
+
+    @Override
+    public ClassroomDTO deleteClassroomById(Long id) {
+        Classroom classroomEntity=entityManager.find(Classroom.class,id);
+        entityManager.remove(classroomEntity);
+        return null;
+    }
+
     private List<ClassroomDTO> mapEntityList(List<Classroom>classrooms){
         return classrooms.parallelStream()
                 .map(s-> classroomMapper.mapFromEntity(s))

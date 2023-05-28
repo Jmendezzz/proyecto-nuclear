@@ -35,11 +35,18 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
     @PutMapping("/classrooms/{id}")
-    public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO){
-        ClassroomDTO classroom= classroomService.updateClassroom(id,classroomDTO);
-        if (classroom == null) throw new ClassroomNotFoundException("Classroom not found with the id: "+ id);
-        return  new ResponseEntity<>(classroom, HttpStatus.OK);
+    public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO) {
+        ClassroomDTO classroom = classroomService.updateClassroom(id, classroomDTO);
+        if (classroom == null) throw new ClassroomNotFoundException("Classroom not found with the id: " + id);
+        return new ResponseEntity<>(classroom, HttpStatus.OK);
 
+    }
+    @DeleteMapping("/classrooms/{id}")
+    public ResponseEntity<ClassroomDTO> deleteClassroomById(@PathVariable Long id){
+        ClassroomDTO classroomDTO = classroomService.deleteClassroom(id);
+        if(classroomDTO==null) throw  new ClassroomNotFoundException("Classroom not found with the ID:"+id);
+        classroomService.deleteClassroom(id);
+        return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
 
 }
