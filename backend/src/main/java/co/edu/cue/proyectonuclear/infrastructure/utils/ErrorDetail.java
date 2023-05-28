@@ -3,7 +3,7 @@ package co.edu.cue.proyectonuclear.infrastructure.utils;
 import java.time.LocalDate;
 
 public class ErrorDetail { // Custom error response model.
-
+    
     private LocalDate timestamp;
     private String message;
     private String details;
