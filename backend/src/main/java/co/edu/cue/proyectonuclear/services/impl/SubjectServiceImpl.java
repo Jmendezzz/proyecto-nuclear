@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -26,8 +26,8 @@ public class SubjectServiceImpl implements SubjectService{
     }
 
     @Override
-    public Optional<SubjectDTO> getSubjectById(Long id) {
-        return Optional.of(subjectDAO.getSubjectById(id));
+    public SubjectDTO getSubjectById(Long id) {
+        return subjectDAO.getSubjectById(id);
     }
 
     @Override
@@ -51,7 +51,14 @@ public class SubjectServiceImpl implements SubjectService{
         SubjectDTO subjectToUpdate = subjectDAO.getSubjectById(id);
 
         if(subjectToUpdate != null){
-            return subjectDAO.updateSubject(subjectDTO);
+            SubjectDTO subjectUpdated = new SubjectDTO( //TODO: Preguntar dónde actualizar los datos de la entidad
+                    subjectToUpdate.id(),
+                    subjectDTO.name(),
+                    subjectDTO.career(),
+                    subjectDTO.semester(),
+                    subjectDTO.credits()
+            );
+            return subjectDAO.updateSubject(subjectUpdated);
         }else{
             return  null;
         }

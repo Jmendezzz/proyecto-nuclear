@@ -68,6 +68,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     @Override
     public SubjectDTO updateSubject(SubjectDTO subject) {
         Subject subjectEntity = mapper.mapFrom(subject);
+        System.out.println(subject.id());
         Subject subjectUpdated = entityManager.merge(subjectEntity);
         return mapper.mapFrom(subjectUpdated);
     }
