@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface SubjectService {
     SubjectDTO createSubject(SubjectDTO subjectDTO);
     List<SubjectDTO> getAllSubjects();
-    Optional<SubjectDTO> getSubjectById(Long id);
+    SubjectDTO getSubjectById(Long id);
 
     List<SubjectDTO> getSubjectByCareer(Career career);
 

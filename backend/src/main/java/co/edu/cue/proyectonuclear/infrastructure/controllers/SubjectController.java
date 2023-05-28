@@ -4,15 +4,12 @@ import co.edu.cue.proyectonuclear.domain.enums.Career;
 import co.edu.cue.proyectonuclear.exceptions.SubjectNotFoundException;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.SubjectService;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -25,8 +22,14 @@ public class SubjectController {
     }
 
     @GetMapping("/subjects/{id}")
-    public Optional<SubjectDTO> getSubjectById(@PathVariable @Size(max = 20) Long id) {
-        return subjectService.getSubjectById(id);
+    public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable Long id) {
+
+        SubjectDTO subjectDTO =  subjectService.getSubjectById(id);
+
+        if(subjectDTO == null) throw  new SubjectNotFoundException("Subject not found with the id: "+ id);
+
+        return new ResponseEntity<>(subjectDTO, HttpStatus.OK);
+
     }
     @GetMapping("/subjects/career/{career}")
     public List<SubjectDTO> getSubjectsByCareer(@PathVariable Career career){
