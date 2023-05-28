@@ -25,9 +25,7 @@ public class SubjectController {
     public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable Long id) {
 
         SubjectDTO subjectDTO =  subjectService.getSubjectById(id);
-
         if(subjectDTO == null) throw  new SubjectNotFoundException("Subject not found with the id: "+ id);
-
         return new ResponseEntity<>(subjectDTO, HttpStatus.OK);
 
     }
