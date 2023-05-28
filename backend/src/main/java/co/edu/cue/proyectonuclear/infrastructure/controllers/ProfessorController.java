@@ -27,7 +27,7 @@ public class ProfessorController {
     public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id){
         ProfessorDTO professorDTO = professorService.getProfessorById(id);
         if (professorDTO == null)
-            throw new ProfessorNotFoundException("Could not find a professor with the given id");
+            throw new ProfessorNotFoundException("Could not find a professor with the given id: "+id);
         return new ResponseEntity<>(professorDTO, HttpStatus.OK);
     }
 
