@@ -49,7 +49,7 @@ public class SubjectController {
 
         SubjectDTO subject= subjectService.updateSubject(id,subjectDTO);
 
-        if (subject == null) throw new SubjectNotFoundException("Subject not found with the id:"+ id); // TODO: Preguntar si las excepciones van en el servicio o acá.
+        if (subject == null) throw new SubjectNotFoundException("Subject not found with the id: "+ id);
 
         return  new ResponseEntity<>(subject, HttpStatus.OK);
 
