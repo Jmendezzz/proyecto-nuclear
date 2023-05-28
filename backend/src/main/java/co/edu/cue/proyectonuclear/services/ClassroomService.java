@@ -19,4 +19,5 @@ public interface ClassroomService {
     ClassroomDTO updateClassroom(Long id, ClassroomDTO classroomDTO);
 
 
+    ClassroomDTO deleteClassroom(Long id);
 }

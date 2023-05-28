@@ -47,6 +47,13 @@ public class ClassroomServiceImpl implements ClassroomService {
         }else {
             return null;
         }
-
+    }
+    @Override
+    public ClassroomDTO deleteClassroom(Long id) {
+        ClassroomDTO classroomToDelete=classroomDAO.getClassroomById(id);
+        if (classroomToDelete!=null){
+            return classroomDAO.deleteClassroomById(classroomToDelete.id());
+        }
+        return null;
     }
 }
