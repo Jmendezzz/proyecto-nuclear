@@ -41,8 +41,9 @@ public class SubjectController {
     }
 
     @PostMapping("/subjects")
-    public SubjectDTO createSubject(@RequestBody SubjectDTO subjectDTO) {
-        return subjectService.createSubject(subjectDTO);
+    public ResponseEntity<SubjectDTO> createSubject(@RequestBody SubjectDTO subjectDTO) {
+        SubjectDTO subjectDTOCreated = subjectService.createSubject(subjectDTO);
+        return new ResponseEntity<>(subjectDTOCreated, HttpStatus.CREATED);
     }
 
     @PutMapping("/subjects/{id}")
@@ -53,6 +54,16 @@ public class SubjectController {
         if (subject == null) throw new SubjectNotFoundException("Subject not found with the id: "+ id);
 
         return  new ResponseEntity<>(subject, HttpStatus.OK);
+
+    }
+    @DeleteMapping("/subjects/{id}") //TODO: Eliminar primero de la tabla professor_subjects para poder eliminar una asignatura asociada a un professor.
+    public ResponseEntity<SubjectDTO> deleteSubjectById(@PathVariable Long id) {
+
+        SubjectDTO subjectDTO =  subjectService.deleteSubjectById(id);
+
+        if(subjectDTO == null) throw  new SubjectNotFoundException("Subject not found with the id: "+ id);
+
+        return new ResponseEntity<>(subjectDTO, HttpStatus.OK);
 
     }
 

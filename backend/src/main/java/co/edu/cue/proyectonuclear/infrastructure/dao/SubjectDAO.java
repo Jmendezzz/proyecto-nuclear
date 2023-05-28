@@ -14,4 +14,6 @@ public interface SubjectDAO {
     List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber);
 
     SubjectDTO updateSubject(SubjectDTO subjectDTO);
+
+    SubjectDTO deleteSubjectById(Long id);
 }

@@ -31,7 +31,6 @@ public class StudentController {
 
     @GetMapping("/students/semester/{semesterNumber}")
     public List<StudentDTO> getStudentsBySemester(@PathVariable Integer semesterNumber){
-        if (semesterNumber == null) throw new StudentNotFoundException("the semester "+semesterNumber+" was not found");
         return studentService.getBySemester(semesterNumber);
     }
 

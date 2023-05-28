@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.exceptions.StudentNotFoundException;
+import co.edu.cue.proyectonuclear.exceptions.UserCreationException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
@@ -26,7 +27,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
-        return null;
+        if(studentDao.getStudentById(createStudentRequestDTO.id())==null){
+            return studentDao.saveStudent(createStudentRequestDTO);
+        }
+        else throw new UserCreationException("The id is unavailable");
     }
 
     @Override
