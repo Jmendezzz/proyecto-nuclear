@@ -24,7 +24,7 @@ public class ProfessorController {
     }
 
     @GetMapping("/professors/{id}")
-    public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable @Size(max = 20) Long id){
+    public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id){
         ProfessorDTO professorDTO = professorService.getProfessorById(id);
         if (professorDTO == null)
             throw new ProfessorNotFoundException("Could not find a professor with the given id");
