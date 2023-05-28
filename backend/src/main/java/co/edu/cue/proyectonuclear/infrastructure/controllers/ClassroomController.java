@@ -1,9 +1,15 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
+import co.edu.cue.proyectonuclear.domain.entities.Classroom;
+import co.edu.cue.proyectonuclear.exceptions.ClassroomNotFoundException;
 import co.edu.cue.proyectonuclear.exceptions.CourseNotFoundException;
+import co.edu.cue.proyectonuclear.exceptions.SubjectNotFoundException;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,25 +19,27 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ClassroomController {
     ClassroomService classroomService;
-
     @GetMapping("/classrooms")
-    public List<ClassroomDTO> getAllCourses(){
+    public List<ClassroomDTO> getAllClassroom(){
         return classroomService.getAllClassroom();
-
     }
     @PostMapping("/classrooms")
-    public ClassroomDTO createCourse(@RequestBody ClassroomDTO classroomDTO){
+    public ClassroomDTO createClassroom(@RequestBody ClassroomDTO classroomDTO){
         return classroomService.saveClassroom(classroomDTO);
     }
+
     @GetMapping("/classrooms/{id}")
-    public ClassroomDTO getById(@PathVariable Long id){
-
-        Optional<ClassroomDTO> classroom = classroomService.getClassroomById(id);
-
-        if(classroom.isEmpty()) throw  new CourseNotFoundException("Classroom not found with the ID:"+id);
-
-        return classroom.get();
+    public ResponseEntity<ClassroomDTO> getClassroomById(@PathVariable Long id){
+        ClassroomDTO classroomDTO = classroomService.getClassroomById(id);
+        if(classroomDTO==null) throw  new ClassroomNotFoundException("Classroom not found with the ID:"+id);
+        return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
+    @PutMapping("/classrooms/{id}")
+    public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO){
+        ClassroomDTO classroom= classroomService.updateClassroom(id,classroomDTO);
+        if (classroom == null) throw new ClassroomNotFoundException("Classroom not found with the id: "+ id);
+        return  new ResponseEntity<>(classroom, HttpStatus.OK);
 
+    }
 
 }

@@ -36,6 +36,7 @@ public class SubjectDAOImpl implements SubjectDAO {
         return mapper.mapFrom(subject);
     }
 
+
     @Override
     public List<SubjectDTO> getSubjectByCareer(Career career) {
         String query = "SELECT * FROM subject WHERE career = :career";

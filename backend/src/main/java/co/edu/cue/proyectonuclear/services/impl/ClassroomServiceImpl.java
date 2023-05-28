@@ -4,6 +4,7 @@ import co.edu.cue.proyectonuclear.domain.entities.Classroom;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ClassroomDAO;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,24 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public Optional<ClassroomDTO> getClassroomById(Long id) {
-        return Optional.of(classroomDAO.findCourseById(id));
+    public ClassroomDTO getClassroomById(Long id) {
+        return classroomDAO.findCourseById(id);
+    }
+    @Override
+    public ClassroomDTO updateClassroom(Long id, ClassroomDTO classroomDTO) {
+        ClassroomDTO classroomToUpdate=classroomDAO.getClassroomById(id);
+        if (classroomToUpdate !=null){
+            ClassroomDTO classroomUpdated=new ClassroomDTO(
+                    classroomToUpdate.id(),
+                    classroomDTO.location(),
+                    classroomDTO.capability(),
+                    classroomDTO.elements(),
+                    classroomDTO.tipology()
+            );
+            return classroomDAO.updateClassroom(classroomUpdated);
+        }else {
+            return null;
+        }
+
     }
 }
