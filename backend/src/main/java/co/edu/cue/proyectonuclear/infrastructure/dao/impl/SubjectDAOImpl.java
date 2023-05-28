@@ -39,8 +39,8 @@ public class SubjectDAOImpl implements SubjectDAO {
     @Override
     public List<SubjectDTO> getSubjectByCareer(Career career) {
         String query = "SELECT * FROM subject WHERE career = :career";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter("career",career);
+        Query nativeQuery = entityManager.createNativeQuery(query,Subject.class); //Importante poner Subject.class para hacer el mapeo automaticamente.
+        nativeQuery.setParameter("career",career.name());
         List<Subject> subjects = nativeQuery.getResultList();
         return mapEntityList(subjects);
     }
@@ -55,11 +55,21 @@ public class SubjectDAOImpl implements SubjectDAO {
     @Override
     public List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber) {
 
-        String query = "SELECT * FROM subject WHERE career= :career AND semester= :semester";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter("career",career);
+        String query = "SELECT * FROM subject WHERE career = :career AND semester = :semester";
+        Query nativeQuery = entityManager.createNativeQuery(query,Subject.class);
+        nativeQuery.setParameter("career",career.name()); //Los ENUMS deben mandarse como String.
         nativeQuery.setParameter("semester",semesterNumber);
         return mapEntityList(nativeQuery.getResultList());
+    }
+/*
+* En esta capa de DAO no se va manejar nada relacionado a la logica solo vamos a hacer operaciones
+* con la base de datos, no vamos a comprobar si hay null ni nada de esos para eso está el servicio y controlador.
+* */
+    @Override
+    public SubjectDTO updateSubject(SubjectDTO subject) {
+        Subject subjectEntity = mapper.mapFrom(subject);
+        Subject subjectUpdated = entityManager.merge(subjectEntity);
+        return mapper.mapFrom(subjectUpdated);
     }
 
     private List<SubjectDTO> mapEntityList(List<Subject>subjects){

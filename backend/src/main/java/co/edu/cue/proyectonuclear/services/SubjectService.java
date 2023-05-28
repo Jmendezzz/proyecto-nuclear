@@ -14,4 +14,6 @@ public interface SubjectService {
     List<SubjectDTO> getSubjectByCareer(Career career);
 
     List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber);
+
+    SubjectDTO updateSubject(Long id,SubjectDTO subjectDTO);
 }

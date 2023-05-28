@@ -12,4 +12,6 @@ public interface SubjectDAO {
     SubjectDTO createSubject(SubjectDTO subject);
 
     List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber);
+
+    SubjectDTO updateSubject(SubjectDTO subjectDTO);
 }

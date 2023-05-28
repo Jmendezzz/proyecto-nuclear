@@ -39,4 +39,22 @@ public class SubjectServiceImpl implements SubjectService{
     public List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber) {
         return subjectDAO.getSubjectByCareerAndSemester(career,semesterNumber);
     }
+
+    /*
+    * Ya sabemos que en la capa de servicios no pueden ir Entidades.
+    * Entonces lo primero que hacemos para modificar una entidad es comprobar si existe.
+    * Si existe mandamos la entidad modificada que llego por el controlador.
+    * Si no existe retornamos el null para que el controlador lo gestione.
+    * */
+    @Override
+    public SubjectDTO updateSubject(Long id,SubjectDTO subjectDTO) {
+        SubjectDTO subjectToUpdate = subjectDAO.getSubjectById(id);
+
+        if(subjectToUpdate != null){
+            return subjectDAO.updateSubject(subjectDTO);
+        }else{
+            return  null;
+        }
+
+    }
 }
