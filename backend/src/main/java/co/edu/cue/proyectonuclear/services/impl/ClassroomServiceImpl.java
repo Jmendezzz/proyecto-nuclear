@@ -37,6 +37,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         if (classroomToUpdate !=null){
             ClassroomDTO classroomUpdated=new ClassroomDTO(
                     classroomToUpdate.id(),
+                    classroomDTO.name(),
                     classroomDTO.location(),
                     classroomDTO.capability(),
                     classroomDTO.elements(),
