@@ -35,10 +35,10 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
     @PutMapping("/classrooms/{id}")
-    public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO){
-        ClassroomDTO classroom= classroomService.updateClassroom(id,classroomDTO);
-        if (classroom == null) throw new ClassroomNotFoundException("Classroom not found with the id: "+ id);
-        return  new ResponseEntity<>(classroom, HttpStatus.OK);
+    public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO) {
+        ClassroomDTO classroom = classroomService.updateClassroom(id, classroomDTO);
+        if (classroom == null) throw new ClassroomNotFoundException("Classroom not found with the id: " + id);
+        return new ResponseEntity<>(classroom, HttpStatus.OK);
 
     }
 

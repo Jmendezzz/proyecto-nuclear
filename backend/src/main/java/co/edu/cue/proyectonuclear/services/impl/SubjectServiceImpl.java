@@ -64,4 +64,15 @@ public class SubjectServiceImpl implements SubjectService{
         }
 
     }
+
+    @Override
+    public SubjectDTO deleteSubjectById(Long id) {
+        SubjectDTO subjectToDelete = subjectDAO.getSubjectById(id);
+
+        if(subjectToDelete != null){
+            return subjectDAO.deleteSubjectById(id);
+        }else{
+            return null;
+        }
+    }
 }
