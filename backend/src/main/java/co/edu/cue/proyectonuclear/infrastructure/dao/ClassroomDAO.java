@@ -18,4 +18,5 @@ public interface ClassroomDAO {
     ClassroomDTO getClassroomById(Long id);
 
 
+    ClassroomDTO deleteClassroomById(Long id);
 }
