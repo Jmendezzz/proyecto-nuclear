@@ -1,12 +1,14 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
+import co.edu.cue.proyectonuclear.domain.entities.Subject;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -38,6 +40,15 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     @Override
     public ProfessorDTO getProfessorById(Long id) {
         Professor professor = entityManager.find(Professor.class, id);
+        return mapper.mapFrom(professor);
+    }
+
+    @Override
+    public ProfessorDTO getProfessorBySubject(Long idSubject) {
+        String query = "SELECT * FROM professor_subjects WHERE subject_id = :idSubject";
+        Query nativeQuery = entityManager.createNativeQuery(query, Professor.class);
+        nativeQuery.setParameter("idSubject", idSubject);
+        Professor professor = (Professor) nativeQuery.getSingleResult();
         return mapper.mapFrom(professor);
     }
 }

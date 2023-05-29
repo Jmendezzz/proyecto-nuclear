@@ -30,6 +30,13 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public ProfessorDTO saveProfessor(CreateProfessorRequestDTO professor) {
+        //TODO create a function for the validations
+        //Validate that the professor is unique for the subject
+        professor.subjects().stream().forEach(s -> {
+            if (professorDAO.getProfessorBySubject(s.getId()) != null) {
+                throw new UserCreationException("The subject "+s.getName()+" already has a professor");
+            }
+        });
         if(professorDAO.getProfessorById(professor.id()) == null) {
             return professorDAO.createProfessor(professor);
         }

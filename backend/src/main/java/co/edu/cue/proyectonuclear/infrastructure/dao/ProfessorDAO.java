@@ -10,5 +10,6 @@ public interface ProfessorDAO {
     List<ProfessorDTO> getAllProfessors();
     ProfessorDTO createProfessor(CreateProfessorRequestDTO professor);
     ProfessorDTO getProfessorById(Long id);
+    ProfessorDTO getProfessorBySubject(Long idSubject);
 
 }
