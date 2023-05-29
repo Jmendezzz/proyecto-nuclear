@@ -1,15 +1,15 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
-import co.edu.cue.proyectonuclear.domain.entities.Professor;
-import co.edu.cue.proyectonuclear.exceptions.UserCreationException;
+
+import co.edu.cue.proyectonuclear.exceptions.UserException;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
-import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class ProfessorServiceImpl implements ProfessorService {
             return professorDAO.createProfessor(professor);
         }
         else{
-            throw new UserCreationException("The id is unavailable");
+            throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
         }
     }
 }

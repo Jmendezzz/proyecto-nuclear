@@ -1,16 +1,15 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
-import co.edu.cue.proyectonuclear.exceptions.StudentNotFoundException;
-import co.edu.cue.proyectonuclear.exceptions.UserCreationException;
+import co.edu.cue.proyectonuclear.exceptions.UserException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +29,7 @@ public class StudentServiceImpl implements StudentService {
         if(studentDao.getStudentById(createStudentRequestDTO.id())==null){
             return studentDao.saveStudent(createStudentRequestDTO);
         }
-        else throw new UserCreationException("The id is unavailable");
+        else throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
     }
 
     @Override
