@@ -35,4 +35,28 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
+
+    @Override
+    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
+        StudentDTO studentToUpdate = studentDao.getStudentById(id);
+        if (studentToUpdate!=null){
+            StudentDTO studentUpdate = new StudentDTO(
+                    studentToUpdate.id(),
+                    studentDTO.name(),
+                    studentDTO.lastName(),
+                    studentDTO.career(),
+                    studentDTO.semester(),
+                    studentDTO.subjects()
+            );
+            return studentDao.updateStudent(studentUpdate);
+        }else return null;
+    }
+
+    @Override
+    public StudentDTO deleteStudent(Long id) {
+        StudentDTO studentDTODelete = studentDao.getStudentById(id);
+        if (studentDTODelete!=null){
+            return studentDao.deleteStudent(id);
+        }else return null;
+    }
 }
