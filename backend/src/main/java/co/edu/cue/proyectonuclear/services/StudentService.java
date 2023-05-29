@@ -12,4 +12,9 @@ public interface StudentService {
 
     StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO);
     List<StudentDTO> getBySemester( Integer semester);
+
+    StudentDTO updateStudent(Long id,StudentDTO studentDTO);
+
+    StudentDTO deleteStudent(Long id);
+
 }

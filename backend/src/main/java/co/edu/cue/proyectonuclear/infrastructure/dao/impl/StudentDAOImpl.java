@@ -51,4 +51,18 @@ public class StudentDAOImpl implements StudentDAO {
         List<Student> students = nativeQuery.getResultList();
         return students.parallelStream().map(s->studentMapper.mapFromEntity(s)).toList();
     }
+
+    @Override
+    public StudentDTO updateStudent(StudentDTO studentDTO) {
+        Student studentEntity = studentMapper.mapFromDTO(studentDTO);
+        Student studentUpdated = entityManager.merge(studentEntity);
+        return studentMapper.mapFromEntity(studentUpdated);
+    }
+
+    @Override
+    public StudentDTO deleteStudent(Long id) {
+        Student studentEntity = entityManager.find(Student.class,id);
+        entityManager.remove(studentEntity);
+        return studentMapper.mapFromEntity(studentEntity);
+    }
 }
