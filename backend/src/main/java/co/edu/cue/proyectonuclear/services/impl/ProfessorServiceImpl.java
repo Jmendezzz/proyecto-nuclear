@@ -1,17 +1,14 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
-import co.edu.cue.proyectonuclear.domain.entities.Professor;
-import co.edu.cue.proyectonuclear.exceptions.UserCreationException;
+import co.edu.cue.proyectonuclear.exceptions.UserException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
-import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -35,14 +32,14 @@ public class ProfessorServiceImpl implements ProfessorService {
         professor.subjects().stream().forEach(s -> {
             if (professorDAO.getProfessorBySubject( s.id() )!= null) {
                 System.out.println(s.name());
-                throw new UserCreationException("The subject "+ s.name() + " already has a professor");
+                throw new UserException("The subject "+ s.name() + " already has a professor");
             }
         });
         if(professorDAO.getProfessorById(professor.id()) == null) {
             return professorDAO.createProfessor(professor);
         }
         else{
-            throw new UserCreationException("The id is unavailable");
+            throw new UserException("The id is unavailable");
         }
     }
 }

@@ -1,8 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 
-import co.edu.cue.proyectonuclear.domain.entities.Course;
-import co.edu.cue.proyectonuclear.exceptions.CourseNotFoundException;
+import co.edu.cue.proyectonuclear.exceptions.CourseException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.services.CourseService;
 import lombok.AllArgsConstructor;
@@ -28,13 +27,17 @@ public class CourseController {
 
         Optional<CourseDTO> course = courseService.getCourseById(id);
 
-        if(course.isEmpty()) throw  new CourseNotFoundException("Course not found with the ID:"+id);
+        if(course.isEmpty()) throw  new CourseException("Course not found with the ID:"+id);
 
         return course.get();
     }
     @GetMapping("/courses/professor/{id}")
     public List<CourseDTO> getCoursesByProfessorId(@PathVariable Long id){
         return  courseService.getCoursesByProfessorId(id);
+    }
+    @GetMapping("/courses/semester/{semesterNumber}")
+    public List<CourseDTO> getCoursesBySemester(@PathVariable Integer semesterNumber){
+        return null; //TODO
     }
 
 

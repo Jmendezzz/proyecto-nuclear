@@ -13,4 +13,6 @@ public interface CourseDAO {
     CourseDTO findCourseById(Long id);
     List<CourseDTO> getCoursesByProfessorId(Long professorId);
 
+    List<CourseDTO> getCoursesBySemester(Integer semesterNumber);
+
 }
