@@ -10,4 +10,7 @@ public interface StudentDAO {
     StudentDTO getStudentById(Long id);
     StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO);
     List<StudentDTO> getBySemester(Integer semester);
+    StudentDTO updateStudent(StudentDTO studentDTO);
+    StudentDTO deleteStudent(Long id);
+
 }
