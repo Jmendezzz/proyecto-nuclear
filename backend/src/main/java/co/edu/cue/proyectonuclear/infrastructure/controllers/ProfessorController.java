@@ -4,6 +4,7 @@ import co.edu.cue.proyectonuclear.exceptions.ProfessorNotFoundException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class ProfessorController {
     }
 
     @PostMapping("/professors")
-    public ProfessorDTO saveProfessor(@RequestBody CreateProfessorRequestDTO professor){
+    public ProfessorDTO saveProfessor(@Valid @RequestBody CreateProfessorRequestDTO professor){
         return professorService.saveProfessor(professor);
     }
 }

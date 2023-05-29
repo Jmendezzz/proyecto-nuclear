@@ -7,6 +7,7 @@ import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
@@ -25,7 +26,8 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     public List<ProfessorDTO> getAllProfessors() {
         String query = "FROM Professor";
         List<Professor> professors = entityManager.createQuery(query).getResultList();
-        return professors.parallelStream()
+        professors.stream().forEach(p-> System.out.println(p.getName()));
+        return professors.stream()//Todo preguntar que paso ahi
                 .map(p->mapper.mapFrom(p))
                 .toList();
     }
@@ -44,11 +46,16 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public ProfessorDTO getProfessorBySubject(Long idSubject) {
-        String query = "SELECT * FROM professor_subjects WHERE subject_id = :idSubject";
-        Query nativeQuery = entityManager.createNativeQuery(query, Professor.class);
+    public ProfessorDTO getProfessorBySubject(Long idSubject) { //TODO: Una funcion que retorne una lista de asignaturas de un profesor.
+        System.out.println(idSubject);
+        String query = "SELECT p.* FROM professor p INNER JOIN professor_subjects ps ON p.id = ps.professor_id WHERE ps.subjects_id = :idSubject";
+        Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("idSubject", idSubject);
-        Professor professor = (Professor) nativeQuery.getSingleResult();
-        return mapper.mapFrom(professor);
+        try {
+            Long idProfessor= (Long) nativeQuery.getSingleResult();
+            return mapper.mapFrom(entityManager.find(Professor.class,idProfessor));
+        }catch (NoResultException ex){
+            return null;
+        }
     }
 }
