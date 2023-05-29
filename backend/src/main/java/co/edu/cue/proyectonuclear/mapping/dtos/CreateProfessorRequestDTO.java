@@ -8,6 +8,7 @@ import java.util.List;
 
 public record CreateProfessorRequestDTO(
         Long id,
+        String nid,
         String name,
         String lastName,
         @Email(message = "The email should be valid")
