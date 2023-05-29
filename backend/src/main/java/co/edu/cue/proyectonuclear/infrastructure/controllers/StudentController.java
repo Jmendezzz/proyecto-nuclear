@@ -22,7 +22,7 @@ public class StudentController {
     @GetMapping("/students/{id}")
     public ResponseEntity<StudentDTO> getById(@PathVariable Long id){
         StudentDTO studentDTO = studentService.getStudentById(id);
-        if(studentDTO == null) throw  new StudentException("Student not found with the id: "+ id);
+        if(studentDTO == null) throw  new StudentException("Student not found with the id: "+ id, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
@@ -36,17 +36,17 @@ public class StudentController {
         return studentService.saveStudent(student);
     }
 
-    @PutMapping("/students/{id}")
+    @PutMapping("/students/{id}")//TODO:CORREGIR DE ACUERDO A SUBJECT
     public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
         StudentDTO student = studentService.updateStudent(id, studentDTO);
-        if (student == null) throw new StudentNotFoundException("Student not found with the id"+id);
+        if (student == null) throw new StudentException("Student not found with the id"+id, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @DeleteMapping("/student/{id}")
+    @DeleteMapping("/student/{id}") //TODO:Corregir de acuerdo  a subjects
     public ResponseEntity<StudentDTO> deleteStudentById(@PathVariable Long id) {
         StudentDTO studentDTO = studentService.deleteStudent(id);
-        if (studentDTO == null) throw new StudentNotFoundException("Student not found with the id"+id);
+        if (studentDTO == null) throw new StudentException("Student not found with the id"+id,HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
 
     }

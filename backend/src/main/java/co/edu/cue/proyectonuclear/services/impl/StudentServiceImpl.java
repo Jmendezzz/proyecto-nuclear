@@ -6,6 +6,7 @@ import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class StudentServiceImpl implements StudentService {
         if(studentDao.getStudentById(createStudentRequestDTO.id())==null){
             return studentDao.saveStudent(createStudentRequestDTO);
         }
-        else throw new UserException("The id is unavailable");
+        else throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
     }
 
     @Override
