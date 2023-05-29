@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 @Transactional
 @AllArgsConstructor
@@ -40,22 +42,30 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public ProfessorDTO getProfessorById(Long id) {
-        Professor professor = entityManager.find(Professor.class, id);
-        return mapper.mapFrom(professor);
+    public Optional<ProfessorDTO> getProfessorById(String nid) {
+        String query = "SELECT p.* FROM professor p INNER JOIN user u ON p.id = u.id WHERE u.nid = :nidProfessor";
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("nid", nid);
+        try{
+            Professor professor = (Professor) nativeQuery.getSingleResult();
+            ProfessorDTO professorDTO = mapper.mapFrom(professor);
+            return Optional.of(professorDTO);
+        }catch (NoResultException ex){
+            return Optional.empty();
+        }
     }
 
     @Override
-    public ProfessorDTO getProfessorBySubject(Long idSubject) { //TODO: Una funcion que retorne una lista de asignaturas de un profesor.
+    public Optional<ProfessorDTO> getProfessorBySubject(Long idSubject) {
         System.out.println(idSubject);
         String query = "SELECT p.* FROM professor p INNER JOIN professor_subjects ps ON p.id = ps.professor_id WHERE ps.subjects_id = :idSubject";
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("idSubject", idSubject);
         try {
             Long idProfessor= (Long) nativeQuery.getSingleResult();
-            return mapper.mapFrom(entityManager.find(Professor.class,idProfessor));
+            return Optional.of(mapper.mapFrom(entityManager.find(Professor.class,idProfessor)));
         }catch (NoResultException ex){
-            return null;
+            return Optional.empty();
         }
     }
 }
