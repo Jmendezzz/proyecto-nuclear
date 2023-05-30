@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,13 +21,13 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
     @Override
-    public StudentDTO getStudentById(Long id){
+    public Optional<StudentDTO> getStudentById(Long id){
         return studentDao.getStudentById(id);
     }
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
-        if(studentDao.getStudentById(createStudentRequestDTO.id())==null){
+        if(studentDao.getStudentById(createStudentRequestDTO.id()).isEmpty()){
             return studentDao.saveStudent(createStudentRequestDTO);
         }
         else throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
@@ -36,25 +37,14 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
 
     @Override
-    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
-        StudentDTO studentToUpdate = studentDao.getStudentById(id);
-        if (studentToUpdate!=null){
-            StudentDTO studentUpdate = new StudentDTO(
-                    studentToUpdate.id(),
-                    studentDTO.name(),
-                    studentDTO.lastName(),
-                    studentDTO.career(),
-                    studentDTO.semester(),
-                    studentDTO.subjects()
-            );
-            return studentDao.updateStudent(studentUpdate);
-        }else return null;
+    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) { //TODO:the student just can update the password and email
+        return studentDao.updateStudent(studentDTO);
     }
 
     @Override
     public StudentDTO deleteStudent(Long id) {
-        StudentDTO studentDTODelete = studentDao.getStudentById(id);
-        if (studentDTODelete!=null){
+        Optional<StudentDTO> studentDTODelete = studentDao.getStudentById(id);
+        if (studentDTODelete.isPresent()){
             return studentDao.deleteStudent(id);
         }else return null;
     }
