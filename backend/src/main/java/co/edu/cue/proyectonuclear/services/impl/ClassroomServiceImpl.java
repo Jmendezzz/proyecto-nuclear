@@ -1,10 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
-import co.edu.cue.proyectonuclear.domain.entities.Classroom;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ClassroomDAO;
-import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +15,7 @@ public class ClassroomServiceImpl implements ClassroomService {
 
 
     @Override
-    public ClassroomDTO saveClassroom(ClassroomDTO classroom) {
+    public Optional<ClassroomDTO> saveClassroom(ClassroomDTO classroom) {
         return classroomDAO.saveCourse(classroom);
     }
 
@@ -28,15 +25,16 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public ClassroomDTO getClassroomById(Long id) {
+    public Optional<ClassroomDTO> getClassroomById(Long id) {
         return classroomDAO.findCourseById(id);
     }
+
     @Override
-    public ClassroomDTO updateClassroom(Long id, ClassroomDTO classroomDTO) {
-        ClassroomDTO classroomToUpdate=classroomDAO.getClassroomById(id);
+    public Optional<ClassroomDTO> updateClassroom(Long id, ClassroomDTO classroomDTO) {
+        Optional<ClassroomDTO> classroomToUpdate=classroomDAO.getClassroomById(id);
         if (classroomToUpdate !=null){
             ClassroomDTO classroomUpdated=new ClassroomDTO(
-                    classroomToUpdate.id(),
+                    classroomToUpdate.get().id(),
                     classroomDTO.name(),
                     classroomDTO.location(),
                     classroomDTO.capability(),
@@ -49,10 +47,10 @@ public class ClassroomServiceImpl implements ClassroomService {
         }
     }
     @Override
-    public ClassroomDTO deleteClassroom(Long id) {
-        ClassroomDTO classroomToDelete=classroomDAO.getClassroomById(id);
+    public Optional<ClassroomDTO> deleteClassroom(Long id) {
+        Optional<ClassroomDTO> classroomToDelete=classroomDAO.getClassroomById(id);
         if (classroomToDelete!=null){
-            return classroomDAO.deleteClassroomById(classroomToDelete.id());
+            return classroomDAO.deleteClassroomById(classroomToDelete.get().id());
         }
         return null;
     }
