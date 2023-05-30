@@ -10,7 +10,8 @@ import java.util.Optional;
 public interface ProfessorDAO {
     List<ProfessorDTO> getAllProfessors();
     ProfessorDTO createProfessor(CreateProfessorRequestDTO professor);
-    Optional<ProfessorDTO> getProfessorById(String nid);
+    Optional<ProfessorDTO> getProfessorByNid(String nid);
+    Optional<ProfessorDTO> getProfessorById(Long id);
     Optional<ProfessorDTO> getProfessorBySubject(Long idSubject);
 
 }

@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface ProfessorService {
     ProfessorDTO saveProfessor(CreateProfessorRequestDTO professor);
     List<ProfessorDTO> getAllProfessors();
-    Optional<ProfessorDTO> getProfessorById(String nid);
+    Optional<ProfessorDTO> getProfessorByNid(String nid);
+    Optional<ProfessorDTO> getProfessorById(Long id);
 }
