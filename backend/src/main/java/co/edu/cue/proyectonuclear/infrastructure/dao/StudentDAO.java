@@ -4,6 +4,7 @@ import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentDAO {
     List<StudentDTO> getAllStudent();
