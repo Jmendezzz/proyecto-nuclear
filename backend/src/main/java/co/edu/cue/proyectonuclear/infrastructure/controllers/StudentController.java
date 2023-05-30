@@ -1,8 +1,10 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.exceptions.StudentException;
+import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,10 +26,10 @@ public class StudentController {
     }
 
     @GetMapping("/students/{id}")
-    public ResponseEntity<StudentDTO> getById(@PathVariable Long id){
+    public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable Long nid){
 
-        Optional<StudentDTO> studentDTO = studentService.getStudentById(id);
-        if(studentDTO.isEmpty()) throw  new StudentException("Student not found with the id: "+ id,HttpStatus.NOT_FOUND);
+        Optional<StudentDTO> studentDTO = studentService.getStudentByNid(nid);
+        if(studentDTO.isEmpty()) throw  new StudentException("Student not found with the id: "+ nid,HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
 
     }
@@ -56,6 +58,15 @@ public class StudentController {
 
         StudentDTO studentDTO = studentService.deleteStudent(id);
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/student/{id}")
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
+
+        Optional<StudentDTO> studentDTO =  studentService.getStudentById(id);
+        if(studentDTO.isEmpty()) throw  new SubjectException("Subject not found with the id: "+ id,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
 
     }
 }
