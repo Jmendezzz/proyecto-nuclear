@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.exceptions.UserException;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDao;
+    private final UserConstrain userConstrain;
     @Override
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
@@ -27,10 +29,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
-        if(studentDao.getStudentById(createStudentRequestDTO.id()).isEmpty()){
-            return studentDao.saveStudent(createStudentRequestDTO);
-        }
-        else throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
+        userConstrain.validateNidUser(createStudentRequestDTO.nid());
+        return studentDao.saveStudent(createStudentRequestDTO);
     }
 
     @Override
