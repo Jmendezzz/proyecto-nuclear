@@ -57,8 +57,13 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 
     @Override
     public Optional<ProfessorDTO> getProfessorById(Long id) {
-        Professor professor = entityManager.find(Professor.class, id);
-        return Optional.of(mapper.mapFrom(professor));
+        try{
+            Professor professor = entityManager.find(Professor.class, id);
+            return Optional.of(mapper.mapFrom(professor));
+        }catch (NoResultException ex){
+            return Optional.empty();
+        }
+        
     }
 
     @Override
