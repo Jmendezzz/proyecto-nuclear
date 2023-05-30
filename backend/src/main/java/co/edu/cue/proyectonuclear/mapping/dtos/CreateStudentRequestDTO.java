@@ -11,6 +11,7 @@ import java.util.List;
 * */
 public record CreateStudentRequestDTO(
         Long id,
+        String nid,
         String name,
         String email,
         String lastName,

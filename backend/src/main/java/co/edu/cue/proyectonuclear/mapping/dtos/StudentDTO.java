@@ -9,6 +9,8 @@ public record StudentDTO(
         Long id,
         String name,
         String lastName,
+        String email,
+        String password,
         Career career,
         Integer semester,
         List<Subject> subjects) {
