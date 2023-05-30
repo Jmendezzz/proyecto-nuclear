@@ -33,9 +33,9 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public Optional<StudentDTO> getStudentByNid(Long nid) {
-        String query = "SELECT s.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidStudent";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter("nid", nid);
+        String query = "SELECT u.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidStudent";
+        Query nativeQuery = entityManager.createNativeQuery(query,Student.class);
+        nativeQuery.setParameter("nidStudent", nid);
         try{
             Student student = (Student) nativeQuery.getSingleResult();
             StudentDTO studentDTO = studentMapper.mapFromEntity(student);
