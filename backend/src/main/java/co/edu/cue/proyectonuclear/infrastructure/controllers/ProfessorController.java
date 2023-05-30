@@ -24,7 +24,7 @@ public class ProfessorController {
         return professorService.getAllProfessors();
     }
 
-    @GetMapping("/professors/{nid}")
+    @GetMapping("/professors/nid/{nid}")
     public ResponseEntity<ProfessorDTO> getProfessorByNid(@PathVariable String nid){
         Optional<ProfessorDTO> professorDTO = professorService.getProfessorByNid(nid);
         if (professorDTO.isEmpty())
