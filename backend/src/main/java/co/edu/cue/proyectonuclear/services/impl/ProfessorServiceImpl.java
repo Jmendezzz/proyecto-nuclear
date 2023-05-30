@@ -28,8 +28,13 @@ public class ProfessorServiceImpl implements ProfessorService {
     }
 
     @Override
-    public Optional<ProfessorDTO> getProfessorById(String nid) {
-        return professorDAO.getProfessorById(nid);
+    public Optional<ProfessorDTO> getProfessorByNid(String nid) {
+        return professorDAO.getProfessorByNid(nid);
+    }
+
+    @Override
+    public Optional<ProfessorDTO> getProfessorById(Long id) {
+        return professorDAO.getProfessorById(id);
     }
 
     //TODO Delete subject in professor

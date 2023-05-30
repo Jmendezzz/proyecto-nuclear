@@ -32,10 +32,10 @@ public class StudentDAOImpl implements StudentDAO {
     StudentMapper studentMapper;
 
     @Override
-    public Optional<StudentDTO> getStudentById(Long id) {
-        String query = "SELECT s.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidProfessor";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter("nid", id);
+    public Optional<StudentDTO> getStudentByNid(Long nid) {
+        String query = "SELECT u.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidStudent";
+        Query nativeQuery = entityManager.createNativeQuery(query,Student.class);
+        nativeQuery.setParameter("nidStudent", nid);
         try{
             Student student = (Student) nativeQuery.getSingleResult();
             StudentDTO studentDTO = studentMapper.mapFromEntity(student);
@@ -89,5 +89,11 @@ public class StudentDAOImpl implements StudentDAO {
         if(studentEntity == null) throw new  SubjectException("Can not delete, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
         entityManager.remove(studentEntity);
         return studentMapper.mapFromEntity(studentEntity);
+    }
+
+    @Override
+    public Optional<StudentDTO> getStudentById(Long id) {
+        Student student = entityManager.find(Student.class, id);
+        return Optional.of(studentMapper.mapFromEntity(student));
     }
 }

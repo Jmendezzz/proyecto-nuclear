@@ -42,10 +42,10 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public Optional<ProfessorDTO> getProfessorById(String nid) {
-        String query = "SELECT p.* FROM professor p INNER JOIN user u ON p.id = u.id WHERE u.nid = :nidProfessor";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter("nid", nid);
+    public Optional<ProfessorDTO> getProfessorByNid(String nid) {
+        String query = "SELECT u.* FROM professor p INNER JOIN user u ON p.id = u.id WHERE u.nid = :nidProfessor";
+        Query nativeQuery = entityManager.createNativeQuery(query, Professor.class);
+        nativeQuery.setParameter("nidProfessor", nid);
         try{
             Professor professor = (Professor) nativeQuery.getSingleResult();
             ProfessorDTO professorDTO = mapper.mapFrom(professor);
@@ -53,6 +53,12 @@ public class ProfessorDAOImpl implements ProfessorDAO {
         }catch (NoResultException ex){
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<ProfessorDTO> getProfessorById(Long id) {
+        Professor professor = entityManager.find(Professor.class, id);
+        return Optional.of(mapper.mapFrom(professor));
     }
 
     @Override
