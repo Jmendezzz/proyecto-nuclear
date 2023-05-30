@@ -38,12 +38,8 @@ public class ProfessorServiceImpl implements ProfessorService {
     public ProfessorDTO saveProfessor(CreateProfessorRequestDTO professor) {
         //TODO split the validations
         //Validate that the professor is unique for the subject
+        userConstrain.validateNidUser(professor.nid());
         professorConstrain.validateSubjects(professor.subjects());
-        if(userConstrain.validateNidUser(professor.nid())) {
-            return professorDAO.createProfessor(professor);
-        }
-        else{
-            throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
-        }
+        return professorDAO.createProfessor(professor);
     }
 }
