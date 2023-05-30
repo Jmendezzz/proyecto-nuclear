@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -25,11 +26,11 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
 
     @Override
-    public ClassroomDTO saveCourse(ClassroomDTO classroomDTO) {
+    public Optional<ClassroomDTO> saveCourse(ClassroomDTO classroomDTO) {
 
         Classroom classroom = classroomMapper.mapFromDTO(classroomDTO);
         Classroom classroomSaved = entityManager.merge(classroom);
-        return classroomMapper.mapFromEntity(classroomSaved);
+        return Optional.of(classroomMapper.mapFromEntity(classroomSaved));
 
     }
 
@@ -44,29 +45,29 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
 
     @Override
-    public ClassroomDTO findCourseById(Long id) {
+    public Optional<ClassroomDTO> findCourseById(Long id) {
         Classroom classroom = entityManager.find(Classroom.class, id);
-        return classroomMapper.mapFromEntity(classroom);
+        return Optional.of(classroomMapper.mapFromEntity(classroom));
     }
 
     @Override
-    public ClassroomDTO updateClassroom(ClassroomDTO classroom) {
+    public Optional<ClassroomDTO> updateClassroom(ClassroomDTO classroom) {
         Classroom classroomEntity = classroomMapper.mapFromDTO(classroom);
         Classroom classroomUpdated = entityManager.merge(classroomEntity);
-        return classroomMapper.mapFromEntity(classroomUpdated);
+        return Optional.of(classroomMapper.mapFromEntity(classroomUpdated));
     }
 
 
 
     @Override
-    public ClassroomDTO getClassroomById(Long id) {
+    public Optional<ClassroomDTO> getClassroomById(Long id) {
         Classroom classroom=entityManager.find(Classroom.class,id);
-        return classroomMapper.mapFromEntity(classroom);
+        return Optional.of(classroomMapper.mapFromEntity(classroom));
 
     }
 
     @Override
-    public ClassroomDTO deleteClassroomById(Long id) {
+    public Optional<ClassroomDTO> deleteClassroomById(Long id) {
         Classroom classroomEntity=entityManager.find(Classroom.class,id);
         entityManager.remove(classroomEntity);
         return null;
