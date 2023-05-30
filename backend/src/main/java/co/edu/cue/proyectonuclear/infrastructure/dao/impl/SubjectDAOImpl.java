@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Subject;
 import co.edu.cue.proyectonuclear.domain.enums.Career;
+import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.SubjectDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.SubjectMapper;
@@ -10,9 +11,11 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -31,9 +34,9 @@ public class SubjectDAOImpl implements SubjectDAO {
     }
 
     @Override
-    public SubjectDTO getSubjectById(Long id) {
+    public Optional<SubjectDTO> getSubjectById(Long id) {
         Subject subject = entityManager.find(Subject.class, id);
-        return mapper.mapFrom(subject);
+        return Optional.of(mapper.mapFrom(subject));
     }
 
 
@@ -68,7 +71,12 @@ public class SubjectDAOImpl implements SubjectDAO {
 * */
     @Override
     public SubjectDTO updateSubject(SubjectDTO subject) {
-        Subject subjectEntity = mapper.mapFrom(subject);
+        Subject subjectEntity = entityManager.find(Subject.class,subject.id());
+        if(subjectEntity == null) throw new SubjectException("Can not update, the id:" + subject.id() + " does not exists", HttpStatus.BAD_REQUEST);
+        subjectEntity.setName(subject.name());
+        subjectEntity.setCareer(subject.career());
+        subjectEntity.setSemester(subject.semester());
+        subjectEntity.setCredits(subject.credits());
         Subject subjectUpdated = entityManager.merge(subjectEntity);
         return mapper.mapFrom(subjectUpdated);
     }
@@ -76,6 +84,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     @Override
     public SubjectDTO deleteSubjectById(Long id)  {
         Subject subjectEntity =  entityManager.find(Subject.class, id);
+        if(subjectEntity == null) throw new  SubjectException("Can not delete, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
         entityManager.remove(subjectEntity);
         return mapper.mapFrom(subjectEntity);
     }

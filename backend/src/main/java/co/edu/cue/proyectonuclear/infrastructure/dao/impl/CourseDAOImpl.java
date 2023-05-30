@@ -52,4 +52,9 @@ public class CourseDAOImpl  implements CourseDAO {
                 .toList();
     }
 
+    @Override
+    public List<CourseDTO> getCoursesBySemester(Integer semesterNumber) {
+        return null;
+    }
+
 }

@@ -12,7 +12,12 @@ import lombok.*;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 10)
+    private String nid;
+
     @Column(length = 50)
     private String name;
 

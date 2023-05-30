@@ -1,8 +1,10 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
+import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.domain.entities.Student;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
 import jakarta.persistence.EntityManager;
@@ -27,6 +29,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public Optional<StudentDTO> getStudentById(Long id) {
+<<<<<<< HEAD
         String query = "SELECT s.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidProfessor";
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("nid", id);
@@ -37,6 +40,9 @@ public class StudentDAOImpl implements StudentDAO {
         }catch (NoResultException ex){
             return Optional.empty();
         }
+=======
+        return null;
+>>>>>>> master
     }
 
     @Override // El DAO recibe el DTO para crear el student y lo mapea y lo guarda en la base de datos para luego hacer otro mappeo de otro DTO como respuesta.

@@ -37,6 +37,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<CourseDTO> getCoursesBySemester(Integer semesterNumber) {
+        return null;
+    }
+
+    @Override
     public void createCourses() {
         //TODO
     }
