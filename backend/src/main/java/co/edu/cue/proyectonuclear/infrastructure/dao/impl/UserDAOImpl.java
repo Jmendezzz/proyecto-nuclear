@@ -26,7 +26,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public Optional<UserDTO> getUserByNid(String nid) {
         String query = "SELECT * FROM user WHERE nid = :nid";
-        Query nativeQuery = entityManager.createNativeQuery(query);
+        Query nativeQuery = entityManager.createNativeQuery(query, User.class);
+        nativeQuery.setParameter("nid", nid);
         try{
             User user = (User) nativeQuery.getSingleResult();
             return Optional.of(mapper.mapFrom(user));

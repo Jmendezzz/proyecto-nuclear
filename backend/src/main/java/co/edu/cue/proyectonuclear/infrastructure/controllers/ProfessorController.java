@@ -24,11 +24,19 @@ public class ProfessorController {
         return professorService.getAllProfessors();
     }
 
+    @GetMapping("/professors/{nid}")
+    public ResponseEntity<ProfessorDTO> getProfessorByNid(@PathVariable String nid){
+        Optional<ProfessorDTO> professorDTO = professorService.getProfessorByNid(nid);
+        if (professorDTO.isEmpty())
+            throw new ProfessorException("No se ha encontrado un profesor con numero de identificacion: "+nid, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(professorDTO.get(), HttpStatus.OK);
+    }
+
     @GetMapping("/professors/{id}")
-    public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable String id){
+    public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id){
         Optional<ProfessorDTO> professorDTO = professorService.getProfessorById(id);
         if (professorDTO.isEmpty())
-            throw new ProfessorException("Could not find a professor with the given id: "+id, HttpStatus.BAD_REQUEST);
+            throw new ProfessorException("No se ha encontrado un profesor con id: "+id, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(professorDTO.get(), HttpStatus.OK);
     }
 
