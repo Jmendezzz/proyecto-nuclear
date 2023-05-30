@@ -34,7 +34,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     }
 
     @Override
-    public Optional<SubjectDTO> getSubjectById(Long id) {
+    public Optional<SubjectDTO> getSubjectById(Long id) { //todo corregir con lo que suba David
         Subject subject = entityManager.find(Subject.class, id);
         return Optional.of(mapper.mapFrom(subject));
     }
