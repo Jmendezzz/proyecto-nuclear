@@ -6,6 +6,7 @@ import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -24,9 +26,17 @@ public class StudentDAOImpl implements StudentDAO {
     StudentMapper studentMapper;
 
     @Override
-    public StudentDTO getStudentById(Long id) {
-        Student student = entityManager.find(Student.class,id);
-        return studentMapper.mapFromEntity(student);
+    public Optional<StudentDTO> getStudentById(Long id) {
+        String query = "SELECT s.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidProfessor";
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("nid", id);
+        try{
+            Student student = (Student) nativeQuery.getSingleResult();
+            StudentDTO studentDTO = studentMapper.mapFromEntity(student);
+            return Optional.of(studentDTO);
+        }catch (NoResultException ex){
+            return Optional.empty();
+        }
     }
 
     @Override // El DAO recibe el DTO para crear el student y lo mapea y lo guarda en la base de datos para luego hacer otro mappeo de otro DTO como respuesta.

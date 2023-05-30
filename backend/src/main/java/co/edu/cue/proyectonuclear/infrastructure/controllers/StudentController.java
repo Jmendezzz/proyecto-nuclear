@@ -25,9 +25,9 @@ public class StudentController {
 
     @GetMapping("/students/{id}")
     public ResponseEntity<StudentDTO> getById(@PathVariable Long id){
-        StudentDTO studentDTO = studentService.getStudentById(id);
-        if(studentDTO == null) throw  new StudentNotFoundException("Student not found with the id: "+ id);
-        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+        Optional<StudentDTO> studentDTO = studentService.getStudentById(id);
+        if(studentDTO.isEmpty()) throw  new StudentNotFoundException("Student not found with the id: "+ id);
+        return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
     }
 
     @GetMapping("/students/semester/{semesterNumber}")

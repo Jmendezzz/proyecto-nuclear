@@ -21,13 +21,13 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
     @Override
-    public StudentDTO getStudentById(Long id){
+    public Optional<StudentDTO> getStudentById(Long id){
         return studentDao.getStudentById(id);
     }
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
-        if(studentDao.getStudentById(createStudentRequestDTO.id())==null){
+        if(studentDao.getStudentById(createStudentRequestDTO.id()).isEmpty()){
             return studentDao.saveStudent(createStudentRequestDTO);
         }
         else throw new UserCreationException("The id is unavailable");
@@ -38,8 +38,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO updateStudent(Long id, StudentDTO studentDTO) { //TODO:the student just can update the password and email
-        StudentDTO studentToUpdate = studentDao.getStudentById(id);
-        if (studentToUpdate!=null){
+        Optional<StudentDTO> studentToUpdate = studentDao.getStudentById(id);
+        if (studentToUpdate != null){
             StudentDTO studentUpdate = new StudentDTO(
                     studentToUpdate.id(),
                     studentDTO.name(),
@@ -54,7 +54,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO deleteStudent(Long id) {
-        StudentDTO studentDTODelete = studentDao.getStudentById(id);
+        Optional<StudentDTO> studentDTODelete = studentDao.getStudentById(id);
         if (studentDTODelete!=null){
             return studentDao.deleteStudent(id);
         }else return null;
