@@ -8,8 +8,13 @@ import java.util.Optional;
 
 public interface StudentService {
     List<StudentDTO> getAllStudent();
-    Optional<StudentDTO> getStudentById(Long id);
+    StudentDTO getStudentById(Long id);
 
     StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO);
     List<StudentDTO> getBySemester( Integer semester);
+
+    StudentDTO updateStudent(Long id,StudentDTO studentDTO);
+
+    StudentDTO deleteStudent(Long id);
+
 }

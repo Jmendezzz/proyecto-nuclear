@@ -11,6 +11,7 @@ public interface CourseService {
     List<CourseDTO> getAllCourses();
     Optional<CourseDTO> getCourseById(Long id);
     List<CourseDTO> getCoursesByProfessorId(Long professorId);
+    List<CourseDTO> getCoursesBySemester(Integer semesterNumber);
 
     void createCourses();
 

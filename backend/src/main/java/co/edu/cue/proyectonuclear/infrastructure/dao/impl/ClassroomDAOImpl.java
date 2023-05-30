@@ -1,8 +1,10 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Classroom;
+import co.edu.cue.proyectonuclear.domain.entities.Subject;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ClassroomDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ClassroomMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,11 +26,11 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
 
     @Override
-    public Optional<ClassroomDTO> saveCourse(ClassroomDTO classroomDTO) {
+    public ClassroomDTO saveCourse(ClassroomDTO classroomDTO) {
 
         Classroom classroom = classroomMapper.mapFromDTO(classroomDTO);
         Classroom classroomSaved = entityManager.merge(classroom);
-        return Optional.of(classroomMapper.mapFromEntity(classroomSaved));
+        return classroomMapper.mapFromEntity(classroomSaved);
 
     }
 
@@ -52,7 +54,6 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     public Optional<ClassroomDTO> updateClassroom(ClassroomDTO classroom) {
         Classroom classroomEntity = classroomMapper.mapFromDTO(classroom);
         Classroom classroomUpdated = entityManager.merge(classroomEntity);
-        //return classroomMapper.mapFromEntity(classroomUpdated);
         return Optional.of(classroomMapper.mapFromEntity(classroomUpdated));
     }
 
@@ -62,7 +63,6 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     public Optional<ClassroomDTO> getClassroomById(Long id) {
         Classroom classroom=entityManager.find(Classroom.class,id);
         return Optional.of(classroomMapper.mapFromEntity(classroom));
-        //return classroomMapper.mapFromEntity(classroom);
 
     }
 
@@ -74,7 +74,7 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     }
 
     private List<ClassroomDTO> mapEntityList(List<Classroom>classrooms){
-        return classrooms.stream()
+        return classrooms.parallelStream()
                 .map(s-> classroomMapper.mapFromEntity(s))
                 .toList();
     }

@@ -28,6 +28,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     public Optional<ClassroomDTO> getClassroomById(Long id) {
         return classroomDAO.findCourseById(id);
     }
+
     @Override
     public Optional<ClassroomDTO> updateClassroom(Long id, ClassroomDTO classroomDTO) {
         Optional<ClassroomDTO> classroomToUpdate=classroomDAO.getClassroomById(id);

@@ -1,7 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.domain.enums.Career;
-import co.edu.cue.proyectonuclear.exceptions.SubjectNotFoundException;
+import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.SubjectService;
 import lombok.AllArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -24,11 +25,9 @@ public class SubjectController {
     @GetMapping("/subjects/{id}")
     public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable Long id) {
 
-        SubjectDTO subjectDTO =  subjectService.getSubjectById(id);
-
-        if(subjectDTO == null) throw  new SubjectNotFoundException("Subject not found with the id: "+ id);
-
-        return new ResponseEntity<>(subjectDTO, HttpStatus.OK);
+        Optional<SubjectDTO> subjectDTO =  subjectService.getSubjectById(id);
+        if(subjectDTO.isEmpty()) throw  new SubjectException("Subject not found with the id: "+ id,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(subjectDTO.get(), HttpStatus.OK);
 
     }
     @GetMapping("/subjects/career/{career}")
@@ -43,18 +42,25 @@ public class SubjectController {
     }
 
     @PostMapping("/subjects")
-    public SubjectDTO createSubject(@RequestBody SubjectDTO subjectDTO) {
-        return subjectService.createSubject(subjectDTO);
+    public ResponseEntity<SubjectDTO> createSubject(@RequestBody SubjectDTO subjectDTO) {
+        SubjectDTO subjectDTOCreated = subjectService.createSubject(subjectDTO);
+        return new ResponseEntity<>(subjectDTOCreated, HttpStatus.CREATED);
     }
 
-    @PutMapping("/subjects/{id}")
-    public ResponseEntity<SubjectDTO> updateSubject(@PathVariable Long id, @RequestBody SubjectDTO subjectDTO){
+    @PutMapping("/subjects")
+    public ResponseEntity<SubjectDTO> updateSubject(@RequestBody SubjectDTO subjectDTO){
 
-        SubjectDTO subject= subjectService.updateSubject(id,subjectDTO);
+        SubjectDTO subject= subjectService.updateSubject(subjectDTO);
 
-        if (subject == null) throw new SubjectNotFoundException("Subject not found with the id: "+ id);
+        return new ResponseEntity<>(subject, HttpStatus.OK);
 
-        return  new ResponseEntity<>(subject, HttpStatus.OK);
+    }
+    @DeleteMapping("/subjects/{id}") //TODO: Eliminar primero de la tabla professor_subjects para poder eliminar una asignatura asociada a un professor.
+    public ResponseEntity<SubjectDTO> deleteSubjectById(@PathVariable Long id) {
+
+        SubjectDTO subjectDTO =  subjectService.deleteSubjectById(id);
+
+        return new ResponseEntity<>(subjectDTO, HttpStatus.OK);
 
     }
 

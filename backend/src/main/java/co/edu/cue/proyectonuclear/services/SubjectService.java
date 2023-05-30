@@ -9,11 +9,13 @@ import java.util.Optional;
 public interface SubjectService {
     SubjectDTO createSubject(SubjectDTO subjectDTO);
     List<SubjectDTO> getAllSubjects();
-    SubjectDTO getSubjectById(Long id);
+    Optional<SubjectDTO> getSubjectById(Long id);
 
     List<SubjectDTO> getSubjectByCareer(Career career);
 
     List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber);
 
-    SubjectDTO updateSubject(Long id,SubjectDTO subjectDTO);
+    SubjectDTO updateSubject(SubjectDTO subjectDTO);
+
+    SubjectDTO deleteSubjectById(Long id);
 }
