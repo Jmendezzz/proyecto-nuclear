@@ -65,10 +65,6 @@ public class SubjectDAOImpl implements SubjectDAO {
         nativeQuery.setParameter("semester",semesterNumber);
         return mapEntityList(nativeQuery.getResultList());
     }
-/*
-* En esta capa de DAO no se va manejar nada relacionado a la logica solo vamos a hacer operaciones
-* con la base de datos, no vamos a comprobar si hay null ni nada de esos para eso está el servicio y controlador.
-* */
     @Override
     public SubjectDTO updateSubject(SubjectDTO subject) {
         Subject subjectEntity = entityManager.find(Subject.class,subject.id());

@@ -4,6 +4,7 @@ import co.edu.cue.proyectonuclear.domain.enums.Career;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.SubjectService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class SubjectController {
     }
 
     @PostMapping("/subjects")
-    public ResponseEntity<SubjectDTO> createSubject(@RequestBody SubjectDTO subjectDTO) {
+    public ResponseEntity<SubjectDTO> createSubject(@Valid @RequestBody SubjectDTO subjectDTO) {
         SubjectDTO subjectDTOCreated = subjectService.createSubject(subjectDTO);
         return new ResponseEntity<>(subjectDTOCreated, HttpStatus.CREATED);
     }
