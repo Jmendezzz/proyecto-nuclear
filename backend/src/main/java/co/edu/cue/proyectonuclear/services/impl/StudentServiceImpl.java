@@ -27,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
-        if(studentDao.getStudentById(createStudentRequestDTO.id())==null){
+        if(studentDao.getStudentById(createStudentRequestDTO.id()).isEmpty()){
             return studentDao.saveStudent(createStudentRequestDTO);
         }
         else throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
@@ -38,24 +38,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO updateStudent(Long id, StudentDTO studentDTO) { //TODO:the student just can update the password and email
-        Optional<StudentDTO> studentToUpdate = studentDao.getStudentById(id);
-        if (studentToUpdate != null){
-            StudentDTO studentUpdate = new StudentDTO(
-                    studentToUpdate.id(),
-                    studentDTO.name(),
-                    studentDTO.lastName(),
-                    studentDTO.career(),
-                    studentDTO.semester(),
-                    studentDTO.subjects()
-            );
-            return studentDao.updateStudent(studentUpdate);
-        }else return null;
+        return studentDao.updateStudent(studentDTO);
     }
 
     @Override
     public StudentDTO deleteStudent(Long id) {
         Optional<StudentDTO> studentDTODelete = studentDao.getStudentById(id);
-        if (studentDTODelete!=null){
+        if (studentDTODelete.isPresent()){
             return studentDao.deleteStudent(id);
         }else return null;
     }
