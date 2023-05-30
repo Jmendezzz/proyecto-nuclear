@@ -7,16 +7,18 @@ import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClassroomDAO {
     ClassroomDTO saveCourse(ClassroomDTO classroomDTO);
     List<ClassroomDTO> getAllClassrrom();
 
-    ClassroomDTO findCourseById(Long id);
-    ClassroomDTO updateClassroom(ClassroomDTO subjectDTO);
 
-    ClassroomDTO getClassroomById(Long id);
+    Optional<ClassroomDTO> findCourseById(Long id);
+    Optional<ClassroomDTO> updateClassroom(ClassroomDTO subjectDTO);
+
+   Optional<ClassroomDTO> getClassroomById(Long id);
 
 
-    ClassroomDTO deleteClassroomById(Long id);
+    Optional<ClassroomDTO> deleteClassroomById(Long id);
 }

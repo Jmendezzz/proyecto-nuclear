@@ -15,9 +15,9 @@ public interface ClassroomService {
 
     ClassroomDTO saveClassroom(ClassroomDTO classroom);
     List<ClassroomDTO> getAllClassroom();
-    ClassroomDTO getClassroomById(Long id);
-    ClassroomDTO updateClassroom(Long id, ClassroomDTO classroomDTO);
+    Optional<ClassroomDTO> getClassroomById(Long id);
+    Optional<ClassroomDTO> updateClassroom(Long id, ClassroomDTO classroomDTO);
 
 
-    ClassroomDTO deleteClassroom(Long id);
+    Optional<ClassroomDTO> deleteClassroom(Long id);
 }

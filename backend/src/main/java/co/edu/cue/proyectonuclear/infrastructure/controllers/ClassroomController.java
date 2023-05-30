@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -25,22 +26,23 @@ public class ClassroomController {
 
     @GetMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> getClassroomById(@PathVariable Long id){
-        ClassroomDTO classroomDTO = classroomService.getClassroomById(id);
-        if(classroomDTO==null) throw  new ClassroomException("Classroom not found with the ID:"+id, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
+        Optional<ClassroomDTO> classroomDTO = classroomService.getClassroomById(id);
+        if(classroomDTO.isEmpty()) throw  new ClassroomException("Classroom not found with the ID:"+id, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(classroomDTO.get(), HttpStatus.OK);
     }
     @PutMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO) {
-        ClassroomDTO classroom = classroomService.updateClassroom(id, classroomDTO);
-        if (classroom == null) throw new ClassroomException("Classroom not found with the ID: " + id,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(classroom, HttpStatus.OK);
+        Optional<ClassroomDTO> classroom = classroomService.updateClassroom(id, classroomDTO);
+        if (classroom.isEmpty()) throw new ClassroomException("Classroom not found with the ID: " + id,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(classroom.get(), HttpStatus.OK);
 
     }
     @DeleteMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> deleteClassroomById(@PathVariable Long id){
-        ClassroomDTO classroomDTO = classroomService.deleteClassroom(id);
+        Optional<ClassroomDTO> classroomDTO = classroomService.deleteClassroom(id);
         classroomService.deleteClassroom(id);
-        return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
+        if (classroomDTO.isEmpty())throw new ClassroomException("Classroom not found with the ID: " + id,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(classroomDTO.get(), HttpStatus.OK);
     }
 
 }

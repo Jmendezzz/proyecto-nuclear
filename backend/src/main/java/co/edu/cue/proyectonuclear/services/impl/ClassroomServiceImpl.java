@@ -28,15 +28,16 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public ClassroomDTO getClassroomById(Long id) {
+    public Optional<ClassroomDTO> getClassroomById(Long id) {
         return classroomDAO.findCourseById(id);
     }
+
     @Override
-    public ClassroomDTO updateClassroom(Long id, ClassroomDTO classroomDTO) {
-        ClassroomDTO classroomToUpdate=classroomDAO.getClassroomById(id);
+    public Optional<ClassroomDTO> updateClassroom(Long id, ClassroomDTO classroomDTO) {
+        Optional<ClassroomDTO> classroomToUpdate=classroomDAO.getClassroomById(id);
         if (classroomToUpdate !=null){
             ClassroomDTO classroomUpdated=new ClassroomDTO(
-                    classroomToUpdate.id(),
+                    classroomToUpdate.get().id(),
                     classroomDTO.name(),
                     classroomDTO.location(),
                     classroomDTO.capability(),
@@ -49,10 +50,10 @@ public class ClassroomServiceImpl implements ClassroomService {
         }
     }
     @Override
-    public ClassroomDTO deleteClassroom(Long id) {
-        ClassroomDTO classroomToDelete=classroomDAO.getClassroomById(id);
+    public Optional<ClassroomDTO> deleteClassroom(Long id) {
+        Optional<ClassroomDTO> classroomToDelete=classroomDAO.getClassroomById(id);
         if (classroomToDelete!=null){
-            return classroomDAO.deleteClassroomById(classroomToDelete.id());
+            return classroomDAO.deleteClassroomById(classroomToDelete.get().id());
         }
         return null;
     }
