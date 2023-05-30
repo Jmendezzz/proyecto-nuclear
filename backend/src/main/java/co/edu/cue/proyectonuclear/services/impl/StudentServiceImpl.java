@@ -23,8 +23,8 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
     @Override
-    public Optional<StudentDTO> getStudentById(Long id){
-        return studentDao.getStudentById(id);
+    public Optional<StudentDTO> getStudentByNid(Long id){
+        return studentDao.getStudentByNid(id);
     }
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
@@ -47,5 +47,10 @@ public class StudentServiceImpl implements StudentService {
         if (studentDTODelete.isPresent()){
             return studentDao.deleteStudent(id);
         }else return null;
+    }
+
+    @Override
+    public Optional<StudentDTO> getStudentById(Long id) {
+        return studentDao.getStudentById(id);
     }
 }
