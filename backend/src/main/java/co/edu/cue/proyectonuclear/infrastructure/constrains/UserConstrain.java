@@ -1,7 +1,9 @@
 package co.edu.cue.proyectonuclear.infrastructure.constrains;
 
+import co.edu.cue.proyectonuclear.exceptions.UserException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.UserDAO;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,6 +11,10 @@ import org.springframework.stereotype.Component;
 public class UserConstrain {
     private final UserDAO userDAO;
 
-    public Boolean validateNidUser(String nid){return userDAO.getUserByNid(nid).isEmpty();}
+    public void validateNidUser(String nid){
+        if (userDAO.getUserByNid(nid).isPresent()){
+            throw new UserException("El nid "+nid+" ya está en uso.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
