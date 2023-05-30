@@ -22,8 +22,7 @@ public class Course {
 
     @OneToOne
     private Subject subject;
-
-    @OneToMany
+    @ManyToMany
     private List<Student> students;
 
     @OneToMany

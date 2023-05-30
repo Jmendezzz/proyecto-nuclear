@@ -3,6 +3,7 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.CourseMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -44,17 +45,25 @@ public class CourseDAOImpl  implements CourseDAO {
     @Override
     public List<CourseDTO> getCoursesByProfessorId(Long id) {
         String query = "SELECT * FROM course WHERE professor_id = :professorId";
-        Query nativeQuery = entityManager.createNativeQuery(query);
+        Query nativeQuery = entityManager.createNativeQuery(query, Course.class);
         nativeQuery.setParameter("professorId",id);
         List<Course> courses = nativeQuery.getResultList();
-        return courses.parallelStream()
+        return courses.stream()
                 .map(c->courseMapper.mapFromEntity(c))
                 .toList();
     }
 
     @Override
-    public List<CourseDTO> getCoursesBySemester(Integer semesterNumber) {
-        return null;
-    }
+    public List<CourseStudentRequestDTO> getCoursesByStudentId(Long id) {//TODO Test
+        String query = "SELECT c.* FROM course c INNER JOIN course_students cs on c.id = cs.course_id WHERE students_id = :studentId";
+        Query nativeQuery = entityManager.createNativeQuery(query,Course.class);
+        nativeQuery.setParameter("studentId",id);
+        return mapEntityList(nativeQuery.getResultList());
 
+    }
+    private List<CourseStudentRequestDTO>  mapEntityList(List<Course> courses){//TODO Crear una función generica para esto.
+        return courses.stream()
+                .map(s-> courseMapper.mapStudentRequestFromEntity(s))
+                .toList();
+    }
 }
