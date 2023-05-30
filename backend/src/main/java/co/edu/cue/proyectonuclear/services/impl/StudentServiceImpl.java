@@ -37,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
 
     @Override
-    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
+    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) { //TODO:the student just can update the password and email
         StudentDTO studentToUpdate = studentDao.getStudentById(id);
         if (studentToUpdate!=null){
             StudentDTO studentUpdate = new StudentDTO(
