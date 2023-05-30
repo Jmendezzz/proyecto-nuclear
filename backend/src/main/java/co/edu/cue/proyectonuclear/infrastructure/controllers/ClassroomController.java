@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.exceptions.ClassroomException;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,11 @@ public class ClassroomController {
         return classroomService.getAllClassroom();
     }
     @PostMapping("/classrooms")
-    public ClassroomDTO createClassroom(@RequestBody ClassroomDTO classroomDTO){
-        return classroomService.saveClassroom(classroomDTO);
+    public ResponseEntity<ClassroomDTO> createClassroom(@RequestBody ClassroomDTO classroomDTO){
+     Optional<ClassroomDTO> classroomDTOCreated=classroomService.saveClassroom(classroomDTO);
+      return new ResponseEntity<>(classroomDTOCreated.get(),HttpStatus.CREATED);
     }
+
 
     @GetMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> getClassroomById(@PathVariable Long id){

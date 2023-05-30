@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClassroomDAO {
-    ClassroomDTO saveCourse(ClassroomDTO classroomDTO);
+   Optional<ClassroomDTO> saveCourse(ClassroomDTO classroomDTO);
     List<ClassroomDTO> getAllClassrrom();
 
 

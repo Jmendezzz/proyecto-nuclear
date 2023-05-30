@@ -26,11 +26,11 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
 
     @Override
-    public ClassroomDTO saveCourse(ClassroomDTO classroomDTO) {
+    public Optional<ClassroomDTO> saveCourse(ClassroomDTO classroomDTO) {
 
         Classroom classroom = classroomMapper.mapFromDTO(classroomDTO);
         Classroom classroomSaved = entityManager.merge(classroom);
-        return classroomMapper.mapFromEntity(classroomSaved);
+        return Optional.of(classroomMapper.mapFromEntity(classroomSaved));
 
     }
 
