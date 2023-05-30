@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface ProfessorMapper {
     ProfessorDTO mapFrom(Professor source);
     Professor mapFrom(ProfessorDTO source);
-    @Mapping(target = "password", source = "professorRequestDTO.id")
+    @Mapping(target = "password", source = "professorRequestDTO.nid")
     @Mapping(target = "role", expression = "java(co.edu.cue.proyectonuclear.domain.enums.Role.PROFESSOR)")
     Professor mapFromDTO(CreateProfessorRequestDTO professorRequestDTO);
 }
