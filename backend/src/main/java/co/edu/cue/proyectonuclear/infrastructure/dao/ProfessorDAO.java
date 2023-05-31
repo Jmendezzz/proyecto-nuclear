@@ -1,6 +1,5 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao;
 
-import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 
@@ -13,5 +12,7 @@ public interface ProfessorDAO {
     Optional<ProfessorDTO> getProfessorByNid(String nid);
     Optional<ProfessorDTO> getProfessorById(Long id);
     Optional<ProfessorDTO> getProfessorBySubject(Long idSubject);
+    ProfessorDTO deleteProfessorById(ProfessorDTO professor);
+    ProfessorDTO updateProfessor(ProfessorDTO professor);
 
 }

@@ -1,7 +1,8 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
-import co.edu.cue.proyectonuclear.domain.entities.Subject;
+import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
@@ -12,6 +13,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     public List<ProfessorDTO> getAllProfessors() {
         String query = "FROM Professor";
         List<Professor> professors = entityManager.createQuery(query).getResultList();
-        professors.stream().forEach(p-> System.out.println(p.getName()));
+        professors.forEach(p-> System.out.println(p.getName()));
         return professors.stream()//Todo preguntar que paso ahi
                 .map(p->mapper.mapFrom(p))
                 .toList();
@@ -60,10 +62,9 @@ public class ProfessorDAOImpl implements ProfessorDAO {
         try{
             Professor professor = entityManager.find(Professor.class, id);
             return Optional.of(mapper.mapFrom(professor));
-        }catch (NoResultException ex){
+        }catch (NullPointerException ex){
             return Optional.empty();
         }
-        
     }
 
     @Override
@@ -77,6 +78,32 @@ public class ProfessorDAOImpl implements ProfessorDAO {
             return Optional.of(mapper.mapFrom(entityManager.find(Professor.class,idProfessor)));
         }catch (NoResultException ex){
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public ProfessorDTO deleteProfessorById(ProfessorDTO professor) {
+        try{
+            Professor professorEntity = entityManager.find(Professor.class, professor.id());
+            //Remove the related child entities
+            professorEntity.getSubjects()
+                            .forEach(s->entityManager.remove(s));
+            //Remove the professor entity
+            entityManager.remove(professorEntity);
+            return mapper.mapFrom(professorEntity);
+        }catch (IllegalArgumentException e){
+            throw new ProfessorException("No se pudo eliminar el profesor", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ProfessorDTO updateProfessor(ProfessorDTO professor) {
+        Professor professorEntity = mapper.mapFrom(professor);
+        try{
+            Professor professorSaved =  entityManager.merge(professorEntity);
+            return mapper.mapFrom(professorSaved);
+        }catch (IllegalArgumentException e){
+            throw new ProfessorException("No se pudo actualizar el profesor", HttpStatus.BAD_REQUEST);
         }
     }
 }

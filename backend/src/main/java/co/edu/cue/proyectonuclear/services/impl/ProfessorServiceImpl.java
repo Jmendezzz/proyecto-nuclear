@@ -1,7 +1,6 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 
-import co.edu.cue.proyectonuclear.exceptions.UserException;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
@@ -9,7 +8,6 @@ import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,12 +35,19 @@ public class ProfessorServiceImpl implements ProfessorService {
         return professorDAO.getProfessorById(id);
     }
 
-    //TODO Delete subject in professor
+    @Override
+    public ProfessorDTO deleteProfessorById(ProfessorDTO professor) {
+        return professorDAO.deleteProfessorById(professor);
+    }
+
+    @Override
+    public ProfessorDTO updateProfessor(ProfessorDTO professor) {
+        //professorConstrain.validateProfessorUpdateSubject(professor);
+        return professorDAO.updateProfessor(professor);
+    }
 
     @Override
     public ProfessorDTO saveProfessor(CreateProfessorRequestDTO professor) {
-        //TODO split the validations
-        //Validate that the professor is unique for the subject
         userConstrain.validateNidUser(professor.nid());
         professorConstrain.validateSubjects(professor.subjects());
         return professorDAO.createProfessor(professor);
