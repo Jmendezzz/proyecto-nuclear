@@ -23,26 +23,59 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDTO createSubject(SubjectDTO subjectDTO) {
         return subjectDAO.createSubject(subjectDTO);
     }
+    /**
+     * Obtener todas las asignaturas registradas.
+     *
+     * @return lista de DTO de subjects.
+     */
+
 
     @Override
     public List<SubjectDTO> getAllSubjects() {
         return subjectDAO.getAllSubjects();
     }
+    /**
+     * Obtener una lista de asignaturas según la carrera.
+     *
+     * @param id el id de la carrera.
+     * @return un Optional que será enviado al controlador.
+     */
+
 
     @Override
     public Optional<SubjectDTO> getSubjectById(Long id) {
         return subjectDAO.getSubjectById(id);
     }
+    /**
+     * Obtener una lista de asignaturas según la carrera.
+     *
+     * @param career el enum de la carrera.
+     * @return lista de asignaturas según la carrera.
+     */
 
     @Override
     public List<SubjectDTO> getSubjectByCareer(Career career){
         return subjectDAO.getSubjectByCareer(career);
     }
+    /**
+     * Obtener una lista de asignaturas según la carrera y el numero de semestre.
+     *
+     * @param career el enum de la carrera.
+     * @param semesterNumber el numero de semestre.
+     * @return lista de asignaturas según la carrera y el numero de semestre.
+     */
 
     @Override
     public List<SubjectDTO> getSubjectByCareerAndSemester(Career career, Integer semesterNumber) {
         return subjectDAO.getSubjectByCareerAndSemester(career,semesterNumber);
     }
+    /**
+     * Actualizar una asignatura existente.
+     *
+     * @param subjectDTO DTO que contiene la información de un subject actualizada proporcionada por el usuairo.
+     * @return asginatura actualizada.
+     * @throws SubjectException si el ID de la asignatura no es válido.
+     */
     @Override
     public SubjectDTO updateSubject(SubjectDTO subjectDTO) {
         return subjectDAO.updateSubject(subjectDTO);
