@@ -3,8 +3,10 @@ package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 import co.edu.cue.proyectonuclear.exceptions.CourseException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
 import co.edu.cue.proyectonuclear.services.CourseService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class CourseController {
 
         Optional<CourseDTO> course = courseService.getCourseById(id);
 
-        if(course.isEmpty()) throw  new CourseException("Course not found with the ID:"+id);
+        if(course.isEmpty()) throw  new CourseException("Course not found with the ID:"+id, HttpStatus.NOT_FOUND);
 
         return course.get();
     }
@@ -35,9 +37,11 @@ public class CourseController {
     public List<CourseDTO> getCoursesByProfessorId(@PathVariable Long id){
         return  courseService.getCoursesByProfessorId(id);
     }
-    @GetMapping("/courses/semester/{semesterNumber}")
-    public List<CourseDTO> getCoursesBySemester(@PathVariable Integer semesterNumber){
-        return null; //TODO
+
+    @GetMapping("/courses/student/{id}")
+    public List<CourseStudentRequestDTO> getCoursesByStudentId(@PathVariable Long id){
+        return courseService.getCoursesByStudentId(id);
+
     }
 
 

@@ -10,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
@@ -35,15 +36,22 @@ public class SubjectDAOImpl implements SubjectDAO {
 
     @Override
     public Optional<SubjectDTO> getSubjectById(Long id) {
-        Subject subject = entityManager.find(Subject.class, id);
-        return Optional.of(mapper.mapFrom(subject));
+
+        try{
+            Subject subject = entityManager.find(Subject.class, id);
+            return Optional.of(mapper.mapFrom(subject));
+
+        }catch (NullPointerException ex){
+            return Optional.empty();
+        }
+
     }
 
 
     @Override
     public List<SubjectDTO> getSubjectByCareer(Career career) {
         String query = "SELECT * FROM subject WHERE career = :career";
-        Query nativeQuery = entityManager.createNativeQuery(query,Subject.class); //Importante poner Subject.class para hacer el mapeo automaticamente.
+        Query nativeQuery = entityManager.createNativeQuery(query,Subject.class);
         nativeQuery.setParameter("career",career.name());
         List<Subject> subjects = nativeQuery.getResultList();
         return mapEntityList(subjects);
@@ -65,10 +73,6 @@ public class SubjectDAOImpl implements SubjectDAO {
         nativeQuery.setParameter("semester",semesterNumber);
         return mapEntityList(nativeQuery.getResultList());
     }
-/*
-* En esta capa de DAO no se va manejar nada relacionado a la logica solo vamos a hacer operaciones
-* con la base de datos, no vamos a comprobar si hay null ni nada de esos para eso está el servicio y controlador.
-* */
     @Override
     public SubjectDTO updateSubject(SubjectDTO subject) {
         Subject subjectEntity = entityManager.find(Subject.class,subject.id());
