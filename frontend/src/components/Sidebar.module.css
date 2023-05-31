@@ -1,0 +1,32 @@
+a{
+    text-decoration: none;
+}
+
+.sidebar{
+    height: 100vh;
+    background-color: rgba(52, 91, 175, 1);
+    background-image: url("../assets/images/login-modal-background.png");
+}
+.bar{
+    color: white;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+}
+.top-section{
+    display: flex;
+    justify-content: center;
+    padding: 0px 0px 20px 0px;
+}
+.logo{
+    width: 230px;
+    height: 200px;
+}
+.link{
+    display: flex;
+    align-items: center;
+
+    color: white;
+    gap: 10px;
+    font-size: 30px;
+}
