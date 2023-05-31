@@ -44,4 +44,13 @@ public class ProfessorController {
     public ProfessorDTO saveProfessor(@Valid @RequestBody CreateProfessorRequestDTO professor){
         return professorService.saveProfessor(professor);
     }
+
+    @PostMapping("/professors/delete")
+    public ProfessorDTO deleteProfessorById(@Valid @RequestBody ProfessorDTO professor){
+        return professorService.deleteProfessorById(professor);
+    }
+    @PutMapping("/professors")
+    public ProfessorDTO updateProfessor(@Valid @RequestBody ProfessorDTO professor){
+        return professorService.updateProfessor(professor);
+    }
 }
