@@ -93,7 +93,11 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public Optional<StudentDTO> getStudentById(Long id) {
-        Student student = entityManager.find(Student.class, id);
-        return Optional.of(studentMapper.mapFromEntity(student));
+        try{
+            Student student = entityManager.find(Student.class, id);
+            return Optional.of(studentMapper.mapFromEntity(student));
+        }catch (NullPointerException ex){
+            return Optional.empty();
+        }
     }
 }
