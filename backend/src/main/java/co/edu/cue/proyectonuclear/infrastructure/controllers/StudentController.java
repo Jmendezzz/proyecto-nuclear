@@ -44,10 +44,10 @@ public class StudentController {
         return studentService.saveStudent(student);
     }
 
-    @PutMapping("/students/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
+    @PutMapping("/students")
+    public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO){
 
-        StudentDTO student = studentService.updateStudent(id, studentDTO);
+        StudentDTO student = studentService.updateStudent(studentDTO);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
