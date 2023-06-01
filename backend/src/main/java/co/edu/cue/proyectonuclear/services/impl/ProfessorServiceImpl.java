@@ -43,8 +43,8 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
-        ProfessorDTO professorDTO = professorConstrain.validateProfessor(professor);
-        return professorDAO.updateProfessor(professorDTO);
+        professorConstrain.validateProfessor(professor);
+        return professorDAO.updateProfessor(professor);
     }
 
     @Override
