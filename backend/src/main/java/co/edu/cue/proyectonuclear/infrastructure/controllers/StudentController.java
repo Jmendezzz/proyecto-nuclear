@@ -44,13 +44,13 @@ public class StudentController {
     }
 
     @PutMapping("/students")
-    public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO){
+    public ResponseEntity<StudentDTO> updateStudent(@Valid @RequestBody StudentDTO studentDTO){
 
         StudentDTO student = studentService.updateStudent(studentDTO);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @DeleteMapping("/student/{id}")
+    @DeleteMapping("/students/{id}")
     public ResponseEntity<StudentDTO> deleteStudentById(@PathVariable Long id) {
 
         StudentDTO studentDTO = studentService.deleteStudent(id);
@@ -58,7 +58,7 @@ public class StudentController {
 
     }
 
-    @GetMapping("/student/{id}")
+    @GetMapping("/students/{id}")
     public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
 
         Optional<StudentDTO> studentDTO =  studentService.getStudentById(id);
