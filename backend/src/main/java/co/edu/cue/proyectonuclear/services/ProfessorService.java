@@ -1,6 +1,5 @@
 package co.edu.cue.proyectonuclear.services;
 
-import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 
@@ -10,5 +9,8 @@ import java.util.Optional;
 public interface ProfessorService {
     ProfessorDTO saveProfessor(CreateProfessorRequestDTO professor);
     List<ProfessorDTO> getAllProfessors();
-    Optional<ProfessorDTO> getProfessorById(String nid);
+    Optional<ProfessorDTO> getProfessorByNid(String nid);
+    Optional<ProfessorDTO> getProfessorById(Long id);
+    ProfessorDTO deleteProfessorById(Long id);
+    ProfessorDTO updateProfessor(ProfessorDTO professor);
 }

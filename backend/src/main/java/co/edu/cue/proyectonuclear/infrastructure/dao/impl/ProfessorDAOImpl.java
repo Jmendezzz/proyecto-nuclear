@@ -1,7 +1,8 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
-import co.edu.cue.proyectonuclear.domain.entities.Subject;
+import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
@@ -12,6 +13,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     public List<ProfessorDTO> getAllProfessors() {
         String query = "FROM Professor";
         List<Professor> professors = entityManager.createQuery(query).getResultList();
-        professors.stream().forEach(p-> System.out.println(p.getName()));
+        professors.forEach(p-> System.out.println(p.getName()));
         return professors.stream()//Todo preguntar que paso ahi
                 .map(p->mapper.mapFrom(p))
                 .toList();
@@ -42,15 +44,25 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public Optional<ProfessorDTO> getProfessorById(String nid) {
-        String query = "SELECT p.* FROM professor p INNER JOIN user u ON p.id = u.id WHERE u.nid = :nidProfessor";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter("nid", nid);
+    public Optional<ProfessorDTO> getProfessorByNid(String nid) {
+        String query = "SELECT u.* FROM professor p INNER JOIN user u ON p.id = u.id WHERE u.nid = :nidProfessor";
+        Query nativeQuery = entityManager.createNativeQuery(query, Professor.class);
+        nativeQuery.setParameter("nidProfessor", nid);
         try{
             Professor professor = (Professor) nativeQuery.getSingleResult();
             ProfessorDTO professorDTO = mapper.mapFrom(professor);
             return Optional.of(professorDTO);
         }catch (NoResultException ex){
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<ProfessorDTO> getProfessorById(Long id) {
+        try{
+            Professor professor = entityManager.find(Professor.class, id);
+            return Optional.of(mapper.mapFrom(professor));
+        }catch (NullPointerException ex){
             return Optional.empty();
         }
     }
@@ -66,6 +78,24 @@ public class ProfessorDAOImpl implements ProfessorDAO {
             return Optional.of(mapper.mapFrom(entityManager.find(Professor.class,idProfessor)));
         }catch (NoResultException ex){
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public ProfessorDTO deleteProfessor(ProfessorDTO professorDTO) {
+        Professor professorEntity = entityManager.find(Professor.class, professorDTO.id());
+        entityManager.remove(professorEntity);
+        return mapper.mapFrom(professorEntity);
+    }
+
+    @Override
+    public ProfessorDTO updateProfessor(ProfessorDTO professor) {
+        Professor professorEntity = mapper.mapFrom(professor);
+        try{
+            Professor professorSaved =  entityManager.merge(professorEntity);
+            return mapper.mapFrom(professorSaved);
+        }catch (IllegalArgumentException e){
+            throw new ProfessorException("No se pudo actualizar el profesor", HttpStatus.BAD_REQUEST);
         }
     }
 }

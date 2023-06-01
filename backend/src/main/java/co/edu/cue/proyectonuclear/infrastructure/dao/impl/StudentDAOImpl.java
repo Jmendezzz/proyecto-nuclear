@@ -1,13 +1,9 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
-import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.domain.entities.Student;
-import co.edu.cue.proyectonuclear.domain.entities.Subject;
-import co.edu.cue.proyectonuclear.exceptions.StudentException;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
 import jakarta.persistence.EntityManager;
@@ -32,10 +28,10 @@ public class StudentDAOImpl implements StudentDAO {
     StudentMapper studentMapper;
 
     @Override
-    public Optional<StudentDTO> getStudentById(Long id) {
-        String query = "SELECT s.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidProfessor";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter("nid", id);
+    public Optional<StudentDTO> getStudentByNid(String nid) {
+        String query = "SELECT u.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidStudent";
+        Query nativeQuery = entityManager.createNativeQuery(query,Student.class);
+        nativeQuery.setParameter("nidStudent", nid);
         try{
             Student student = (Student) nativeQuery.getSingleResult();
             StudentDTO studentDTO = studentMapper.mapFromEntity(student);
@@ -55,9 +51,9 @@ public class StudentDAOImpl implements StudentDAO {
     @Override
     public List<StudentDTO> getAllStudent(){
         String query = "FROM Student";
-        Query nativeQuery = entityManager.createQuery(query);
-        List<Student> students = nativeQuery.getResultList();
-        return students.parallelStream().map(s->studentMapper.mapFromEntity(s)).toList();
+        List<Student> students = entityManager.createQuery(query).getResultList();
+        students.forEach(s-> System.out.println(s.getName()));
+        return students.stream().map(s->studentMapper.mapFromEntity(s)).toList();
     }
     @Override
     public List<StudentDTO> getBySemester(Integer semester) {
@@ -70,17 +66,9 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public StudentDTO updateStudent(StudentDTO studentDTO) {
-        Student studentEntity = entityManager.find(Student.class,studentDTO.id());
-        if(studentEntity == null) throw new StudentException("Can not update, the id:" + studentDTO.id() + " does not exists", HttpStatus.BAD_REQUEST);
-        studentEntity.setEmail(studentDTO.email());
-        studentEntity.setName(studentDTO.name());
-        studentEntity.setPassword(studentDTO.password());
-        studentEntity.setLastName(studentDTO.lastName());
-        studentEntity.setCareer(studentDTO.career());
-        studentEntity.setSemester(studentDTO.semester());
-        studentEntity.setSubjects(studentDTO.subjects());
-        Student studentUpdated = entityManager.merge(studentEntity);
-        return studentMapper.mapFromEntity(studentUpdated);
+        Student studentEntity = studentMapper.mapFromDTO(studentDTO);
+        Student studentSaved = entityManager.merge(studentEntity);
+        return studentMapper.mapFromEntity(studentSaved);
     }
 
     @Override
@@ -89,5 +77,15 @@ public class StudentDAOImpl implements StudentDAO {
         if(studentEntity == null) throw new  SubjectException("Can not delete, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
         entityManager.remove(studentEntity);
         return studentMapper.mapFromEntity(studentEntity);
+    }
+
+    @Override
+    public Optional<StudentDTO> getStudentById(Long id) {
+        try{
+            Student student = entityManager.find(Student.class, id);
+            return Optional.of(studentMapper.mapFromEntity(student));
+        }catch (NullPointerException ex){
+            return Optional.empty();
+        }
     }
 }

@@ -7,10 +7,10 @@ import java.util.List;
 
 public record StudentDTO(
         Long id,
+        String nid,
         String name,
         String lastName,
         String email,
-        String password,
         Career career,
         Integer semester,
         List<Subject> subjects) {

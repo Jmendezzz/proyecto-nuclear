@@ -1,6 +1,8 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.exceptions.UserException;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.StudentConstrain;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
@@ -17,27 +19,28 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDao;
+    private final UserConstrain userConstrain;
+    private final StudentConstrain studentConstrain;
     @Override
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
     @Override
-    public Optional<StudentDTO> getStudentById(Long id){
-        return studentDao.getStudentById(id);
+    public Optional<StudentDTO> getStudentByNid(String nid){
+        return studentDao.getStudentByNid(nid);
     }
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
-        if(studentDao.getStudentById(createStudentRequestDTO.id()).isEmpty()){
-            return studentDao.saveStudent(createStudentRequestDTO);
-        }
-        else throw new UserException("The id is unavailable", HttpStatus.BAD_REQUEST);
+        userConstrain.validateNidUser(createStudentRequestDTO.nid());
+        return studentDao.saveStudent(createStudentRequestDTO);
     }
 
     @Override
     public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
 
     @Override
-    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) { //TODO:the student just can update the password and email
+    public StudentDTO updateStudent(StudentDTO studentDTO) { //TODO:the student just can update the password and email
+        studentConstrain.validateStudentById(studentDTO.id());
         return studentDao.updateStudent(studentDTO);
     }
 
@@ -47,5 +50,10 @@ public class StudentServiceImpl implements StudentService {
         if (studentDTODelete.isPresent()){
             return studentDao.deleteStudent(id);
         }else return null;
+    }
+
+    @Override
+    public Optional<StudentDTO> getStudentById(Long id) {
+        return studentDao.getStudentById(id);
     }
 }

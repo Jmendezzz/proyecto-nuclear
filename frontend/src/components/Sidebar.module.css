@@ -1,0 +1,60 @@
+a{
+    text-decoration: none;
+    height: 80px;
+    transition: all 0.5s ease 0s;
+    opacity: 1;
+}
+.main-container{
+    display: flex;
+    height: 100vh;
+    min-height: 1000px;
+}
+a:hover{
+    background-color: rgba(37, 61, 111, 0.7);
+}
+
+.sidebar{
+    height: 120vh;
+    min-height: 1000px;
+    background-color: rgba(52, 91, 175, 1);
+    background-image: url("../assets/images/login-modal-background.png");
+}
+.bar{
+    color: white;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+}
+.top-section{
+    display: flex;
+    align-items: center;
+    height: 210px;
+    justify-content: center;
+    padding: 0px 0px 20px 0px;
+}
+.logo{
+    transition: all 1s;
+    width: 210px;
+    height: 200px;
+}
+.link{
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 10px;
+    font-size: 30px;
+    padding: 4px 10px;
+    transition: all 1s;
+}
+
+.link-closed{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    gap: 10px;
+    font-size: 30px;
+    padding: 4px 10px;
+    transition: all 1s;
+
+}
