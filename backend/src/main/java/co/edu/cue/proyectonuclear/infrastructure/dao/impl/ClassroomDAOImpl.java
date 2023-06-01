@@ -2,6 +2,8 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Classroom;
 import co.edu.cue.proyectonuclear.domain.entities.Subject;
+import co.edu.cue.proyectonuclear.exceptions.ClassroomException;
+import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ClassroomDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
@@ -10,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,11 +29,11 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
 
     @Override
-    public Optional<ClassroomDTO> saveCourse(ClassroomDTO classroomDTO) {
+    public ClassroomDTO saveCourse(ClassroomDTO classroomDTO) {
 
         Classroom classroom = classroomMapper.mapFromDTO(classroomDTO);
         Classroom classroomSaved = entityManager.merge(classroom);
-        return Optional.of(classroomMapper.mapFromEntity(classroomSaved));
+        return classroomMapper.mapFromEntity(classroomSaved);
 
     }
 
@@ -38,26 +41,31 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     @Override
     public List<ClassroomDTO> getAllClassrrom() {
         String query = "FROM Classroom ";
-        List<Classroom>classrooms=entityManager.createQuery(query).getResultList();
+        List<Classroom> classrooms = entityManager.createQuery(query).getResultList();
         return mapEntityList(classrooms);
 
     }
 
 
     @Override
-    public Optional<ClassroomDTO> findCourseById(Long id) {
+    public Optional<ClassroomDTO> findClassroomById(Long id) {
         Classroom classroom = entityManager.find(Classroom.class, id);
         return Optional.of(classroomMapper.mapFromEntity(classroom));
     }
 
     @Override
-    public Optional<ClassroomDTO> updateClassroom(ClassroomDTO classroom) {
-        Classroom classroomEntity = classroomMapper.mapFromDTO(classroom);
+    public ClassroomDTO updateClassroom(ClassroomDTO classroom) {
+        Classroom classroomEntity = entityManager.find(Classroom.class, classroom.id());
+        if (classroomEntity == null)
+            throw new ClassroomException("Can not update, the id:" + classroom.id() + " does not exists", HttpStatus.BAD_REQUEST);
+        classroomEntity.setName(classroom.name());
+        classroomEntity.setLocation(classroom.location());
+        classroomEntity.setCapability(classroom.capability());
+        classroomEntity.setElements(classroom.elements());
+        classroomEntity.setTipology(classroom.tipology());
         Classroom classroomUpdated = entityManager.merge(classroomEntity);
-        return Optional.of(classroomMapper.mapFromEntity(classroomUpdated));
+        return classroomMapper.mapFromEntity(classroomUpdated);
     }
-
-
 
     @Override
     public Optional<ClassroomDTO> getClassroomById(Long id) {
@@ -67,11 +75,14 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     }
 
     @Override
-    public Optional<ClassroomDTO> deleteClassroomById(Long id) {
+    public ClassroomDTO deleteClassroomById(Long id) {
         Classroom classroomEntity=entityManager.find(Classroom.class,id);
+        if (classroomEntity==null)throw new ClassroomException("Can not delete, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
         entityManager.remove(classroomEntity);
-        return null;
+        return classroomMapper.mapFromEntity(classroomEntity);
     }
+
+
 
     private List<ClassroomDTO> mapEntityList(List<Classroom>classrooms){
         return classrooms.stream()
