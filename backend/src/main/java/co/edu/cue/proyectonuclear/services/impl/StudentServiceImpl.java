@@ -23,8 +23,8 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
     @Override
-    public Optional<StudentDTO> getStudentByNid(Long id){
-        return studentDao.getStudentByNid(id);
+    public Optional<StudentDTO> getStudentByNid(String nid){
+        return studentDao.getStudentByNid(nid);
     }
 
     @Override //Recibimos el DTO para crear y se lo pasamos al DAO
