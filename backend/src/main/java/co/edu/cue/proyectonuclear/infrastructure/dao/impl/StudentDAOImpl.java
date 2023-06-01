@@ -52,8 +52,7 @@ public class StudentDAOImpl implements StudentDAO {
     public List<StudentDTO> getAllStudent(){
         String query = "FROM Student";
         List<Student> students = entityManager.createQuery(query).getResultList();
-        students.forEach(s-> System.out.println(s.getName()));
-        return students.stream().map(s->studentMapper.mapFromEntity(s)).toList();
+        return studentMapper.mapFrom(students);
     }
     @Override
     public List<StudentDTO> getBySemester(Integer semester) {
