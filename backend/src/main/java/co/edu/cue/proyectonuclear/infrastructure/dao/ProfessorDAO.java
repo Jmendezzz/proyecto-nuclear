@@ -12,7 +12,7 @@ public interface ProfessorDAO {
     Optional<ProfessorDTO> getProfessorByNid(String nid);
     Optional<ProfessorDTO> getProfessorById(Long id);
     Optional<ProfessorDTO> getProfessorBySubject(Long idSubject);
-    ProfessorDTO deleteProfessorById(ProfessorDTO professor);
+    ProfessorDTO deleteProfessor(ProfessorDTO professorDTO);
     ProfessorDTO updateProfessor(ProfessorDTO professor);
 
 }
