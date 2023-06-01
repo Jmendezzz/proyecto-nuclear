@@ -22,9 +22,10 @@ public class ClassroomController {
     }
     @PostMapping("/classrooms")
     public ResponseEntity<ClassroomDTO> createClassroom(@RequestBody ClassroomDTO classroomDTO){
-     Optional<ClassroomDTO> classroomDTOCreated=classroomService.saveClassroom(classroomDTO);
-      return new ResponseEntity<>(classroomDTOCreated.get(),HttpStatus.CREATED);
+     ClassroomDTO classroomDTOCreated=classroomService.saveClassroom(classroomDTO);
+      return new ResponseEntity<>(classroomDTOCreated,HttpStatus.CREATED);
     }
+
 
 
     @GetMapping("/classrooms/{id}")
@@ -35,17 +36,16 @@ public class ClassroomController {
     }
     @PutMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO) {
-        Optional<ClassroomDTO> classroom = classroomService.updateClassroom(id, classroomDTO);
-        if (classroom.isEmpty()) throw new ClassroomException("Classroom not found with the ID: " + id,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(classroom.get(), HttpStatus.OK);
+        ClassroomDTO classroom = classroomService.updateClassroom(id, classroomDTO);
+        return new ResponseEntity<>(classroom, HttpStatus.OK);
 
     }
+
     @DeleteMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> deleteClassroomById(@PathVariable Long id){
-        Optional<ClassroomDTO> classroomDTO = classroomService.deleteClassroom(id);
-        classroomService.deleteClassroom(id);
-        if (classroomDTO.isEmpty())throw new ClassroomException("Classroom not found with the ID: " + id,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(classroomDTO.get(), HttpStatus.OK);
+        ClassroomDTO classroomDTO = classroomService.deleteClassroom(id);
+        return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
+
 
 }
