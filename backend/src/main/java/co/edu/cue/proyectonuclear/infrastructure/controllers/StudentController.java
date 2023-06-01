@@ -20,16 +20,14 @@ import java.util.Optional;
 public class StudentController {
     StudentService studentService;
     @GetMapping("/students")
-    public List<StudentDTO> getAllStudent(){
-
-        return studentService.getAllStudent();
-    }
+    public List<StudentDTO> getAllStudent(){ return studentService.getAllStudent();}
 
     @GetMapping("/students/{id}")
     public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable Long nid){
 
         Optional<StudentDTO> studentDTO = studentService.getStudentByNid(nid);
-        if(studentDTO.isEmpty()) throw  new StudentException("Student not found with the id: "+ nid,HttpStatus.NOT_FOUND);
+        if(studentDTO.isEmpty())
+            throw new StudentException("No se ha encontrado un estudiante con numero de identificacion: "+nid, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
 
     }

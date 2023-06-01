@@ -4,7 +4,6 @@ import "./App.css";
 import { Sidebar } from "./components/Sidebar";
 function App() {
   return (
-    <div className="App">
       <BrowserRouter>
         <Sidebar>
           <Routes>
@@ -12,7 +11,6 @@ function App() {
           </Routes>
         </Sidebar>
       </BrowserRouter>
-    </div>
   );
 }
 
