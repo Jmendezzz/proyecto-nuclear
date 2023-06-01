@@ -74,7 +74,7 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     }
 
     private List<ClassroomDTO> mapEntityList(List<Classroom>classrooms){
-        return classrooms.parallelStream()
+        return classrooms.stream()
                 .map(s-> classroomMapper.mapFromEntity(s))
                 .toList();
     }

@@ -36,13 +36,14 @@ public class ProfessorServiceImpl implements ProfessorService {
     }
 
     @Override
-    public ProfessorDTO deleteProfessorById(ProfessorDTO professor) {
-        return professorDAO.deleteProfessorById(professor);
+    public ProfessorDTO deleteProfessorById(Long id) {
+        ProfessorDTO professorDTO = professorConstrain.validateProfessorById(id);
+        return professorDAO.deleteProfessor(professorDTO);
     }
 
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
-        //professorConstrain.validateProfessorUpdateSubject(professor);
+        professorConstrain.validateProfessor(professor);
         return professorDAO.updateProfessor(professor);
     }
 

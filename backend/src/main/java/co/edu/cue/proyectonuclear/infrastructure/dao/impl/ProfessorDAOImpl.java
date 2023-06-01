@@ -82,18 +82,10 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public ProfessorDTO deleteProfessorById(ProfessorDTO professor) {
-        try{
-            Professor professorEntity = entityManager.find(Professor.class, professor.id());
-            //Remove the related child entities
-            professorEntity.getSubjects()
-                            .forEach(s->entityManager.remove(s));
-            //Remove the professor entity
-            entityManager.remove(professorEntity);
-            return mapper.mapFrom(professorEntity);
-        }catch (IllegalArgumentException e){
-            throw new ProfessorException("No se pudo eliminar el profesor", HttpStatus.BAD_REQUEST);
-        }
+    public ProfessorDTO deleteProfessor(ProfessorDTO professorDTO) {
+        Professor professorEntity = entityManager.find(Professor.class, professorDTO.id());
+        entityManager.remove(professorEntity);
+        return mapper.mapFrom(professorEntity);
     }
 
     @Override
