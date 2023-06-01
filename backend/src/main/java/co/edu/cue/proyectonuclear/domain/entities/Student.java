@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "student")
 public class Student extends User {
     @JoinTable(name = "student_subjects")
-    @OneToMany
+    @ManyToMany
     private List<Subject> subjects;
     private Integer semester;
     @Enumerated(EnumType.STRING)

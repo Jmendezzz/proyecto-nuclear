@@ -32,7 +32,7 @@ public class StudentDAOImpl implements StudentDAO {
     StudentMapper studentMapper;
 
     @Override
-    public Optional<StudentDTO> getStudentByNid(Long nid) {
+    public Optional<StudentDTO> getStudentByNid(String nid) {
         String query = "SELECT u.* FROM student s INNER JOIN user u ON s.id = u.id WHERE u.nid = :nidStudent";
         Query nativeQuery = entityManager.createNativeQuery(query,Student.class);
         nativeQuery.setParameter("nidStudent", nid);
@@ -74,7 +74,6 @@ public class StudentDAOImpl implements StudentDAO {
         if(studentEntity == null) throw new StudentException("Can not update, the id:" + studentDTO.id() + " does not exists", HttpStatus.BAD_REQUEST);
         studentEntity.setEmail(studentDTO.email());
         studentEntity.setName(studentDTO.name());
-        studentEntity.setPassword(studentDTO.password());
         studentEntity.setLastName(studentDTO.lastName());
         studentEntity.setCareer(studentDTO.career());
         studentEntity.setSemester(studentDTO.semester());

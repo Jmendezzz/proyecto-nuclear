@@ -22,8 +22,8 @@ public class StudentController {
     @GetMapping("/students")
     public List<StudentDTO> getAllStudent(){ return studentService.getAllStudent();}
 
-    @GetMapping("/students/{id}")
-    public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable Long nid){
+    @GetMapping("/students/{nid}")
+    public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable String nid){
 
         Optional<StudentDTO> studentDTO = studentService.getStudentByNid(nid);
         if(studentDTO.isEmpty())
