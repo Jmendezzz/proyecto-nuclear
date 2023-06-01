@@ -1,13 +1,9 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
-import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.domain.entities.Student;
-import co.edu.cue.proyectonuclear.domain.entities.Subject;
-import co.edu.cue.proyectonuclear.exceptions.StudentException;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
 import jakarta.persistence.EntityManager;
@@ -70,16 +66,9 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public StudentDTO updateStudent(StudentDTO studentDTO) {
-        Student studentEntity = entityManager.find(Student.class,studentDTO.id());
-        if(studentEntity == null) throw new StudentException("Can not update, the id:" + studentDTO.id() + " does not exists", HttpStatus.BAD_REQUEST);
-        studentEntity.setEmail(studentDTO.email());
-        studentEntity.setName(studentDTO.name());
-        studentEntity.setLastName(studentDTO.lastName());
-        studentEntity.setCareer(studentDTO.career());
-        studentEntity.setSemester(studentDTO.semester());
-        studentEntity.setSubjects(studentDTO.subjects());
-        Student studentUpdated = entityManager.merge(studentEntity);
-        return studentMapper.mapFromEntity(studentUpdated);
+        Student studentEntity = studentMapper.mapFromDTO(studentDTO);
+        Student studentSaved = entityManager.merge(studentEntity);
+        return studentMapper.mapFromEntity(studentSaved);
     }
 
     @Override

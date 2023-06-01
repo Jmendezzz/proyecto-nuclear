@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.exceptions.UserException;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.StudentConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
@@ -19,6 +20,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDao;
     private final UserConstrain userConstrain;
+    private final StudentConstrain studentConstrain;
     @Override
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
@@ -37,7 +39,8 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
 
     @Override
-    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) { //TODO:the student just can update the password and email
+    public StudentDTO updateStudent(StudentDTO studentDTO) { //TODO:the student just can update the password and email
+        studentConstrain.validateStudentById(studentDTO.id());
         return studentDao.updateStudent(studentDTO);
     }
 
