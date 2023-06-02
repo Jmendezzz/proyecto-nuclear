@@ -10,6 +10,7 @@ export const Flex = (props)=>{
         justifyContent: props.justifyContent || "center",
         height: props.height || "auto",
         width: props.width || "auto",
+        gap: props.gap || "0px"
 
     }
     return(
