@@ -58,3 +58,7 @@ a:hover{
     transition: all 1s;
 
 }
+main{
+    height: 100%;
+    width: 100%;
+}
