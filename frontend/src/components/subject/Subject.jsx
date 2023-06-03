@@ -3,10 +3,24 @@ import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import { Input } from "../../UI/inputs/Input";
 import style from "./Subject.module.css";
-import {BiEdit} from "react-icons/bi";
-import {MdDeleteForever} from "react-icons/md";
+import { BiEdit } from "react-icons/bi";
+import { MdDeleteForever } from "react-icons/md";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export const Subject = () => {
+  const [subjects, setSubjects] = useState([]);
+  const succesResponses = (res) => {
+    console.log(res.data);
+    setSubjects(res.data);
+  };
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/subjects")
+      .then((response) => succesResponses(response))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <Flex
       height={"100%"}
@@ -19,7 +33,7 @@ export const Subject = () => {
         <h2 style={{ fontSize: "60px" }}>ASIGNATURAS</h2>
       </Header>
       <Flex
-        height={"100%"}
+        height={"auto"}
         width={"80%"}
         direction={"column"}
         className={style["main-container"]}
@@ -43,51 +57,35 @@ export const Subject = () => {
           </Button>
         </Flex>
         <table className={style.table}>
-          <tr>
-            <th >Id</th>
-            <th>Nombre</th>
-            <th>Carrera</th>
-            <th>Semestre</th>
-            <th>Créditos</th>
-            <th>Acciones</th>
-          </tr>
-          <tr>
-            <td className={style.id}>1</td>
-            <td>Programación</td>
-            <td>Ingeniería de Software</td>
-            <td>2</td>
-            <td>275</td>
-            <td className={style["actions__container"]}>
-                <div className={style["icon__edit"]} ><BiEdit/></div>
-                <div className={style["icon__delete"]}><MdDeleteForever/></div>
-
-            </td>
-
-          </tr>
-          <tr>
-            <td className={style.id}>3</td>
-            <td>Programación</td>
-            <td>Ingeniería de Software</td>
-            <td>2</td>
-            <td>275</td>
-            <td className={style["actions__container"]}>
-                <div className={style["icon__edit"]} ><BiEdit/></div>
-                <div className={style["icon__delete"]}><MdDeleteForever/></div>
-
-            </td>
-          </tr>
-          <tr>
-            <td className={style.id}>2</td>
-            <td>Programación</td>
-            <td>Ingeniería de Software</td>
-            <td>2</td>
-            <td>275</td>
-            <td className={style["actions__container"]}>
-                <div className={style["icon__edit"]} ><BiEdit/></div>
-                <div className={style["icon__delete"]}><MdDeleteForever/></div>
-
-            </td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Carrera</th>
+              <th>Semestre</th>
+              <th>Créditos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {subjects.map((subject) => (
+              <tr key={subject.id}>
+                <td className={style.id}>{subject.id}</td>
+                <td>{subject.name}</td>
+                <td>{subject.career}</td>
+                <td>{subject.semester}</td>
+                <td>{subject.credits}</td>
+                <td className={style["actions__container"]}>
+                  <div className={style["icon__edit"]}>
+                    <BiEdit />
+                  </div>
+                  <div className={style["icon__delete"]}>
+                    <MdDeleteForever />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </Flex>
     </Flex>
