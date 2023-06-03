@@ -14,8 +14,6 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Embeddable
 public class TimeSlot {
-
     private LocalTime startTime;
     private LocalTime endTime;
-
 }
