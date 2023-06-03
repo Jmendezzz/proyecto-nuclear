@@ -1,11 +1,12 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
-import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
-import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
+import co.edu.cue.proyectonuclear.domain.entities.ProfessorSchedule;
+import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorScheduleDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -13,7 +14,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,10 +30,7 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     public List<ProfessorDTO> getAllProfessors() {
         String query = "FROM Professor";
         List<Professor> professors = entityManager.createQuery(query).getResultList();
-        professors.forEach(p-> System.out.println(p.getName()));
-        return professors.stream()//Todo preguntar que paso ahi
-                .map(p->mapper.mapFrom(p))
-                .toList();
+        return mapper.mapFrom(professors);
     }
 
     @Override
@@ -91,11 +88,27 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
         Professor professorEntity = mapper.mapFrom(professor);
-        try{
-            Professor professorSaved =  entityManager.merge(professorEntity);
-            return mapper.mapFrom(professorSaved);
-        }catch (IllegalArgumentException e){
-            throw new ProfessorException("No se pudo actualizar el profesor", HttpStatus.BAD_REQUEST);
-        }
+        Professor professorSaved =  entityManager.merge(professorEntity);
+        return mapper.mapFrom(professorSaved);
+    }
+
+    @Override
+    public ProfessorScheduleDTO saveScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+        //Get the professorSchedule Entity
+        ProfessorSchedule professorSchedule = mapper.mapFrom(professorScheduleDTO);
+        //Get the professor from the db
+        Professor professor = entityManager.find(Professor.class, id);
+        //Get the schedules that the professor already had in the db
+        List<ProfessorSchedule> schedules = professor.getSchedule();
+        //Save the professorSchedule sent by param in the schedules list
+        schedules.add(professorSchedule);
+        //Save the schedules to the professor Entity
+        professor.setSchedule(schedules);
+        //Save the professor in the db
+        entityManager.persist(professor);
+        entityManager.flush();
+        return professorScheduleDTO;
     }
 }
+/*
+* */

@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.infrastructure.dao;
 
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorScheduleDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,5 +15,5 @@ public interface ProfessorDAO {
     Optional<ProfessorDTO> getProfessorBySubject(Long idSubject);
     ProfessorDTO deleteProfessor(ProfessorDTO professorDTO);
     ProfessorDTO updateProfessor(ProfessorDTO professor);
-
+    ProfessorScheduleDTO saveScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO);
 }

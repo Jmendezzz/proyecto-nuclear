@@ -1,9 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
-import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.domain.entities.User;
 import co.edu.cue.proyectonuclear.infrastructure.dao.UserDAO;
-import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.UserDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.UserMapper;
 import jakarta.persistence.*;
