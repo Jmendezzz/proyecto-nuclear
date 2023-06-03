@@ -12,8 +12,9 @@ public class ProfessorScheduleConstrain {
     public void validateTime(ProfessorScheduleDTO professorScheduleDTO){
         professorScheduleDTO.timeSlots().forEach(ts->{
             if (ts.getStartTime().isAfter(ts.getEndTime())){
-                throw new ProfessorException("El horario ingresado no es válido", HttpStatus.BAD_REQUEST);
+                throw new ProfessorException("El horario ingresado no es válido, la fecha de fin no puede ser antes de la de inicio.", HttpStatus.BAD_REQUEST);
             }
         });
     }
+    //Si repite día no crear uno nuevo y si el time slot es igual, bad request.
 }

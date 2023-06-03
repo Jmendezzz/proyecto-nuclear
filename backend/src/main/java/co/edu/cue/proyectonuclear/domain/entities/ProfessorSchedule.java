@@ -23,7 +23,7 @@ public class ProfessorSchedule {
     @Enumerated(EnumType.STRING)
     private DayOfWeek day;
 
-    @OneToMany
+    @ElementCollection
+    @CollectionTable(name = "professor_schedule_time_slot", joinColumns = @JoinColumn(name = "professor_schedule_id"))
     private List<TimeSlot> timeSlots;
-
 }
