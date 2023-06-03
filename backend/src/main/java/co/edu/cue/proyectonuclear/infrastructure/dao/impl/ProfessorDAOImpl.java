@@ -94,21 +94,13 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 
     @Override
     public ProfessorScheduleDTO saveScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        //Get the professorSchedule Entity
         ProfessorSchedule professorSchedule = mapper.mapFrom(professorScheduleDTO);
-        //Get the professor from the db
         Professor professor = entityManager.find(Professor.class, id);
-        //Get the schedules that the professor already had in the db
-        List<ProfessorSchedule> schedules = professor.getSchedule();
-        //Save the professorSchedule sent by param in the schedules list
-        schedules.add(professorSchedule);
-        //Save the schedules to the professor Entity
-        professor.setSchedule(schedules);
-        //Save the professor in the db
-        entityManager.persist(professor);
-        entityManager.flush();
+        professor.getSchedule().add(professorSchedule);
+        entityManager.merge(professor);
         return professorScheduleDTO;
     }
+    //TODO DELETE AND REMOVE
 }
 /*
 * */
