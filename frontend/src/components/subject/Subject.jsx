@@ -94,7 +94,7 @@ export const Subject = () => {
           </tbody>
         </table>
         <Pagination 
-          totalitems={subjects.length}
+          totalItems={subjects.length}
           itemsPerPage={subjectsPerPage}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
