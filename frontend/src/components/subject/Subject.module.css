@@ -4,19 +4,22 @@
 }
 .table{
     width: 95%;
+    margin: 20px;
     background-color: white !important;
     border-collapse:collapse !important;
+    flex: 1;
+    overflow: auto;
 }
-.table >tr > th{
+.table thead >tr > th{
     font-size: 30px;
     padding: 20px;
 
 
 }
-.table > tr > td{
+.table tbody>  tr > td{
     font-size: 25px;
     text-align: center;
-    padding: 20px;
+    padding: 3px;
 
 
 }
@@ -24,7 +27,7 @@
     text-align: center;
     width: 20px;
 }
- table >tr:not(:last-child) {
+ table > tbody >tr:not(:last-child) {
     border-bottom: 1px solid rgb(169, 168, 168);
 }
 .actions__container{
