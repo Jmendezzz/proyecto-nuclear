@@ -34,5 +34,18 @@
     font-size: 50px;
     cursor: pointer;
     transition: all .2s ease-in-out; 
+}
+.icon__delete{
+    color: rgb(255, 0, 0);
+    font-size: 50px;
+    cursor: pointer;
+    transition: all .2s ease-in-out; 
+}
+.icon__edit:hover{
+    transform: scale(1.1); 
+
+}
+.icon__delete:hover{
+    transform: scale(1.1); 
 
 }

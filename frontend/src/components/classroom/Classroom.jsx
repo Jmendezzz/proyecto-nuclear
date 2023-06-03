@@ -4,12 +4,15 @@ import { Header } from "../../UI/headers/Header";
 import { Button } from "../../UI/button/Button";
 import { Input } from "../../UI/inputs/Input";
 import style from "./Classroom.module.css";
+import { Pagination } from "../pagination/Pagination";
 import { MdDeleteForever } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import axios from "axios";
 import { useState, useEffect } from "react";
 export const Classroom = () => {
     const [classroom, setClassroom] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const classroomsPerPage = 7;
     const succesResponses = (res) => {
       console.log(res.data);
       setClassroom(res.data);
@@ -20,6 +23,11 @@ export const Classroom = () => {
         .then((response) => succesResponses(response))
         .catch((error) => console.error(error));
     }, []);
+    const lastClassroomIndex = currentPage * classroomsPerPage;
+    const firstClassroomIndex = lastClassroomIndex - classroomsPerPage;
+    const currentClassroom = classroom.slice(firstClassroomIndex, lastClassroomIndex);
+
+   
 
     return(
         <Flex
@@ -69,7 +77,7 @@ export const Classroom = () => {
             </tr>
           </thead>
           <tbody>
-          {classroom.map((classroom) => (
+          {currentClassroom.map((classroom) => (
               <tr key={classroom.id}>
                 <td className={style.id}>{classroom.id}</td>
                 <td>{classroom.name}</td>
@@ -79,10 +87,10 @@ export const Classroom = () => {
                 <td>{classroom.tipology}</td>
                 <td className={style["actions__container"]}>
                   <div className={style["icon__edit"]}>
-                  <BiEdit />
+                    <BiEdit />
                   </div>
                   <div className={style["icon__delete"]}>
-                  <MdDeleteForever />
+                    <MdDeleteForever />
                   </div>
                 </td>
               </tr>
@@ -90,7 +98,12 @@ export const Classroom = () => {
            
           </tbody>
         </table>
-
+        <Pagination 
+          totalItems={classroom.length}
+          itemsPerPage={classroomsPerPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        ></Pagination>
 
       </Flex>
     </Flex>
