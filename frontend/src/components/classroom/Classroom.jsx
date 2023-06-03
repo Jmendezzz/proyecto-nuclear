@@ -98,12 +98,15 @@ export const Classroom = () => {
            
           </tbody>
         </table>
+        {classroom.length>8 &&(
         <Pagination 
-          totalItems={classroom.length}
-          itemsPerPage={classroomsPerPage}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
+        totalItems={classroom.length}
+        itemsPerPage={classroomsPerPage}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
         ></Pagination>
+        )}
+      
 
       </Flex>
     </Flex>
