@@ -18,6 +18,7 @@ public class Professor extends User {
     @JoinColumn(name = "professor_id")
     private List<ProfessorSchedule> schedule;
 
+
     @OneToMany
     @JoinTable(name = "professor_subjects")
     private List<Subject> subjects;
