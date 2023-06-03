@@ -6,6 +6,8 @@ import { FaBars } from "react-icons/fa";
 import { GiTeacher } from "react-icons/gi";
 import { HiUserGroup, HiOutlineBookOpen } from "react-icons/hi";
 import { BiChalkboard } from "react-icons/bi";
+import {SiGoogleclassroom} from "react-icons/si";
+import {BsFillGearFill} from "react-icons/bs";
 import logo from "../assets/images/logo-cue-avh.png";
 import { useState } from "react";
 
@@ -13,27 +15,37 @@ const routes = [
   {
     path: "/",
     name: "Dashboard",
-    icon: <AiOutlineDashboard />,
+    icon: <AiOutlineDashboard />
   },
   {
     path: "/profesores",
     name: "Profesores",
-    icon: <GiTeacher />,
+    icon: <GiTeacher />
   },
   {
     path: "/estudiantes",
     name: "Estudiantes",
-    icon: <HiUserGroup />,
+    icon: <HiUserGroup />
   },
   {
     path: "/salones",
     name: "Salones",
-    icon: <BiChalkboard />,
+    icon: <BiChalkboard />
   },
   {
     path: "/asignaturas",
     name: "Asignaturas",
-    icon: <HiOutlineBookOpen />,
+    icon: <HiOutlineBookOpen />
+  },
+  {
+    path: "/cursos",
+    name: "Cursos",
+    icon: <SiGoogleclassroom/>
+  },
+    {
+    path: "/configuracion",
+    name: "Configuración",
+    icon: <BsFillGearFill/>
   },
 ];
 

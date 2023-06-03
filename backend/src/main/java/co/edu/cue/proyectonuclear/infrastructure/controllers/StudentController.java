@@ -4,7 +4,6 @@ import co.edu.cue.proyectonuclear.exceptions.StudentException;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -45,13 +44,13 @@ public class StudentController {
     }
 
     @PutMapping("/students")
-    public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO){
+    public ResponseEntity<StudentDTO> updateStudent(@Valid @RequestBody StudentDTO studentDTO){
 
         StudentDTO student = studentService.updateStudent(studentDTO);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @DeleteMapping("/student/{id}")
+    @DeleteMapping("/students/{id}")
     public ResponseEntity<StudentDTO> deleteStudentById(@PathVariable Long id) {
 
         StudentDTO studentDTO = studentService.deleteStudent(id);
@@ -59,7 +58,7 @@ public class StudentController {
 
     }
 
-    @GetMapping("/student/{id}")
+    @GetMapping("/students/{id}")
     public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
 
         Optional<StudentDTO> studentDTO =  studentService.getStudentById(id);
