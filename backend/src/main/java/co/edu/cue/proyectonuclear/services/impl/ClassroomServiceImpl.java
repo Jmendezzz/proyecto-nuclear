@@ -1,5 +1,6 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
+import co.edu.cue.proyectonuclear.domain.enums.Location;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ClassroomDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
@@ -54,4 +55,16 @@ public class ClassroomServiceImpl implements ClassroomService {
         }
         return null;
     }
+
+    @Override
+    public List<ClassroomDTO> searchByCapacity(Integer capability) {
+        return classroomDAO.searchByCapacity(capability);
+    }
+
+    @Override
+    public List<ClassroomDTO> searchByLocation(Location location) {
+        return classroomDAO.searchByLocation(location);
+    }
+
+
 }
