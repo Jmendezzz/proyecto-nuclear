@@ -4,6 +4,7 @@ import "./App.css";
 import { Sidebar } from "./components/Sidebar";
 import { Subject } from "./components/subject/Subject";
 import {Classroom} from './components/classroom/Classroom'
+import { SubjectCreate } from "./components/subject/SubjectCreate";
 function App() {
   return (
       <BrowserRouter>
@@ -12,8 +13,7 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/asignaturas" element={<Subject/>}></Route>
             <Route path="/salones" element={<Classroom/>}></Route>
-
-
+            <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
           </Routes>
         </Sidebar>
       </BrowserRouter>
