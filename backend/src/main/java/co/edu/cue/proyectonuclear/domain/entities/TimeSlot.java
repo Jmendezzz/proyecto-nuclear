@@ -12,13 +12,8 @@ import java.time.LocalTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Embeddable
 public class TimeSlot {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private LocalTime startTime;
     private LocalTime endTime;
-
 }
