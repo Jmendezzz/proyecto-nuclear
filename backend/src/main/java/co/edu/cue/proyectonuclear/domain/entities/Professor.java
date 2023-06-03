@@ -14,8 +14,10 @@ import java.util.List;
 @Table(name = "professor")
 public class Professor extends User {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "professor_id")
     private List<ProfessorSchedule> schedule;
+
 
     @OneToMany
     @JoinTable(name = "professor_subjects")
