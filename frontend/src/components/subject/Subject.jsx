@@ -7,9 +7,12 @@ import { BiEdit } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Pagination } from "../pagination/Pagination";
 
 export const Subject = () => {
   const [subjects, setSubjects] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const subjectsPerPage = 7;
   const succesResponses = (res) => {
     console.log(res.data);
     setSubjects(res.data);
@@ -20,6 +23,9 @@ export const Subject = () => {
       .then((response) => succesResponses(response))
       .catch((error) => console.error(error));
   }, []);
+  const lastSubjectIndex = currentPage * subjectsPerPage;
+  const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
+  const currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
 
   return (
     <Flex
@@ -68,7 +74,7 @@ export const Subject = () => {
             </tr>
           </thead>
           <tbody>
-            {subjects.map((subject) => (
+            {currentSubjects.map((subject) => (
               <tr key={subject.id}>
                 <td className={style.id}>{subject.id}</td>
                 <td>{subject.name}</td>
@@ -87,6 +93,12 @@ export const Subject = () => {
             ))}
           </tbody>
         </table>
+        <Pagination 
+          totalSubjects={subjects.length}
+          subjectsPerPage={subjectsPerPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        ></Pagination>
       </Flex>
     </Flex>
   );
