@@ -1,6 +1,5 @@
 package co.edu.cue.proyectonuclear.mapping.dtos;
 
-import co.edu.cue.proyectonuclear.domain.entities.Subject;
 import jakarta.validation.constraints.Email;
 
 

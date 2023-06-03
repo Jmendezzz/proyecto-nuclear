@@ -2,10 +2,12 @@ package co.edu.cue.proyectonuclear.services.impl;
 
 
 import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorScheduleConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorScheduleDTO;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorDAO professorDAO;
     private final ProfessorConstrain professorConstrain;
+    private final ProfessorScheduleConstrain professorScheduleConstrain;
     private final UserConstrain userConstrain;
 
     @Override
@@ -43,8 +46,14 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
-        professorConstrain.validateProfessor(professor);
+        professorConstrain.validateProfessorById(professor.id());
         return professorDAO.updateProfessor(professor);
+    }
+
+    @Override
+    public ProfessorScheduleDTO saveScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+        professorScheduleConstrain.validateTime(professorScheduleDTO);
+        return professorDAO.saveScheduleProfessor(id, professorScheduleDTO);
     }
 
     @Override

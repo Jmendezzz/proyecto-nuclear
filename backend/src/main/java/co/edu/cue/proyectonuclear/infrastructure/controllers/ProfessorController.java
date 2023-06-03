@@ -3,6 +3,7 @@ package co.edu.cue.proyectonuclear.infrastructure.controllers;
 import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorScheduleDTO;
 import co.edu.cue.proyectonuclear.services.ProfessorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -52,5 +53,9 @@ public class ProfessorController {
     @PutMapping("/professors")
     public ProfessorDTO updateProfessor(@Valid @RequestBody ProfessorDTO professor){
         return professorService.updateProfessor(professor);
+    }
+    @PutMapping("/professors/{id}/schedule")
+    public ProfessorScheduleDTO saveScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
+        return professorService.saveScheduleProfessor(id, professorSchedule);
     }
 }
