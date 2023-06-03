@@ -1,14 +1,14 @@
 import style from "./Pagination.module.css";
 
 export const Pagination = ({
-    totalSubjects,
-    subjectsPerPage,
+    totalItems,
+    itemsPerPage,
     setCurrentPage,
     currentPage,
 }) => {
     let pages = [];
 
-    for (let i = 1; i <= Math.ceil(totalSubjects / subjectsPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
         pages.push(i);
     }
 
