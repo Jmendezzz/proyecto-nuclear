@@ -1,7 +1,9 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
+import co.edu.cue.proyectonuclear.domain.enums.Location;
 import co.edu.cue.proyectonuclear.exceptions.ClassroomException;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
 import lombok.AllArgsConstructor;
@@ -47,5 +49,13 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
 
+    @GetMapping("classrooms/capability/{capability}")
+    public List<ClassroomDTO>searchByCapacity(@PathVariable Integer capability){
+       return classroomService.searchByCapacity(capability);
+    }
+    @GetMapping("classrooms/location/{location}")
+    public List<ClassroomDTO>searchByLocation(@PathVariable Location location){
+        return classroomService.searchByLocation(location);
+    }
 
 }

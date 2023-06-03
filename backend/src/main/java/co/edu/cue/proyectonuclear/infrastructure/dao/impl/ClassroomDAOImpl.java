@@ -1,20 +1,26 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Classroom;
+import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.domain.entities.Subject;
+import co.edu.cue.proyectonuclear.domain.enums.Career;
+import co.edu.cue.proyectonuclear.domain.enums.Location;
 import co.edu.cue.proyectonuclear.exceptions.ClassroomException;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ClassroomDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.ClassroomMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +88,22 @@ public class ClassroomDAOImpl implements ClassroomDAO {
         return classroomMapper.mapFromEntity(classroomEntity);
     }
 
+    @Override
+    public List<ClassroomDTO> searchByCapacity(Integer capability) {
+        String query="SELECT * FROM classroom WHERE capability > :capability";
+        Query nativeQuery = entityManager.createNativeQuery(query,Classroom.class);
+        nativeQuery.setParameter("capability",capability);
+        return mapEntityList(nativeQuery.getResultList());
+    }
+
+    @Override
+    public List<ClassroomDTO> searchByLocation(Location location) {
+        String query="SELECT * FROM classroom WHERE location=:location";
+        Query nativeQuery=entityManager.createNativeQuery(query,Classroom.class);
+        nativeQuery.setParameter("location",location.name());
+        List<Classroom>classrooms=nativeQuery.getResultList();
+        return mapEntityList(classrooms);
+    }
 
 
     private List<ClassroomDTO> mapEntityList(List<Classroom>classrooms){
