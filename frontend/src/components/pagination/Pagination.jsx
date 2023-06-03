@@ -1,14 +1,14 @@
 import style from "./Pagination.module.css";
 
 export const Pagination = ({
-    totalPosts,
-    postsPerPage,
+    totalItems,
+    itemsPerPage,
     setCurrentPage,
     currentPage,
 }) => {
     let pages = [];
 
-    for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
         pages.push(i);
     }
 
@@ -19,7 +19,7 @@ export const Pagination = ({
                     <button
                         key={index}
                         onClick={() => setCurrentPage(page)}
-                        className={page == currentPage ? "active" : ""}>
+                        className={page == currentPage ? style.active : ""}>
                         {page}
                     </button>
                 );
