@@ -19,7 +19,7 @@ export const Pagination = ({
                     <button
                         key={index}
                         onClick={() => setCurrentPage(page)}
-                        className={page == currentPage ? style.active : ""}>
+                        className={page === currentPage ? style.active : ""}>
                         {page}
                     </button>
                 );
