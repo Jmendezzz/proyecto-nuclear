@@ -6,8 +6,10 @@ import style from "./Student.module.css";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Pagination } from "../pagination/Pagination";
+import { useNavigate } from "react-router-dom";
+import { getStudents} from "../../api/StudentApiService";
+
 
 export const Student = () => {
     const [students, setStudents] = useState([]);
@@ -18,14 +20,15 @@ export const Student = () => {
       setStudents(res.data);
     };
     useEffect(() => {
-      axios
-        .get("http://localhost:8080/students")
-        .then((response) => succesResponses(response))
-        .catch((error) => console.error(error));
+      getStudents()
+      .then((response) => succesResponses(response))
+      .catch((error) => console.log(error));
     }, []);
     const lastStudentIndex = currentPage * studentsPerPage;
     const firstStudentIndex = lastStudentIndex - studentsPerPage;
     const currentStudents = students.slice(firstStudentIndex, lastStudentIndex);
+
+    const navigate = useNavigate();
   
     return (
       <Flex
@@ -48,7 +51,9 @@ export const Student = () => {
         >
           <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>
             <div style={{ width: "60%", margin: "10px" }}>
-              <Button inLineStyle={{ width: "180px", height: "60px" }}>
+              <Button 
+              inLineStyle={{ width: "180px", height: "60px" }}
+              onClick={() => navigate("/estudiantes/crear")}>
                 Crear estudiante
               </Button>
             </div>
