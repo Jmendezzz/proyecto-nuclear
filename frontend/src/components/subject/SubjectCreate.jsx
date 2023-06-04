@@ -1,72 +1,74 @@
 import { Button } from "../../UI/button/Button";
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
-import { Input } from "../../UI/inputs/Input";
 import style from "./Subject.module.css";
 import { careers } from "../../enums/Career";
 import Select from "react-select";
-import { useInput } from "../../hooks/use-input";
 import { saveSubject } from "../../api/SubjectApiService";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { isEmpty } from "../../validations/InputValidations";
-export const SubjectCreate = () => {
-  const navigate = useNavigate();
-  const {
-    value: subjectNameValue,
-    isInvalid: subjectNameIsInvalid,
-    valueChangeHandler: subjectNameValueChangeHandler,
-    blurChangeHandler: subjectNameBlurChangeHandler
-  } = useInput(isEmpty);
+import { Field, Form, Formik, ErrorMessage } from "formik";
 
+const validateForm = (values) => {
+  const errors = {};
+  if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
+
+  if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
+
+  if (isEmpty(values.semester.toString())) errors.semester = 'El semestre no debe estar vacío';
+
+  if (isEmpty(values.credits.toString())) errors.credits = 'El número de créditos no debe estar vacío';
+
+  if (values.credits <= 1) errors.credits = "El número de créditos deber ser válido";
+
+  return errors;
+
+}
+
+const succesResponseAlert = (response) => {
+  Swal.fire({
+    title: "Asignatura creada",
+    text: "Se ha creado la asignatura " + response.data.name,
+    icon: "success",
+    confirmButtonColor: "green",
+    confirmButtonText: "Aceptar"
+
+  })
+
+}
+
+const errorResponseAlert = (error) => {
+  Swal.fire({
+    title: "Error",
+    text: error.response.data.detail,
+    icon: "error",
+    confirmButtonColor: "red",
+    confirmButtonText: "Aceptar"
+  })
+
+}
+
+export const SubjectCreate = () => {
   const [
     subjectCareerValue,
     subjectCareerValueChangeHandler
   ] = useState("INGENIERIA_DE_SOFTWARE");
 
-  const {
-    value: subjectSemesterValue,
-    isInvalid:subjectSemesterIsInvalid,
-    valueChangeHandler: subjectSemesterValueChangeHandler,
-    blurChangeHandler: subjectSemesterBlurChangeHandler
-  } = useInput(isEmpty);
+  const navigate = useNavigate();
 
-  const {
-    value: subjectCreditsValue,
-    isInvalid:subjectCreditsIsInvalid,
-    valueChangeHandler: subjectCreditsValueChangeHandler,
-    blurChangeHandler: subjectCreditsBlurChangeHandler
-  } = useInput(isEmpty);
-
-
-  const createSubjectHandler = () => {
-    if(subjectNameIsInvalid && subjectSemesterIsInvalid && subjectCreditsIsInvalid){
-      return;
-    }
+  const createSubjectHandler = (values) => {
     const subject = {
-      name: subjectNameValue,
+      name: values.name,
       career: subjectCareerValue,
-      semester: subjectSemesterValue,
-      credits: subjectCreditsValue
+      semester: values.semester,
+      credits: values.credits
     }
     saveSubject(subject)
-      .then(response => Swal.fire({
-        title: "Asignatura creada",
-        text: "Se ha creado la asignatura " + response.data.name,
-        icon: "success",
-        confirmButtonColor: "green",
-        confirmButtonText: "Aceptar"
-
-      }))
-      .then(()=> navigate("/asignaturas"))
-      .catch(error => Swal.fire({
-        title: "Error",
-        text: error.response.data.detail,
-        icon: "error",
-        confirmButtonColor: "red",
-        confirmButtonText: "Aceptar"
-      }))
+      .then(response => succesResponseAlert(response))
+      .then(() => navigate("/asignaturas"))
+      .catch(error => errorResponseAlert(error))
 
   }
 
@@ -100,70 +102,82 @@ export const SubjectCreate = () => {
           width={"90%"}
           className={style["create-subject-container"]}
         >
-          <Flex
-            direction={"column"}
-            height={"auto"}
-            alignItems={"none"}
-            justifyContent={"none"}
+          <Formik
+            initialValues={{
+              name: "",
+              semester: "",
+              credits: ""
+            }}
+            onSubmit={createSubjectHandler}
+            validate={validateForm}
           >
-            <label style={{ fontSize: "20px" }}>Nombre</label>
-            <Input style={{ height: "10px" }} input={{ onChange: subjectNameValueChangeHandler,onBlur: subjectNameBlurChangeHandler }} ></Input>
-            {subjectNameIsInvalid && <p style={{color:"red"}}>El nombre no debe estar vacío</p>}
-          </Flex>
-          <Flex
-            direction={"column"}
-            height={"auto"}
-            alignItems={"none"}
-            justifyContent={"none"}
-          >
-            <label style={{ fontSize: "20px" }}>Carrera</label>
-            <Select
-              onChange={selectCareerHandler}
-              defaultValue={{ label: careers[0].name, value: careers[0].value }}
-              noOptionsMessage={() => "No se encontraron carreras "}
-              className={style.select}
-              options={careers.map((career) => ({
-                label: career.name,
-                value: career.value,
-              }))}
-            />
-          </Flex>
-          <Flex
-            direction={"column"}
-            height={"auto"}
-            alignItems={"none"}
-            justifyContent={"none"}
-          >
-            <label style={{ fontSize: "20px" }}>Semestre</label>
-            <Input
-              style={{ height: "10px" }}
-              input={{ type: "number", min: 1, max: 8, onChange: subjectSemesterValueChangeHandler, onBlur:subjectSemesterBlurChangeHandler }}
-            ></Input>
-            {subjectSemesterIsInvalid && <p style={{color:"red"}}>El semestre no debe estar vacío</p>}
+            {({ errors, touched }) => (
+              <Form className={style.form}>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={errors.name && touched.name ? style["form__item-error"] : style["form__item"]}
+                >
+                  <label style={{ fontSize: "20px", color: errors.name && touched.name ? "red" : "black" }}>Nombre</label>
+                  <Field name="name" />
+                  <ErrorMessage name="name" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                </Flex>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={errors.semester && touched.semester ? style["form__item-error"] : style["form__item"]}
+                >
+                  <label style={{ fontSize: "20px", color: errors.semester && touched.semester ? "red" : "black" }}>Semestre</label>
+                  <Field name="semester" type="number" />
+                  <ErrorMessage name="semester" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                </Flex>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={style["form__item"]}
+                >
+                  <label style={{ fontSize: "20px" }}>Carrera</label>
+                  <Select
+                    onChange={selectCareerHandler}
+                    defaultValue={{ label: careers[0].name, value: careers[0].value }}
+                    noOptionsMessage={() => "No se encontraron carreras "}
+                    className={style.select}
+                    options={careers.map((career) => ({
+                      label: career.name,
+                      value: career.value,
+                    }))}
+                  />
+                </Flex>
 
-          </Flex>
-          <Flex
-            direction={"column"}
-            height={"auto"}
-            alignItems={"none"}
-            justifyContent={"none"}
-          >
-            <label style={{ fontSize: "20px" }}>Créditos</label>
-            <Input
-              style={{ height: "10px" }}
-              input={{ type: "number", min: 1, onChange: subjectCreditsValueChangeHandler, onBlur:subjectCreditsBlurChangeHandler }}
-            ></Input>
-            {subjectCreditsIsInvalid && <p style={{color:"red"}}>El número de créditos no debe estar vacío</p>}
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={errors.credits && touched.credits ? style["form__item-error"] : style["form__item"]}
+                >
+                  <label style={{ fontSize: "20px" }}>Créditos</label>
+                  <Field name="credits" type="number" />
+                  <ErrorMessage name="credits" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                </Flex>
+                <Flex width>
+                  <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
+                    Guardar
+                  </Button>
+                  <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px" }} onClick={() => navigate("/asignaturas")}>
+                    Cancelar
+                  </Button>
+                </Flex>
+              </Form>
+            )}
+          </Formik>
 
-          </Flex>
-          <Flex width>
-            <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }} onClick={createSubjectHandler}>
-              Guardar
-            </Button>
-            <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px" }} onClick={()=> navigate("/asignaturas") }>
-              Cancelar
-            </Button>
-          </Flex>
         </Flex>
       </Flex>
     </Flex>

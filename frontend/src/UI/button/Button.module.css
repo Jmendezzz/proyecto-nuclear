@@ -14,3 +14,11 @@
 .button:hover{
     background-color: rgb(99, 3, 3);
 }
+button:disabled,
+button:disabled:hover,
+button:disabled:active {
+  background-color: rgb(236, 64, 64);
+  color: #ffffff;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
