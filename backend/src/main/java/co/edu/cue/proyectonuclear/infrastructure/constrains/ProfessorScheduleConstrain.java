@@ -16,5 +16,4 @@ public class ProfessorScheduleConstrain {
             }
         });
     }
-    //Si repite día no crear uno nuevo y si el time slot es igual, bad request.
 }
