@@ -2,7 +2,9 @@ import React from "react";
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import style from "./Classroom.module.css";
+import { Button } from "../../UI/button/Button";
 import { useEffect, useState } from "react";
+import { getClassroomById, updateClassroom } from "../../api/ClassroomApiService";
 import { useInput } from "../../hooks/use-input";
 import Select from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,9 +13,8 @@ import { location } from "../../enums/Location";
 import { tipologies } from "../../enums/Tipology";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { isEmpty } from "../../validations/InputValidations";
-import { Button } from "../../UI/button/Button";
-import { saveClassroom } from "../../api/ClassroomApiService";
 import Swal from "sweetalert2";
+import { Loading } from "../../UI/loading/Loading";
 
 
 
@@ -48,7 +49,7 @@ const succesResponseAlert = (response) => {
 const errorResponseAlert = (error) => {
   Swal.fire({
     title: "Error",
-    text: error.response.data.detail,
+    text: error,
     icon: "error",
     confirmButtonColor: "red",
     confirmButtonText: "Aceptar"
@@ -63,6 +64,7 @@ export const ClassroomEdit = () => {
     const navigate=useNavigate();
     const {classroomId}=useParams();
     const [classroom,setClassroom]=useState();
+    const [isLoading, setIsLoading] = useState(true);
  
   const [
     classroomLocationValue,
@@ -75,16 +77,16 @@ export const ClassroomEdit = () => {
   ]= useState("NORMAL");
 
  
-//   useEffect(() => {
-//     window.scrollTo(0, 0);
-//     getSubjectById(subjectId)
-//         .then((response) => {
-//             setSubject(response.data)
-//             setIsLoading(false)
-//         })
-//         .catch((error) => console.log(error))
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getClassroomById(classroomId)
+        .then((response) => {
+            setClassroom(response.data)
+            setIsLoading(false)
+        })
+        .catch((error) => console.log(error))
 
-// }, [])
+}, [])
 
 
   const editClassroomHandler = (values) => {
@@ -95,7 +97,7 @@ export const ClassroomEdit = () => {
       elements:values.elements, 
       tipology: classroomTipologyValue
     }
-    saveClassroom(classroom)
+    updateClassroom(classroom)
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/salones"))
       .catch(error => errorResponseAlert(error))
@@ -110,6 +112,9 @@ export const ClassroomEdit = () => {
  }
 
     return(
+      isLoading ? 
+      <Loading />
+  :
       <Flex
       height={"100%"}
       width={"100%"}
@@ -118,7 +123,7 @@ export const ClassroomEdit = () => {
       justifyContent={"none"}
     >
       <Header>
-        <h2 style={{ fontSize: "60px" }}>CREAR SALONES</h2>
+        <h2 style={{ fontSize: "60px" }}>EDITAR SALONES</h2>
       </Header>
       <Flex
         height={"auto"}
@@ -136,11 +141,12 @@ export const ClassroomEdit = () => {
           width={"90%"}
           className={style["create-classroom-container"]}
         >
+           
           <Formik
             initialValues={{
-              name: "",
-              capability: "",
-              elements: ""
+              name: classroom.name,
+              capability: classroom.capability,
+              elements: classroom.elements
             }}
             onSubmit={editClassroomHandler}
             validate={validateForm}
@@ -221,7 +227,7 @@ export const ClassroomEdit = () => {
           </Flex>
 
                 <Flex width>
-                  <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
+                  <Button  inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
                     Guardar
                   </Button>
                   <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px" }} onClick={() => navigate("/salones")}>

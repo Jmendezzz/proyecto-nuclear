@@ -89,9 +89,11 @@ export const Classroom = () => {
                 <td>{classroom.capability}</td>
                 <td>{classroom.elements}</td>
                 <td>{classroom.tipology}</td>
+           
                 <td className={style["actions__container"]}>
                   <div className={style["icon__edit"]}>
-                    <BiEdit />
+                  
+                    <BiEdit onClick={()=>navigate(`/salones/editar/${classroom.id}`)} />
                   </div>
                   <div className={style["icon__delete"]}>
                     <MdDeleteForever />
