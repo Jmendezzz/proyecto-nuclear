@@ -1,8 +1,22 @@
-export const location = {
-    PRINCIPAL:"Principal",
-    NOGAL:"Nogal",
-    ANOVA:"Anova",
-    ALCAZAR:"Alcazar",
-    CAMPINA:"Campina"
-
-};
+export const location = [
+    {
+        name:"Principal",
+        value:"PRINCIPAL"
+    },
+    {
+        name:"Nogal",
+        value:"NOGAL"
+    },
+    {
+        name:"Anova",
+        value:"ANOVA"
+    },
+    {
+        name:"Alcazar",
+        value:"ALCAZAR"
+    },
+    {
+        name:"Campina",
+        value:"CAMPINA"
+    }
+]
