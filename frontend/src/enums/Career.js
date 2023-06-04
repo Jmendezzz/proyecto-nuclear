@@ -1,12 +1,46 @@
-export const careers = {
+export const careers = [ 
+    {   
+        name:"Ingeniería de Software",
+        value:"INGENIERIA_DE_SOFTWARE"
+    
+    },
+    {
+        name: "Ingeniería Industrial",
+        value:"INGENIERIA_INDUSTRIAL" 
+    },
+    {
+        name:"Ingeniería Civil",
+        value:"INGENIERIA_CIVIL"
 
-    INGENIERIA_DE_SOFTWARE: "Ingeniería de Software",
-    INGENIERIA_INDUSTRIAL: "Ingeniería Industrial",
-    INGENIERIA_CIVIL: "Ingeniería Civil",
-    ADMINISTRACION_DE_EMPRESAS : "Administración de empresas",
-    MEDICINA: "Medicina",
-    ENFERMERIA: "Enfermeria",
-    PSICOLOGIA: "Psicologia",
-    MEDICINA_VERTERINARIA: "Medicina Verterinaria",
-    MARKETING_DIGITAL: "Marketing Digital",
-};
+    },
+    {
+        name:"Administración de empresas",
+        value:"ADMINISTRACION_DE_EMPRESAS"
+
+
+    },
+    {
+        name:"Medicina",
+        value:"MEDICINA"
+
+    },
+    {
+        name:"Enfermeria",
+        value:"ENFERMERIA"
+
+    },
+    {
+        name:"Psicologia",
+        value:"PSICOLOGIA"
+
+    },
+    {
+        name:"Medicina Veterinaria",
+        value:"MEDICINA_VETERINARIA"
+    },
+    {
+        name: "Marketing Digital",
+        value: "MARKETING_DIGITAL"
+    }
+]
+    

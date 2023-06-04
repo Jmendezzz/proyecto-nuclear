@@ -6,25 +6,22 @@ import style from "./Subject.module.css";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Pagination } from "../pagination/Pagination";
+import { getSubjects } from "../../api/SubjectApiService";
 
 import { useNavigate } from "react-router-dom";
-
 
 export const Subject = () => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPerPage = 7;
-  const succesResponses = (res) => {
-    console.log(res.data);
+  const succesResponse = (res) => {
     setSubjects(res.data);
   };
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/subjects")
-      .then((response) => succesResponses(response))
-      .catch((error) => console.error(error));
+    getSubjects()
+      .then((response) => succesResponse(response))
+      .catch((error) => console.log(error));
   }, []);
   const lastSubjectIndex = currentPage * subjectsPerPage;
   const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
@@ -53,7 +50,10 @@ export const Subject = () => {
       >
         <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>
           <div style={{ width: "60%", margin: "10px" }}>
-            <Button inLineStyle={{ width: "180px", height: "60px" }} onClick={()=>navigate("/asignaturas/crear")}>
+            <Button
+              inLineStyle={{ width: "180px", height: "60px" }}
+              onClick={() => navigate("/asignaturas/crear")}
+            >
               Crear asignatura
             </Button>
           </div>
@@ -105,8 +105,7 @@ export const Subject = () => {
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}
           ></Pagination>
-        ) 
-        }
+        )}
       </Flex>
     </Flex>
   );
