@@ -14,5 +14,6 @@ public interface ProfessorService {
     Optional<ProfessorDTO> getProfessorById(Long id);
     ProfessorDTO deleteProfessorById(Long id);
     ProfessorDTO updateProfessor(ProfessorDTO professor);
-    ProfessorScheduleDTO saveScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO);
+    ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO);
+    ProfessorDTO deleteScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO);
 }

@@ -2,7 +2,6 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.domain.entities.ProfessorSchedule;
-import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
@@ -93,14 +92,34 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public ProfessorScheduleDTO saveScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+    public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
         ProfessorSchedule professorSchedule = mapper.mapFrom(professorScheduleDTO);
         Professor professor = entityManager.find(Professor.class, id);
-        professor.getSchedule().add(professorSchedule);
+        Boolean dayExists = false;
+        for (ProfessorSchedule s : professor.getSchedule()) {
+            if (s.getDay().equals(professorScheduleDTO.day())) {
+                s.getTimeSlots().clear();
+                s.getTimeSlots().addAll(professorSchedule.getTimeSlots());
+                dayExists = true;
+                break;
+            }
+        }
+        if (!dayExists) {
+            professor.getSchedule().add(professorSchedule);
+        }
         entityManager.merge(professor);
         return professorScheduleDTO;
     }
-    //TODO DELETE AND REMOVE
+
+    @Override
+    public ProfessorDTO deleteScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+        Professor professor = entityManager.find(Professor.class, id);
+        professor.getSchedule().forEach(s -> {
+            if (s.getDay().equals(professorScheduleDTO.day())){
+                s.getTimeSlots().clear();
+            }
+        });
+        entityManager.merge(professor);
+        return mapper.mapFrom(professor);
+    }
 }
-/*
-* */

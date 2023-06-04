@@ -55,7 +55,11 @@ public class ProfessorController {
         return professorService.updateProfessor(professor);
     }
     @PutMapping("/professors/{id}/schedule")
-    public ProfessorScheduleDTO saveScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
-        return professorService.saveScheduleProfessor(id, professorSchedule);
+    public ProfessorScheduleDTO setScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
+        return professorService.setScheduleProfessor(id, professorSchedule);
+    }
+    @DeleteMapping("/professors/{id}/schedule")
+    public ProfessorDTO deleteScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
+        return professorService.deleteScheduleProfessor(id, professorSchedule);
     }
 }
