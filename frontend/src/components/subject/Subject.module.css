@@ -96,6 +96,3 @@
 .form__item-error > input:focus{
     outline: 1px solid red;
 }
-.fom__item-error > label{
-    color: red;
-}
