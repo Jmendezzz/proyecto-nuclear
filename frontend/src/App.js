@@ -5,6 +5,7 @@ import { Sidebar } from "./components/Sidebar";
 import { Subject } from "./components/subject/Subject";
 import {Classroom} from './components/classroom/Classroom'
 import { SubjectCreate } from "./components/subject/SubjectCreate";
+import { SubjectEdit } from "./components/subject/SubjectEdit";
 function App() {
   return (
       <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
             <Route path="/asignaturas" element={<Subject/>}></Route>
             <Route path="/salones" element={<Classroom/>}></Route>
             <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
+            <Route path="asignaturas/editar/:subjectId" element={<SubjectEdit/>}></Route>
           </Routes>
         </Sidebar>
       </BrowserRouter>
