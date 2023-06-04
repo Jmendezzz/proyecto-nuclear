@@ -20,18 +20,16 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/asignaturas" element={<Subject/>}></Route>
             <Route path="/salones" element={<Classroom/>}></Route>
-
-            <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
-
             <Route path="/estudiantes" element={<Student/>}></Route>
 
+
+            <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
             <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
+            <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
 
             <Route path="asignaturas/editar/:subjectId" element={<SubjectEdit/>}></Route>
-
             <Route path="salones/editar/:classroomId" element={<ClassroomEdit/>}></Route>
 
-            <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
 
           </Routes>
         </Sidebar>
