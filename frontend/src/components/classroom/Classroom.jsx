@@ -9,6 +9,8 @@ import { Pagination } from "../pagination/Pagination";
 import { MdDeleteForever } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 
+import { useNavigate } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 export const Classroom = () => {
     const [classroom, setClassroom] = useState([]);
@@ -27,7 +29,7 @@ export const Classroom = () => {
     const firstClassroomIndex = lastClassroomIndex - classroomsPerPage;
     const currentClassroom = classroom.slice(firstClassroomIndex, lastClassroomIndex);
 
-   
+    const navigate = useNavigate();
 
     return(
         <Flex
@@ -48,9 +50,11 @@ export const Classroom = () => {
         justifyContent={"none"}
         alignItems={"center"}
       >
+       
          <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>
           <div style={{ width: "60%", margin: "10px" }}>
-            <Button inLineStyle={{ width: "180px", height: "60px" }}>
+            <Button inLineStyle={{ width: "180px", height: "60px" }}
+            onClick={()=>navigate("/salones/crear")}>
               Crear salon
             </Button>
           </div>
