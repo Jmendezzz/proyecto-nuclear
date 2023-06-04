@@ -10,14 +10,15 @@ import { saveSubject } from "../../api/SubjectApiService";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { isEmpty } from "../../validations/InputValidations";
 export const SubjectCreate = () => {
   const navigate = useNavigate();
-
-
   const {
     value: subjectNameValue,
-    valueChangeHandler: subjectNameValueChangeHandler
-  } = useInput();
+    isInvalid: subjectNameIsInvalid,
+    valueChangeHandler: subjectNameValueChangeHandler,
+    blurChangeHandler: subjectNameBlurChangeHandler
+  } = useInput(isEmpty);
 
   const [
     subjectCareerValue,
@@ -26,16 +27,23 @@ export const SubjectCreate = () => {
 
   const {
     value: subjectSemesterValue,
-    valueChangeHandler: subjectSemesterValueChangeHandler
-  } = useInput();
+    isInvalid:subjectSemesterIsInvalid,
+    valueChangeHandler: subjectSemesterValueChangeHandler,
+    blurChangeHandler: subjectSemesterBlurChangeHandler
+  } = useInput(isEmpty);
 
   const {
     value: subjectCreditsValue,
-    valueChangeHandler: subjectCreditsValueChangeHandler
-  } = useInput();
+    isInvalid:subjectCreditsIsInvalid,
+    valueChangeHandler: subjectCreditsValueChangeHandler,
+    blurChangeHandler: subjectCreditsBlurChangeHandler
+  } = useInput(isEmpty);
 
 
   const createSubjectHandler = () => {
+    if(subjectNameIsInvalid && subjectSemesterIsInvalid && subjectCreditsIsInvalid){
+      return;
+    }
     const subject = {
       name: subjectNameValue,
       career: subjectCareerValue,
@@ -99,7 +107,8 @@ export const SubjectCreate = () => {
             justifyContent={"none"}
           >
             <label style={{ fontSize: "20px" }}>Nombre</label>
-            <Input style={{ height: "10px" }} input={{ onChange: subjectNameValueChangeHandler }} ></Input>
+            <Input style={{ height: "10px" }} input={{ onChange: subjectNameValueChangeHandler,onBlur: subjectNameBlurChangeHandler }} ></Input>
+            {subjectNameIsInvalid && <p style={{color:"red"}}>El nombre no debe estar vacío</p>}
           </Flex>
           <Flex
             direction={"column"}
@@ -128,8 +137,10 @@ export const SubjectCreate = () => {
             <label style={{ fontSize: "20px" }}>Semestre</label>
             <Input
               style={{ height: "10px" }}
-              input={{ type: "number", min: 1, max: 8, onChange: subjectSemesterValueChangeHandler }}
+              input={{ type: "number", min: 1, max: 8, onChange: subjectSemesterValueChangeHandler, onBlur:subjectSemesterBlurChangeHandler }}
             ></Input>
+            {subjectSemesterIsInvalid && <p style={{color:"red"}}>El semestre no debe estar vacío</p>}
+
           </Flex>
           <Flex
             direction={"column"}
@@ -140,8 +151,10 @@ export const SubjectCreate = () => {
             <label style={{ fontSize: "20px" }}>Créditos</label>
             <Input
               style={{ height: "10px" }}
-              input={{ type: "number", min: 1, onChange: subjectCreditsValueChangeHandler }}
+              input={{ type: "number", min: 1, onChange: subjectCreditsValueChangeHandler, onBlur:subjectCreditsBlurChangeHandler }}
             ></Input>
+            {subjectCreditsIsInvalid && <p style={{color:"red"}}>El número de créditos no debe estar vacío</p>}
+
           </Flex>
           <Flex width>
             <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }} onClick={createSubjectHandler}>
