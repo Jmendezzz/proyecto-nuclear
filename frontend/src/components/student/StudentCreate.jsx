@@ -9,6 +9,7 @@ import Select from "react-select";
 import { useInput } from "../../hooks/use-input";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { isEmpty } from "../../validations/InputValidations";
 
 import { useNavigate } from "react-router-dom";
 export const StudentCreate = () => {
@@ -16,8 +17,11 @@ export const StudentCreate = () => {
 
   const {
     value: studentNameValue,
-    valueChangeHandler: studentNameValueChangeHandler
-  } = useInput();
+    isInvalid: studentNameIsInvalid,
+    valueChangeHandler: studentNameValueChangeHandler,
+    blurChangeHandler: studentNameBlurChangeHandler
+
+  } = useInput(isEmpty);
 
   const [
     studentCareerValue,
@@ -26,20 +30,30 @@ export const StudentCreate = () => {
 
   const {
     value: studentSemesterValue,
-    valueChangeHandler: studentSemesterValueChangeHandler
-  } = useInput();
+    isInvalid: studentSemesterIsInvalid,
+    valueChangeHandler: studentSemesterValueChangeHandler,
+    blurChangeHandler: studentSemesterBlurChangeHandler
+
+  } = useInput(isEmpty);
 
   const {
     value: studentSubjectsValue,
-    valueChangeHandler: studentSubjectsValueChangeHandler
-  } = useInput();
+    isInvalid: studentSubjectsIsInvalid,
+    valueChangeHandler: studentSubjectsValueChangeHandler,
+    blurChangeHandler: studentSubjectsBlurChangeHandler
+  } = useInput(isEmpty);
 
   const {
     value: studentEmailValue,
-    valueChangeHandler: studentEmailValueChangeHandler
-  }= useInput();
+    isInvalid: studentEmailIsInvalid,
+    valueChangeHandler: studentEmailValueChangeHandler,
+    blurChangeHandler: studentEmailBlurChangeHandler
+  }= useInput(isEmpty);
 
   const createStudentHandler = () => {
+    if(studentNameIsInvalid && studentSemesterIsInvalid && studentSubjectsIsInvalid && studentEmailIsInvalid){
+      return;
+    }
     const student = {
       name: studentNameValue,
       career: studentCareerValue,
@@ -104,7 +118,8 @@ export const StudentCreate = () => {
             justifyContent={"none"}
           >
             <label style={{ fontSize: "20px" }}>Nombre</label>
-            <Input style={{ height: "10px" }} input={{ onChange: studentNameValueChangeHandler }} ></Input>
+            <Input style={{ height: "10px" }} input={{ onChange: studentNameValueChangeHandler, onBlur: studentNameBlurChangeHandler }} ></Input>
+            {studentNameIsInvalid && <p style={{color:"red"}}>El nombre no debe estar vacío</p>}
           </Flex>
           <Flex
             direction={"column"}
@@ -133,8 +148,9 @@ export const StudentCreate = () => {
             <label style={{ fontSize: "20px" }}>Semestre</label>
             <Input
               style={{ height: "10px" }}
-              input={{ type: "number", min: 1, max: 8, onChange: studentSemesterValueChangeHandler }}
+              input={{ type: "number", min: 1, max: 8, onChange: studentSemesterValueChangeHandler, onBlur: studentSemesterBlurChangeHandler }}
             ></Input>
+            {studentSemesterIsInvalid && <p style={{color:"red"}}>El semestre no debe estar vacío</p>}
           </Flex>
           <Flex
             direction={"column"}
@@ -145,8 +161,9 @@ export const StudentCreate = () => {
             <label style={{ fontSize: "20px" }}>Materias</label>
             <Input
               style={{ height: "10px" }}
-              input={{ type: "number", min: 1, onChange: studentSubjectsValueChangeHandler }}
+              input={{ type: "number", min: 1, onChange: studentSubjectsValueChangeHandler, onBlur: studentSubjectsBlurChangeHandler }}
             ></Input>
+            {studentSubjectsIsInvalid && <p style={{color:"red"}}>xxx falta solucion con lista manin</p>} //TODO: recorrer la lista de materias para mostar
           </Flex>
           <Flex
             direction={"column"}
@@ -155,7 +172,10 @@ export const StudentCreate = () => {
             justifyContent={"none"}
           >
             <label style={{ fontSize: "20px" }}>Email</label>
-            <Input style={{ height: "10px" }} input={{ onChange: studentEmailValueChangeHandler }} ></Input>
+            <Input style={{ height: "10px" }} 
+            input={{ onChange: studentEmailValueChangeHandler, onBlur: studentEmailBlurChangeHandler }} 
+            ></Input>
+            {studentEmailIsInvalid && <p style={{color:"red"}}>El email no debe estar vacío</p>}
           </Flex>
           <Flex width>
             <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }} onClick={createStudentHandler}>
