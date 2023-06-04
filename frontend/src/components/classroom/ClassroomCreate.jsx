@@ -8,41 +8,54 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "../../UI/inputs/Input";
 import { location } from "../../enums/Location";
 import { tipologies } from "../../enums/Tipology";
+import { isEmpty } from "../../validations/InputValidations";
 import { useState } from "react";
 import { Button } from "../../UI/button/Button";
 import { saveClassroom } from "../../api/ClassroomApiService";
 import Swal from "sweetalert2";
+import { is } from "@babel/types";
 export const ClassroomCreate = () => {
   const navigate = useNavigate();
-
-
   const {
     value: classroomNameValue,
-    valueChangeHandler: classroomNameValueChangeHandler
-  } = useInput();
+    isInvalid:classroomNameIsInvalid,
+    valueChangeHandler: classroomNameValueChangeHandler,
+    blurChangeHandler: classroomNameBlurChangeHandler
+  } = useInput(isEmpty);
+
 
   const [
     classroomLocationValue,
     classroomLocationValueChangeHandler
   ] = useState("PRINCIPAL");
-
+  
+ 
   const {
     value: classroomCapabilityValue,
-    valueChangeHandler: classroomCapabilityValueChangeHandler
-  } = useInput();
-
+    isInvalid:classroomCapabilityIsInvalid,
+    valueChangeHandler: classroomCapabilityValueChangeHandler,
+    blurChangeHandler:classroomCapabilityBlurChangeHandler
+    
+  } = useInput(isEmpty);
+  
   const {
     value: classroomElementsValue,
-    valueChangeHandler: classroomElementsValueChangeHandler
-  } = useInput();
+    isInvalid:classroomElementsIsInvalid,
+    valueChangeHandler: classroomElementsValueChangeHandler,
+    blurChangeHandler:classroomElementsBlurChangeHandler
+  } = useInput(isEmpty);
 
   const [
     classroomTipologyValue,
     classroomTipologyValueChangeHandler
   ]= useState("NORMAL");
 
+ 
 
   const createClassroomHandler = () => {
+    if(classroomNameIsInvalid && classroomCapabilityIsInvalid && classroomElementsIsInvalid){
+      return;
+    }
     const classroom = {
       name: classroomNameValue,
       location: classroomLocationValue,
@@ -111,8 +124,11 @@ export const ClassroomCreate = () => {
             alignItems={"none"}
             justifyContent={"none"}
           >
+           
+            
             <label style={{ fontSize: "20px" }}>Nombre</label>
-            <Input style={{ height: "10px" }} input={{ onChange: classroomNameValueChangeHandler }} ></Input>
+            <Input style={{ height: "10px" }} input={{ onChange: classroomNameValueChangeHandler,onBlur:classroomNameBlurChangeHandler }} ></Input>
+            {classroomNameIsInvalid && <p style={{color:"red"}}>El nombre no debe estar vacío</p>}
           </Flex>
           <Flex
             direction={"column"}
@@ -141,8 +157,9 @@ export const ClassroomCreate = () => {
             <label style={{ fontSize: "20px" }}>Capacidad</label>
             <Input
               style={{ height: "10px" }}
-              input={{ type: "number", min: 1, max: 8, onChange: classroomCapabilityValueChangeHandler }}
+              input={{ type: "number", min: 1, onChange: classroomCapabilityValueChangeHandler,onBlur:classroomCapabilityBlurChangeHandler }}
             ></Input>
+            {classroomCapabilityIsInvalid && <p style={{color:"red"}}>El nombre no debe estar vacío</p>}
           </Flex>
           <Flex
             direction={"column"}
@@ -153,8 +170,9 @@ export const ClassroomCreate = () => {
             <label style={{ fontSize: "20px" }}>Elementos</label>
             <Input
               style={{ height: "10px" }}
-              input={{ type: "number", min: 1, onChange: classroomElementsValueChangeHandler }}
+              input={{ type: "number", min: 1, onChange: classroomElementsValueChangeHandler,onBlur:classroomElementsBlurChangeHandler}}
             ></Input>
+            {classroomElementsIsInvalid && <p style={{color:"red"}}>El nombre no debe estar vacío</p>}
           </Flex>
           <Flex
             direction={"column"}
