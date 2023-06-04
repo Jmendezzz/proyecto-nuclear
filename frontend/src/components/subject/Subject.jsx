@@ -7,27 +7,75 @@ import { BiEdit } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { Pagination } from "../pagination/Pagination";
-import { getSubjects } from "../../api/SubjectApiService";
-
+import { getSubjects, deleteSubjectById } from "../../api/SubjectApiService";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
+
+const succesResponseAlert= (response)=>{
+  Swal.fire(
+    'Eliminado!',
+    `La asignatura ${response.data.name} ha sido eliminada`,
+    'success',
+  )
+}
+const errorResponseAlert = (error)=>{
+  Swal.fire({
+    title: "Error",
+    text: error.response.data.message,
+    icon: "error",
+    confirmButtonColor: "red",
+    confirmButtonText: "Aceptar",
+  })
+
+}
 
 export const Subject = () => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [subjectsChange, setSubjectsChange] = useState(false);
   const subjectsPerPage = 7;
   const succesResponse = (res) => {
     setSubjects(res.data);
   };
   useEffect(() => {
+    console.log("Useee")
     getSubjects()
       .then((response) => succesResponse(response))
       .catch((error) => console.log(error));
-  }, []);
+    setSubjectsChange(false);
+  }, [subjectsChange]);
   const lastSubjectIndex = currentPage * subjectsPerPage;
   const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
   const currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
 
   const navigate = useNavigate();
+  const deleteSubjectHandler = (id) => {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar esta asignatura?',
+      text: "Estos cambios son irreversibles",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar'
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deleteSubjectById(id)
+            .then((response) => {
+              succesResponseAlert(response);
+              setSubjectsChange(true) //Indicates to the useEffect to update the subject list
+            }
+            )
+            .catch((error) => {
+              errorResponseAlert(error);              
+            })
+        }
+      })
+
+  }
 
   return (
     <Flex
@@ -88,10 +136,10 @@ export const Subject = () => {
                 <td>{subject.credits}</td>
                 <td className={style["actions__container"]}>
                   <div className={style["icon__edit"]}>
-                    <BiEdit onClick={()=>navigate(`/asignaturas/editar/${subject.id}`)} />
+                    <BiEdit onClick={() => navigate(`/asignaturas/editar/${subject.id}`)} />
                   </div>
                   <div className={style["icon__delete"]}>
-                    <MdDeleteForever />
+                    <MdDeleteForever onClick={deleteSubjectHandler.bind(null, subject.id)} />
                   </div>
                 </td>
               </tr>

@@ -47,7 +47,6 @@ const errorResponseAlert = (error) => {
     confirmButtonColor: "red",
     confirmButtonText: "Aceptar"
   })
-
 }
 
 export const SubjectCreate = () => {

@@ -13,3 +13,5 @@ export const getSubjectById = (id) => api.get(`/subjects/${id}`)
 export const saveSubject = (subject) =>api.post("/subjects",subject);
 
 export const updateSubject = (subjectUpdated) => api.put("/subjects",subjectUpdated);
+
+export const deleteSubjectById = (id) => api.delete(`/subjects/${id}`);
