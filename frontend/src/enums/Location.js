@@ -1,0 +1,22 @@
+export const location = [
+    {
+        name:"Principal",
+        value:"PRINCIPAL"
+    },
+    {
+        name:"Nogal",
+        value:"NOGAL"
+    },
+    {
+        name:"Anova",
+        value:"ANOVA"
+    },
+    {
+        name:"Alcazar",
+        value:"ALCAZAR"
+    },
+    {
+        name:"Campina",
+        value:"CAMPINA"
+    }
+]

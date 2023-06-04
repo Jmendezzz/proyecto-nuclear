@@ -51,9 +51,16 @@ public class ProfessorServiceImpl implements ProfessorService {
     }
 
     @Override
-    public ProfessorScheduleDTO saveScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+    public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+        professorConstrain.validateProfessorById(id);
         professorScheduleConstrain.validateTime(professorScheduleDTO);
-        return professorDAO.saveScheduleProfessor(id, professorScheduleDTO);
+        return professorDAO.setScheduleProfessor(id, professorScheduleDTO);
+    }
+
+    @Override
+    public ProfessorDTO deleteScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+        professorConstrain.validateProfessorById(id);
+        return professorDAO.deleteScheduleProfessor(id, professorScheduleDTO);
     }
 
     @Override

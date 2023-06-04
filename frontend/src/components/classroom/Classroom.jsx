@@ -1,4 +1,5 @@
 import React from "react";
+import { getClassrooms } from "../../api/ClassroomApiService"; 
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import { Button } from "../../UI/button/Button";
@@ -7,7 +8,9 @@ import style from "./Classroom.module.css";
 import { Pagination } from "../pagination/Pagination";
 import { MdDeleteForever } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
-import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 export const Classroom = () => {
     const [classroom, setClassroom] = useState([]);
@@ -18,8 +21,7 @@ export const Classroom = () => {
       setClassroom(res.data);
     };
     useEffect(() => {
-      axios
-        .get("http://localhost:8080/classrooms")
+     getClassrooms()
         .then((response) => succesResponses(response))
         .catch((error) => console.error(error));
     }, []);
@@ -27,7 +29,7 @@ export const Classroom = () => {
     const firstClassroomIndex = lastClassroomIndex - classroomsPerPage;
     const currentClassroom = classroom.slice(firstClassroomIndex, lastClassroomIndex);
 
-   
+    const navigate = useNavigate();
 
     return(
         <Flex
@@ -48,9 +50,11 @@ export const Classroom = () => {
         justifyContent={"none"}
         alignItems={"center"}
       >
+       
          <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>
           <div style={{ width: "60%", margin: "10px" }}>
-            <Button inLineStyle={{ width: "180px", height: "60px" }}>
+            <Button inLineStyle={{ width: "180px", height: "60px" }}
+            onClick={()=>navigate("/salones/crear")}>
               Crear salon
             </Button>
           </div>
@@ -85,9 +89,11 @@ export const Classroom = () => {
                 <td>{classroom.capability}</td>
                 <td>{classroom.elements}</td>
                 <td>{classroom.tipology}</td>
+           
                 <td className={style["actions__container"]}>
                   <div className={style["icon__edit"]}>
-                    <BiEdit />
+                  
+                    <BiEdit onClick={()=>navigate(`/salones/editar/${classroom.id}`)} />
                   </div>
                   <div className={style["icon__delete"]}>
                     <MdDeleteForever />
@@ -98,12 +104,15 @@ export const Classroom = () => {
            
           </tbody>
         </table>
+        {classroom.length>8 &&(
         <Pagination 
-          totalItems={classroom.length}
-          itemsPerPage={classroomsPerPage}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
+        totalItems={classroom.length}
+        itemsPerPage={classroomsPerPage}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
         ></Pagination>
+        )}
+      
 
       </Flex>
     </Flex>

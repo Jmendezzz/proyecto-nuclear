@@ -49,3 +49,47 @@
     transform: scale(1.1); 
 
 }
+.select{
+    width: 360px;
+    font-size: 20px;
+    border-radius: 3em;
+
+}
+.create-classroom-container{
+    margin: 20px;
+    
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:30px
+}
+.form__item > input{
+    width: 320px;
+    padding: 20px;
+    border-radius: 20px;
+    border:1px solid lightgray;
+    font-size: 20px;
+    height: 10px;
+
+}
+
+.form__item > input:focus{
+    
+    outline: 1px solid rgba(52, 91, 175, 1);
+}
+.form__item-error > input {
+    width: 320px;
+    padding: 20px;
+    border-radius: 20px;
+    border:1px solid red;
+    font-size: 20px;
+    height: 10px;
+}
+.form__item-error > input:focus{
+    outline: 1px solid red;
+}
+.fom__item-error > label{
+    color: red;
+}
