@@ -49,3 +49,13 @@
     transform: scale(1.1); 
 
 }
+.select{
+    width: 360px;
+    font-size: 20px;
+    border-radius: 3em;
+
+}
+.create-classroom-container{
+    margin: 20px;
+    
+}

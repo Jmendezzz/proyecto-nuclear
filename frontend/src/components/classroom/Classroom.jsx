@@ -1,4 +1,5 @@
 import React from "react";
+import { getClassrooms } from "../../api/ClassroomApiService"; 
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import { Button } from "../../UI/button/Button";
@@ -7,7 +8,7 @@ import style from "./Classroom.module.css";
 import { Pagination } from "../pagination/Pagination";
 import { MdDeleteForever } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
-import axios from "axios";
+
 import { useState, useEffect } from "react";
 export const Classroom = () => {
     const [classroom, setClassroom] = useState([]);
@@ -18,8 +19,7 @@ export const Classroom = () => {
       setClassroom(res.data);
     };
     useEffect(() => {
-      axios
-        .get("http://localhost:8080/classrooms")
+     getClassrooms()
         .then((response) => succesResponses(response))
         .catch((error) => console.error(error));
     }, []);

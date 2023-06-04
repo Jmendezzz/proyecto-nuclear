@@ -1,14 +1,14 @@
-export const Tipology=[
+export const tipologies=[
     {
         name:"Normal",
         value:"NORMAL"
     },
     {
-        name:"Laboratory",
+        name:"Laboratorio",
         value:"LABORATORY"
     },
     {
-        name:"Court Room",
+        name:"Sala de audiencia",
         value:"COURT_ROOM"
     }
 ]
