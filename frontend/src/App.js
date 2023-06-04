@@ -6,8 +6,10 @@ import { Subject } from "./components/subject/Subject";
 import {Classroom} from './components/classroom/Classroom'
 import {ClassroomCreate} from'./components/classroom/ClassroomCreate'
 import { SubjectCreate } from "./components/subject/SubjectCreate";
+import { SubjectEdit } from "./components/subject/SubjectEdit";
 import { Student } from "./components/student/Student";
 import { StudentCreate } from "./components/student/StudentCreate";
+
 
 function App() {
   return (
@@ -23,7 +25,11 @@ function App() {
             <Route path="/estudiantes" element={<Student/>}></Route>
 
             <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
+
+            <Route path="asignaturas/editar/:subjectId" element={<SubjectEdit/>}></Route>
+
             <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
+
           </Routes>
         </Sidebar>
       </BrowserRouter>

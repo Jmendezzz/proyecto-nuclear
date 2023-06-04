@@ -154,7 +154,6 @@ export const SubjectCreate = () => {
                     }))}
                   />
                 </Flex>
-
                 <Flex
                   direction={"column"}
                   height={"auto"}
@@ -162,7 +161,7 @@ export const SubjectCreate = () => {
                   justifyContent={"none"}
                   className={errors.credits && touched.credits ? style["form__item-error"] : style["form__item"]}
                 >
-                  <label style={{ fontSize: "20px" }}>Créditos</label>
+                  <label style={{ fontSize: "20px", color: errors.credits && touched.credits ? "red" : "black" }}>Créditos</label>
                   <Field name="credits" type="number" />
                   <ErrorMessage name="credits" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>

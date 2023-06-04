@@ -88,7 +88,7 @@ export const Subject = () => {
                 <td>{subject.credits}</td>
                 <td className={style["actions__container"]}>
                   <div className={style["icon__edit"]}>
-                    <BiEdit />
+                    <BiEdit onClick={()=>navigate(`/asignaturas/editar/${subject.id}`)} />
                   </div>
                   <div className={style["icon__delete"]}>
                     <MdDeleteForever />
