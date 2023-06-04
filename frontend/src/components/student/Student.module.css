@@ -57,3 +57,11 @@
 .icon__delete:hover{
     transform: scale(1.1); 
 }
+.create-subject-container{
+    margin: 20px;
+}
+.select{
+    width: 360px;
+    font-size: 20px;
+    border-radius: 3em;
+}

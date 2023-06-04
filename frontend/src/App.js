@@ -6,6 +6,9 @@ import { Subject } from "./components/subject/Subject";
 import {Classroom} from './components/classroom/Classroom'
 import {ClassroomCreate} from'./components/classroom/ClassroomCreate'
 import { SubjectCreate } from "./components/subject/SubjectCreate";
+import { Student } from "./components/student/Student";
+import { StudentCreate } from "./components/student/StudentCreate";
+
 function App() {
   return (
       <BrowserRouter>
@@ -17,8 +20,10 @@ function App() {
 
             <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
 
+            <Route path="/estudiantes" element={<Student/>}></Route>
 
             <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
+            <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
           </Routes>
         </Sidebar>
       </BrowserRouter>
