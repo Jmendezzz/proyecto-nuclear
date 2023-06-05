@@ -10,6 +10,9 @@ import { SubjectEdit } from "./components/subject/SubjectEdit";
 import { Student } from "./components/student/Student";
 import{ClassroomEdit}from "./components/classroom/ClassroomEdit"
 import { StudentCreate } from "./components/student/StudentCreate";
+import { Professor } from "./components/professor/Professor";
+import { ProfessorCreate } from "./components/professor/ProfessorCreate";
+import { ProfessorEdit } from "./components/professor/ProfessorEdit";
 
 
 function App() {
@@ -21,14 +24,19 @@ function App() {
             <Route path="/asignaturas" element={<Subject/>}></Route>
             <Route path="/salones" element={<Classroom/>}></Route>
             <Route path="/estudiantes" element={<Student/>}></Route>
+            <Route path="/profesores" element={<Professor/>}></Route>
+
 
 
             <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
             <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
             <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
+            <Route path="/profesores/crear" element={<ProfessorCreate/>} ></Route>
+
 
             <Route path="asignaturas/editar/:subjectId" element={<SubjectEdit/>}></Route>
             <Route path="salones/editar/:classroomId" element={<ClassroomEdit/>}></Route>
+            <Route path="profesores/editar/:professorId" element={<ProfessorEdit/>}></Route>
 
 
           </Routes>
