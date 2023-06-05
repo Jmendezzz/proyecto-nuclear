@@ -39,7 +39,6 @@ export const Subject = () => {
     setSubjects(res.data);
   };
   useEffect(() => {
-    console.log("Useee")
     getSubjects()
       .then((response) => succesResponse(response))
       .catch((error) => console.log(error));

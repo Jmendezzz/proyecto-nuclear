@@ -36,9 +36,9 @@ public class ClassroomController {
         if(classroomDTO.isEmpty()) throw  new ClassroomException("Classroom not found with the ID:"+id, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(classroomDTO.get(), HttpStatus.OK);
     }
-    @PutMapping("/classrooms/{id}")
-    public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO classroomDTO) {
-        ClassroomDTO classroom = classroomService.updateClassroom(id, classroomDTO);
+    @PutMapping("/classrooms")
+    public ResponseEntity<ClassroomDTO> updateClassroom(@RequestBody ClassroomDTO classroomDTO) {
+        ClassroomDTO classroom = classroomService.updateClassroom(classroomDTO);
         return new ResponseEntity<>(classroom, HttpStatus.OK);
 
     }
