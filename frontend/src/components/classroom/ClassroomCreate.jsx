@@ -2,19 +2,21 @@ import React from "react";
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import style from "./Classroom.module.css";
-import { useInput } from "../../hooks/use-input";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { Input } from "../../UI/inputs/Input";
 import { location } from "../../enums/Location";
 import { tipologies } from "../../enums/Tipology";
+import { elements } from "../../enums/Element";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { isEmpty } from "../../validations/InputValidations";
 import { useState } from "react";
 import { Button } from "../../UI/button/Button";
 import { saveClassroom } from "../../api/ClassroomApiService";
+import { IoIosAddCircle } from "react-icons/io";
 import Swal from "sweetalert2";
-import { is } from "@babel/types";
+import { ClassroomElementsModal } from "./ClassroomElementsModal";
+import { AiOutlineClose } from "react-icons/ai";
+
 
 
 const validateForm = (values) => {
@@ -25,9 +27,6 @@ const validateForm = (values) => {
 
   if (isEmpty(values.capability.toString())) errors.capability = 'La capacidad no debe estar vacío';
 
-  if (isEmpty(values.elements.toString())) errors.elements = 'El número de elementos no debe estar vacío';
-
-  if (values.elements <= 1) errors.elements = "El número de elementos deber ser válido";
 
   return errors;
 
@@ -35,8 +34,8 @@ const validateForm = (values) => {
 
 const succesResponseAlert = (response) => {
   Swal.fire({
-    title: "Salon creado",
-    text: "Se ha creado el salon" + response.data.name,
+    title: "Salón creado",
+    text: "Se ha creado el salón " + response.data.name,
     icon: "success",
     confirmButtonColor: "green",
     confirmButtonText: "Aceptar"
@@ -60,7 +59,8 @@ const errorResponseAlert = (error) => {
 
 
 export const ClassroomCreate = () => {
- 
+  const [elementsAdded, setElementsAdded] = useState([]);
+
   const [
     classroomLocationValue,
     classroomLocationValueChangeHandler
@@ -69,10 +69,12 @@ export const ClassroomCreate = () => {
   const [
     classroomTipologyValue,
     classroomTipologyValueChangeHandler
-  ]= useState("NORMAL");
+  ] = useState("NORMAL");
 
- 
-  
+  const [elementsModal, setElementsModal] = useState(undefined);
+
+
+
   const navigate = useNavigate();
 
   const createClassroomHandler = (values) => {
@@ -80,9 +82,10 @@ export const ClassroomCreate = () => {
       name: values.name,
       location: classroomLocationValue,
       capability: values.capability,
-      elements:values.elements, 
+      elements: elementsAdded.map((element)=>element.value),
       tipology: classroomTipologyValue
     }
+
     saveClassroom(classroom)
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/salones"))
@@ -93,18 +96,34 @@ export const ClassroomCreate = () => {
   const selectLocationHandler = ({ value }) => {
     classroomLocationValueChangeHandler(value);
   }
- const selectTipologyHandler=({value})=>{
-  classroomTipologyValueChangeHandler(value)
- }
+  const selectTipologyHandler = ({ value }) => {
+    classroomTipologyValueChangeHandler(value)
+  }
+  const hideElementsModalHandler = () => {
+    setElementsModal(undefined);
 
-    return(
-      <Flex
+  }
+  const showElementsModalHandler = () => {
+    setElementsModal(true)
+  }
+  const confirmElementsAddedHandler = (elements) => {
+    setElementsAdded(elements);
+  }
+
+  const removeElement=(elementToRemove)=>{
+    setElementsAdded((prevElements) =>
+    prevElements.filter((element) => element !== elementToRemove)
+  );
+  }
+  return (
+    <Flex
       height={"100%"}
       width={"100%"}
       direction={"column"}
       alignItems={"center"}
       justifyContent={"none"}
     >
+      {elementsModal && <ClassroomElementsModal elements={elementsAdded} onConfirm={confirmElementsAddedHandler} onClick={hideElementsModalHandler} />}
       <Header>
         <h2 style={{ fontSize: "60px" }}>CREAR SALONES</h2>
       </Header>
@@ -128,7 +147,6 @@ export const ClassroomCreate = () => {
             initialValues={{
               name: "",
               capability: "",
-              elements: ""
             }}
             onSubmit={createClassroomHandler}
             validate={validateForm}
@@ -153,20 +171,20 @@ export const ClassroomCreate = () => {
                   justifyContent={"none"}
                   className={style["form__item"]}
                 >
-            
-              <label style={{ fontSize: "20px" }}>Ubicacion</label>
-             <Select
-              onChange={selectLocationHandler}
-              defaultValue={{ label: location[0].name, value: location[0].value }}
-              noOptionsMessage={() => "No se encontraron carreras "}
-              className={style.select}
-              options={location.map((location) => ({
-                label: location.name,
-                value: location.value,
-              }))}
-              />
-              
-            </Flex>
+
+                  <label style={{ fontSize: "20px" }}></label>
+                  <Select
+                    onChange={selectLocationHandler}
+                    defaultValue={{ label: location[0].name, value: location[0].value }}
+                    noOptionsMessage={() => "No se encontraron carreras "}
+                    className={style.select}
+                    options={location.map((location) => ({
+                      label: location.name,
+                      value: location.value,
+                    }))}
+                  />
+
+                </Flex>
                 <Flex
                   direction={"column"}
                   height={"auto"}
@@ -183,30 +201,39 @@ export const ClassroomCreate = () => {
                   height={"auto"}
                   alignItems={"none"}
                   justifyContent={"none"}
-                  className={errors.elements && touched.elements ? style["form__item-error"] : style["form__item"]}
                 >
-                  <label style={{ fontSize: "20px", color: errors.elements && touched.elements ? "red" : "black" }}>Elementos</label>
-                  <Field name="elements" />
-                  <ErrorMessage name="elements" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                  <Flex justifyContent={"none"} gap={"10px"} >
+                    <label style={{ fontSize: "20px" }}>Elementos</label>
+                    <IoIosAddCircle className={style["button__add-element"]} onClick={showElementsModalHandler} />
+                  </Flex>
+                  {elementsAdded.length === 0 ? <p>Aún no se han agregado elementos</p>
+                    :
+                    elementsAdded.map((element) => (
+                      <Flex justifyContent={"none"} height={"50px"} >
+                        <p className={style["element-list"]}>{element.name}</p>
+                        <AiOutlineClose className={style["element-list__remove"]} onClick={removeElement.bind(null,element)} />
+                      </Flex>
+                    ))}
+
                 </Flex>
                 <Flex
-            direction={"column"}
-            height={"auto"}
-            alignItems={"none"}
-            justifyContent={"none"}
-          >
-            <label style={{ fontSize: "20px" }}>Tipologia</label>
-            <Select
-              onChange={selectTipologyHandler}
-              defaultValue={{ label: tipologies[0].name, value: tipologies[0].value }}
-              noOptionsMessage={() => "No se encontraron carreras "}
-              className={style.select}
-              options={tipologies.map((tipology) => ({
-                label: tipology.name,
-                value: tipology.value,
-              }))}
-            />
-          </Flex>
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                >
+                  <label style={{ fontSize: "20px" }}>Tipologia</label>
+                  <Select
+                    onChange={selectTipologyHandler}
+                    defaultValue={{ label: tipologies[0].name, value: tipologies[0].value }}
+                    noOptionsMessage={() => "No se encontraron tipologias. "}
+                    className={style.select}
+                    options={tipologies.map((tipology) => ({
+                      label: tipology.name,
+                      value: tipology.value,
+                    }))}
+                  />
+                </Flex>
 
                 <Flex width>
                   <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
@@ -224,5 +251,5 @@ export const ClassroomCreate = () => {
       </Flex>
     </Flex>
 
-    );
+  );
 };

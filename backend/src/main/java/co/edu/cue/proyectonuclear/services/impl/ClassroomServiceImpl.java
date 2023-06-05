@@ -31,21 +31,10 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public ClassroomDTO updateClassroom(Long id, ClassroomDTO classroomDTO) {
-        Optional<ClassroomDTO> classroomToUpdate=classroomDAO.getClassroomById(id);
-        if (classroomToUpdate.isPresent()){
-            ClassroomDTO classroomUpdated=new ClassroomDTO(
-                    classroomToUpdate.get().id(),
-                    classroomDTO.name(),
-                    classroomDTO.location(),
-                    classroomDTO.capability(),
-                    classroomDTO.elements(),
-                    classroomDTO.tipology()
-            );
-            return classroomDAO.updateClassroom(classroomUpdated);
-        }else
-            return null;
-        }
+    public ClassroomDTO updateClassroom(ClassroomDTO classroomDTO) {
+
+        return classroomDAO.updateClassroom(classroomDTO);
+    }
 
     @Override
     public ClassroomDTO deleteClassroom(Long id) {
