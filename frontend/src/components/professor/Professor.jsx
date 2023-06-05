@@ -95,7 +95,8 @@ export const Professor = () => {
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Correo</th>
-                            <th>asignaturas</th>                            
+                            <th>Asignaturas</th>                            
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,7 +107,13 @@ export const Professor = () => {
                                     <td>{professor.name}</td>
                                     <td>{professor.lastName}</td>
                                     <td>{professor.email}</td>
-                                    <td>{professor.subjects}</td>
+                                    <td>
+                                    <ul>
+                                        {professor.subjects.map((subject)=>(
+                                            <li key={subject.id}>{subject.name}</li>
+                                        ))}
+                                    </ul>
+                                    </td>
                                     <td className={style["actions__container"]}>
                                         <div className={style["icon__edit"]}>
                                             <BiEdit onClick={()=>navigate(`/profesores/editar/${professor.id}`)}/>
