@@ -37,6 +37,10 @@ public class ProfessorServiceImpl implements ProfessorService {
     public Optional<ProfessorDTO> getProfessorById(Long id) {
         return professorDAO.getProfessorById(id);
     }
+    @Override
+    public Optional<ProfessorDTO> getProfessorBySubjectId(Long idSubject) {
+        return professorDAO.getProfessorBySubject(idSubject);
+    }
 
     @Override
     public ProfessorDTO deleteProfessorById(Long id) {
