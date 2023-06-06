@@ -19,7 +19,7 @@ import { ClassroomElementsModal } from "./ClassroomElementsModal";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoIosAddCircle } from "react-icons/io";
 import { elements } from "../../enums/Element";
-
+import { ErrorResponse } from "../../UI/error/ErrorResponse";
 
 
 
@@ -75,7 +75,7 @@ export const ClassroomEdit = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [elementsModal, setElementsModal] = useState(undefined);
   const [elementsAdded, setElementsAdded] = useState([]);
-
+  const [error, setError] = useState(undefined);
   const [
     classroomLocationValue,
     classroomLocationValueChangeHandler
@@ -115,7 +115,9 @@ export const ClassroomEdit = () => {
     prevElements.filter((element) => element !== elementToRemove)
   );
   }
-
+  if(error){
+    return <ErrorResponse errStatus={error.response.status} errMessage={error.response.data.message} />;
+}
 
   const editClassroomHandler = (values) => {
     const classroom = {
