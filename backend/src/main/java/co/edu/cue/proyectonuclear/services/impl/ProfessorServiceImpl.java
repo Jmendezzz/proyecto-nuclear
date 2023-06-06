@@ -2,7 +2,6 @@ package co.edu.cue.proyectonuclear.services.impl;
 
 
 import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
-import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorScheduleConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
@@ -20,7 +19,6 @@ import java.util.Optional;
 public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorDAO professorDAO;
     private final ProfessorConstrain professorConstrain;
-    private final ProfessorScheduleConstrain professorScheduleConstrain;
     private final UserConstrain userConstrain;
 
     @Override
@@ -44,26 +42,21 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public ProfessorDTO deleteProfessorById(Long id) {
-        ProfessorDTO professorDTO = professorConstrain.validateProfessorById(id);
-        return professorDAO.deleteProfessor(professorDTO);
+        return professorDAO.deleteProfessor(id);
     }
 
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
-        professorConstrain.validateProfessorById(professor.id());
         return professorDAO.updateProfessor(professor);
     }
 
     @Override
     public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        professorConstrain.validateProfessorById(id);
-        professorScheduleConstrain.validateTime(professorScheduleDTO);
         return professorDAO.setScheduleProfessor(id, professorScheduleDTO);
     }
 
     @Override
     public ProfessorDTO deleteScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        professorConstrain.validateProfessorById(id);
         return professorDAO.deleteScheduleProfessor(id, professorScheduleDTO);
     }
 
