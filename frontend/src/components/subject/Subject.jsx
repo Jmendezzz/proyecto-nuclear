@@ -12,14 +12,14 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
-const succesResponseAlert= (response)=>{
+const succesResponseAlert = (response) => {
   Swal.fire(
     'Eliminado!',
     `La asignatura ${response.data.name} ha sido eliminada`,
     'success',
   )
 }
-const errorResponseAlert = (error)=>{
+const errorResponseAlert = (error) => {
   Swal.fire({
     title: "Error",
     text: error.response.data.message,
@@ -41,14 +41,14 @@ export const Subject = () => {
   useEffect(() => {
     getSubjects()
       .then((response) => succesResponse(response))
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error)); // TODO
     setSubjectsChange(false);
   }, [subjectsChange]);
   const lastSubjectIndex = currentPage * subjectsPerPage;
   const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
   const currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
-
   const navigate = useNavigate();
+
   const deleteSubjectHandler = (id) => {
     Swal.fire({
       title: '¿Estas seguro de eliminar esta asignatura?',
@@ -65,11 +65,11 @@ export const Subject = () => {
           deleteSubjectById(id)
             .then((response) => {
               succesResponseAlert(response);
-              setSubjectsChange(true) //Indicates to the useEffect to update the subject list
+              setSubjectsChange(true)
             }
             )
             .catch((error) => {
-              errorResponseAlert(error);              
+              errorResponseAlert(error);
             })
         }
       })
@@ -114,45 +114,51 @@ export const Subject = () => {
             Buscar
           </Button>
         </Flex>
-        <table className={style.table}>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Nombre</th>
-              <th>Carrera</th>
-              <th>Semestre</th>
-              <th>Créditos</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentSubjects.map((subject) => (
-              <tr key={subject.id}>
-                <td className={style.id}>{subject.id}</td>
-                <td>{subject.name}</td>
-                <td>{subject.career}</td>
-                <td>{subject.semester}</td>
-                <td>{subject.credits}</td>
-                <td className={style["actions__container"]}>
-                  <div className={style["icon__edit"]}>
-                    <BiEdit onClick={() => navigate(`/asignaturas/editar/${subject.id}`)} />
-                  </div>
-                  <div className={style["icon__delete"]}>
-                    <MdDeleteForever onClick={deleteSubjectHandler.bind(null, subject.id)} />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {subjects.length > 8 && (
-          <Pagination
-            totalItems={subjects.length}
-            itemsPerPage={subjectsPerPage}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-          ></Pagination>
-        )}
+        {subjects.length > 0 ?
+          <>
+            <table className={style.table}>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Nombre</th>
+                  <th>Carrera</th>
+                  <th>Semestre</th>
+                  <th>Créditos</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentSubjects.map((subject) => (
+                  <tr key={subject.id}>
+                    <td className={style.id}>{subject.id}</td>
+                    <td>{subject.name}</td>
+                    <td>{subject.career}</td>
+                    <td>{subject.semester}</td>
+                    <td>{subject.credits}</td>
+                    <td className={style["actions__container"]}>
+                      <div className={style["icon__edit"]}>
+                        <BiEdit onClick={() => navigate(`/asignaturas/editar/${subject.id}`)} />
+                      </div>
+                      <div className={style["icon__delete"]}>
+                        <MdDeleteForever onClick={deleteSubjectHandler.bind(null, subject.id)} />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {subjects.length > 8 && (
+              <Pagination
+                totalItems={subjects.length}
+                itemsPerPage={subjectsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              ></Pagination>
+            )}
+          </>
+          :
+          <p style={{ fontSize: "30px" }}>No hay asignaturas por mostrar</p>
+        }
       </Flex>
     </Flex>
   );

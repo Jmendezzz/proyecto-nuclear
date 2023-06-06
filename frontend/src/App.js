@@ -14,6 +14,8 @@ import { StudentEdit } from "./components/student/StudentEdit";
 import { Professor } from "./components/professor/Professor";
 import { ProfessorCreate } from "./components/professor/ProfessorCreate";
 import { ProfessorEdit } from "./components/professor/ProfessorEdit";
+import { PageNotFoundError } from "./UI/error/PageNotFoundError";
+
 
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
       <BrowserRouter>
         <Sidebar>
           <Routes>
+            <Route path="*" element={<PageNotFoundError/>}></Route>
+
             <Route path="/login" element={<Login />}></Route>
             <Route path="/asignaturas" element={<Subject/>}></Route>
             <Route path="/salones" element={<Classroom/>}></Route>

@@ -1,5 +1,4 @@
 import React from "react";
-import { getClassrooms } from "../../api/ClassroomApiService";
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import { Button } from "../../UI/button/Button";
@@ -8,9 +7,13 @@ import style from "./Classroom.module.css";
 import { Pagination } from "../pagination/Pagination";
 import { MdDeleteForever } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { elements } from "../../enums/Element";
+import { getClassrooms, deleteClassroomById } from "../../api/ClassroomApiService";
+import Swal from "sweetalert2";
+
+
 
 
 const reformatElement=(element)=>{
@@ -19,10 +22,29 @@ const reformatElement=(element)=>{
   return foundElement ? foundElement.name : "";
   }
 
+  const succesResponseAlert= (response)=>{
+    Swal.fire(
+      'Eliminado!',
+      `El salón ${response.data.name} ha sido eliminada`,
+      'success',
+    )
+  }
+  const errorResponseAlert = (error)=>{
+    Swal.fire({
+      title: "Error",
+      text: error.response.data.message,
+      icon: "error",
+      confirmButtonColor: "red",
+      confirmButtonText: "Aceptar",
+    })
+  
+  }
+
 export const Classroom = () => {
   const [classroom, setClassroom] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const classroomsPerPage = 7;
+  const [classroomsChange, setClassroomsChange] = useState(false);
+  const classroomsPerPage = 5;
   const succesResponses = (res) => {
     setClassroom(res.data);
   };
@@ -30,12 +52,45 @@ export const Classroom = () => {
     getClassrooms()
       .then((response) => succesResponses(response))
       .catch((error) => console.error(error));
-  }, []);
+      setClassroomsChange(false);
+  }, [classroomsChange]);
   const lastClassroomIndex = currentPage * classroomsPerPage;
   const firstClassroomIndex = lastClassroomIndex - classroomsPerPage;
   const currentClassroom = classroom.slice(firstClassroomIndex, lastClassroomIndex);
 
   const navigate = useNavigate();
+  const deleteSubjectHandler = (id) => {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar este salon?',
+      text: "Estos cambios son irreversibles",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar'
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deleteClassroomById(id)
+            .then((response) => {
+              succesResponseAlert(response);
+              setClassroomsChange(true) //Indicates to the useEffect to update the subject list
+            }
+            )
+            .catch((error) => {
+              errorResponseAlert(error);              
+            })
+        }
+      })
+
+    }
+   
+  
+  
+   
+
+  
 
   return (
     <Flex
@@ -64,16 +119,21 @@ export const Classroom = () => {
               Crear salon
             </Button>
           </div>
-          <Input
+          {<Input
             input={{ placeholder: "Nombre del id" }}
             style={{ height: "20px" }}
-          ></Input>
-          <Button
+          ></Input> }
+          
+          { <Button
             inLineStyle={{ width: "120px", height: "60px", margin: "10px" }}
           >
+
             Buscar
-          </Button>
+          </Button> }
+       
         </Flex>
+        {classroom.length > 0 ?
+          <>
         <table className={style.table}>
           <thead>
             <tr>
@@ -105,7 +165,7 @@ export const Classroom = () => {
 
                 <td className={style["actions__container"]}>
                     <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/salones/editar/${classroom.id}`)} />
-                    <MdDeleteForever className={style["icon__delete"]} />
+                    <MdDeleteForever className={style["icon__delete"]}  onClick={deleteSubjectHandler.bind(null, classroom.id)}/>
                 </td>
               </tr>
             ))}
@@ -120,8 +180,10 @@ export const Classroom = () => {
             currentPage={currentPage}
           ></Pagination>
         )}
-
-
+          </>
+          :
+        <p style={{ fontSize: "30px" }}>No hay salones por mostrar</p>
+        }
       </Flex>
     </Flex>
 

@@ -6,7 +6,6 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { location } from "../../enums/Location";
 import { tipologies } from "../../enums/Tipology";
-import { elements } from "../../enums/Element";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { isEmpty } from "../../validations/InputValidations";
 import { useState } from "react";

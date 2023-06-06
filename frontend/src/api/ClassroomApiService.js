@@ -11,3 +11,4 @@ export const getClassrooms = () => api.get("/classrooms");
 export const saveClassroom = (classroom) =>api.post("/classrooms",classroom);
 export const getClassroomById = (id) => api.get(`/classrooms/${id}`)
 export const updateClassroom = (classroomUpdated) => api.put("/classrooms",classroomUpdated);
+export const deleteClassroomById = (id) => api.delete(`/classrooms/${id}`);
