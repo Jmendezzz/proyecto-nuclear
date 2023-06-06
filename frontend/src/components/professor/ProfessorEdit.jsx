@@ -167,6 +167,7 @@ export const ProfessorEdit = () => {
                                             <Field name="email" />
                                             <ErrorMessage name="email" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                                 </Flex>
+                                
                                 <Flex direction={"column"}	height={"auto"} alignItems={"none"} justifyContent={"none"}>
 									<Flex justifyContent={"none"} gap={"10px"}>
 										<label style={{ fontSize: "20px" }}>Materias </label>

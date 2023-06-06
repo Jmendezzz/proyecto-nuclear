@@ -6,12 +6,14 @@ import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import style from "./Student.module.css";
 import { careers } from "../../enums/Career";
+import { getSubjects } from "../../api/SubjectApiService";
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { isEmpty } from "../../validations/InputValidations";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { Loading } from "../../UI/loading/Loading";
+import { UserSubjectsModal } from "../user/UserSubjectsModal";
 
 const validateForm = (values) => {    
       const errors = {};
@@ -57,16 +59,32 @@ const errorResponseAlert = (error) => {
 
 
 export const StudentEdit = () => {
+
+    const [subjectsAdded, setSubjectsAdded] = useState([]);
+	const [subjectsModal, setSubjectsModal] = useState(undefined);
+
+    const [subjects, setSubjects] = useState([]);
+	const succesResponse = (res) => {
+		setSubjects(res.data);
+	}
+    const hideSubjectsModalHandler = () => {
+		setSubjectsModal(undefined);
+	}
+	const showSubjectsModalHandler = () => {
+        setSubjectsModal(true);
+    }
+	const confirmSubjectsAddedHandler = (subjects) =>{
+		setSubjectsAdded(subjects);
+	}
+	const removeSubject = (subjectToRemove) => {
+		setSubjectsAdded((prevSubject) => prevSubject.filter((subject) => subject !== subjectToRemove));
+	}
+
     const navigate = useNavigate();
     const { studentId } = useParams();
-
     const [isLoading, setIsLoading] = useState(true);
-
     const [student, setStudent] = useState();
-    const [
-        studentCareerValue,
-        studentCareerValueChangeHandler
-    ] = useState("INGENIERIA_DE_SOFTWARE");
+    const [studentCareerValue, studentCareerValueChangeHandler] = useState("INGENIERIA_DE_SOFTWARE");
 
     const selectCareerHandler = ({ value }) => {
         studentCareerValueChangeHandler(value);
@@ -77,18 +95,26 @@ export const StudentEdit = () => {
         getStudentById(studentId)
             .then((response) => {
                 setStudent(response.data)
+                setSubjectsAdded(response.data.subjects)
                 setIsLoading(false)
             })
             .catch((error) => console.log(error))
 
     }, [])
+
+    useEffect(()=>{
+		getSubjects()
+		.then((response) => succesResponse(response))
+		.catch((error) => console.log(error));
+	}, []);
+
     const editStudentHandler = (values) => {
         const studentUpdated = {
             id: student.id,
             name: values.name,
             career: studentCareerValue,
             semester: values.semester,
-            subjects: values.subjects,
+            subjects: subjectsAdded.map((subject) => {return {id: subject.id, name: subject.name}} ),
             email: values.email,
             password: values.password
         }
@@ -110,7 +136,10 @@ export const StudentEdit = () => {
                 direction={"column"}
                 alignItems={"center"}
                 justifyContent={"none"}
+            
             >
+                {subjectsModal && <UserSubjectsModal subjectsAdded={subjectsAdded} subjects={subjects} onConfirm={confirmSubjectsAddedHandler} onClick={hideSubjectsModalHandler} />}
+
                 <Header>
                     <h2 style={{ fontSize: "60px" }}>EDITAR ESTUDIANTES</h2>
                 </Header>
@@ -190,18 +219,6 @@ export const StudentEdit = () => {
                                         height={"auto"}
                                         alignItems={"none"}
                                         justifyContent={"none"}
-                                        className={errors.subject && touched.subject ? style["form__item-error"] : style["form__item"]}
-                                    >
-                                        <label style={{ fontSize: "20px", color: errors.subject && touched.subject ? "red" : "black" }}>Materias</label>
-                                        <Field name="subject" type="number" />
-                                        <ErrorMessage name="subject" style={{ fontSize: "17px", color: "red" }} component={"small"} />
-                                    </Flex>
-
-                                    <Flex
-                                        direction={"column"}
-                                        height={"auto"}
-                                        alignItems={"none"}
-                                        justifyContent={"none"}
                                         className={errors.email && touched.email ? style["form__item-error"] : style["form__item"]}
                                     >
                                         <label style={{ fontSize: "20px", color: errors.email && touched.email ? "red" : "black" }}>Email</label>
@@ -220,6 +237,20 @@ export const StudentEdit = () => {
                                         <Field name="password" />
                                         <ErrorMessage name="password" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                                     </Flex>
+
+                                    <Flex direction={"column"}	height={"auto"} alignItems={"none"} justifyContent={"none"}>
+									    <Flex   Flex justifyContent={"none"} gap={"10px"}>
+										    <label style={{ fontSize: "20px" }}>Materias </label>
+										    <IoIosAddCircle className={style["button__add-subject"]} onClick={showSubjectsModalHandler} />
+									    </Flex>
+									    {subjectsAdded.length === 0 ? <p>No hay materias agregadas</p> : 
+									    subjectsAdded.map((subject, index) => (
+										    <Flex key={index} justifyContent={"none"} height={"50px"}>
+											    <p className={style["subject-list"]}>{subject.name}</p>
+											    <AiOutlineClose className={style["subject-list__remove"]} onClick={removeSubject.bind(null, subject)} />
+										    </Flex>
+									    ))}
+								    </Flex>
 
                                     <Flex width>
                                         <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>

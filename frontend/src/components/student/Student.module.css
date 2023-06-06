@@ -27,7 +27,7 @@
     text-align: center;
     width: 20px;
 }
- table > tbody >tr:not(:last-child) {
+    table > tbody >tr:not(:last-child) {
     border-bottom: 1px solid rgb(169, 168, 168);
 }
 .actions__container{
@@ -36,7 +36,6 @@
     justify-content: center;
     gap: 20px;
 }
-
 .icon__edit{
     color: rgba(52, 91, 175, 1);
     font-size: 50px;
@@ -57,9 +56,6 @@
 .icon__delete:hover{
     transform: scale(1.1); 
 }
-.create-subject-container{
-    margin: 20px;
-}
 .select{
     width: 360px;
     font-size: 20px;
@@ -78,7 +74,6 @@
     border:1px solid lightgray;
     font-size: 20px;
     height: 10px;
-
 }
 
 .form__item > input:focus{
@@ -98,4 +93,17 @@
 }
 .fom__item-error > label{
     color: red;
+}
+.button__add-subject{
+    font-size: 25px;
+    color:rgba(52, 91, 175, 1);
+    cursor: pointer;
+}
+.subject-list {
+	font-size: 20px;
+	width: 150px;
+}
+.subject-list__remove {
+	color: red;
+	cursor: pointer;
 }
