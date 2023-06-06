@@ -15,7 +15,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +41,7 @@ public class StudentDAOImpl implements StudentDAO {
         }
     }
 
-    @Override // El DAO recibe el DTO para crear el student y lo mapea y lo guarda en la base de datos para luego hacer otro mappeo de otro DTO como respuesta.
+    @Override
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
         Student student = studentMapper.mapFromDTO(createStudentRequestDTO);
         Student studentSave = entityManager.merge(student);
@@ -66,6 +65,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public StudentDTO updateStudent(StudentDTO studentDTO) {
+        validateStudentById(studentDTO.id());
         Student studentEntity = entityManager.find(Student.class,studentDTO.id());
         if (studentEntity == null) throw new StudentException("Can not update, the id:" + studentDTO.id() + " does not exists", HttpStatus.BAD_REQUEST);
         studentEntity.setName(studentDTO.name());
@@ -77,6 +77,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public StudentDTO deleteStudent(Long id) {
+        validateStudentById(id);
         Student studentEntity = entityManager.find(Student.class,id);
         if(studentEntity == null) throw new  SubjectException("Can not delete, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
         entityManager.remove(studentEntity);
@@ -91,5 +92,13 @@ public class StudentDAOImpl implements StudentDAO {
         }catch (NullPointerException ex){
             return Optional.empty();
         }
+    }
+
+    private StudentDTO validateStudentById(Long id){
+        Optional<StudentDTO> studentExist = getStudentById(id);
+        if (studentExist.isEmpty()){
+            throw new StudentException("no se encontro un estudiante con el id" + id, HttpStatus.BAD_REQUEST);
+        }
+        else return studentExist.get();
     }
 }
