@@ -15,7 +15,7 @@ import { IoIosAddCircle } from "react-icons/io";
 import Swal from "sweetalert2";
 import { ClassroomElementsModal } from "./ClassroomElementsModal";
 import { AiOutlineClose } from "react-icons/ai";
-
+import ClassroomForm from './ClassroomForm';
 
 
 const validateForm = (values) => {
@@ -79,18 +79,23 @@ export const ClassroomCreate = () => {
   const createClassroomHandler = (values) => {
     const classroom = {
       name: values.name,
-      location: classroomLocationValue,
+      location: values.location,
       capability: values.capability,
-      elements: elementsAdded.map((element)=>element.value),
-      tipology: classroomTipologyValue
-    }
-
+      elements: values.elements,
+      tipology: values.tipology
+    };
+  
+    // Aquí puedes realizar la lógica para guardar el salón
+    // Puedes llamar a tu API o servicio correspondiente para guardar los datos
+  
+    // Ejemplo:
     saveClassroom(classroom)
+
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/salones"))
-      .catch(error => errorResponseAlert(error))
-
-  }
+      .catch(error => errorResponseAlert(error));
+      console.log(classroom);
+  };
 
   const selectLocationHandler = ({ value }) => {
     classroomLocationValueChangeHandler(value);
@@ -108,6 +113,7 @@ export const ClassroomCreate = () => {
   const confirmElementsAddedHandler = (elements) => {
     setElementsAdded(elements);
   }
+  
 
   const removeElement=(elementToRemove)=>{
     setElementsAdded((prevElements) =>
@@ -122,7 +128,7 @@ export const ClassroomCreate = () => {
       alignItems={"center"}
       justifyContent={"none"}
     >
-      {elementsModal && <ClassroomElementsModal elements={elementsAdded} onConfirm={confirmElementsAddedHandler} onClick={hideElementsModalHandler} />}
+      {/* {elementsModal && <ClassroomElementsModal elements={elementsAdded} onConfirm={confirmElementsAddedHandler} onClick={hideElementsModalHandler} />} */}
       <Header>
         <h2 style={{ fontSize: "60px" }}>CREAR SALONES</h2>
       </Header>
@@ -134,7 +140,8 @@ export const ClassroomCreate = () => {
         justifyContent={"none"}
         alignItems={"center"}
       >
-        <Flex
+        <ClassroomForm onSubmit={createClassroomHandler}/>
+        {/* <Flex
           justifyContent={"none"}
           alignItems={"center"}
           direction={"column"}
@@ -246,7 +253,7 @@ export const ClassroomCreate = () => {
             )}
           </Formik>
 
-        </Flex>
+        </Flex> */}
       </Flex>
     </Flex>
 
