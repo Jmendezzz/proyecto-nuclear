@@ -42,20 +42,20 @@ public class SubjectController {
 
     }
 
-    @PostMapping("/subjects")
+    @PostMapping("/subjects/create")
     public ResponseEntity<SubjectDTO> createSubject(@Valid @RequestBody SubjectDTO subjectDTO) {
         SubjectDTO subjectDTOCreated = subjectService.createSubject(subjectDTO);
         return new ResponseEntity<>(subjectDTOCreated, HttpStatus.CREATED);
     }
 
-    @PutMapping("/subjects")
+    @PutMapping("/subjects/update")
     public ResponseEntity<SubjectDTO> updateSubject(@RequestBody SubjectDTO subjectDTO){
 
         SubjectDTO subject= subjectService.updateSubject(subjectDTO);
 
         return new ResponseEntity<>(subject, HttpStatus.OK);
     }
-    @DeleteMapping("/subjects/{id}") //TODO: Eliminar primero de la tabla professor_subjects para poder eliminar una asignatura asociada a un professor.
+    @DeleteMapping("/subjects/delete/{id}") //TODO: Eliminar primero de la tabla professor_subjects para poder eliminar una asignatura asociada a un professor.
     public ResponseEntity<SubjectDTO> deleteSubjectById(@PathVariable Long id) {
 
         SubjectDTO subjectDTO =  subjectService.deleteSubjectById(id);

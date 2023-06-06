@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 @Getter
 @Setter
@@ -24,6 +25,10 @@ public class Course {
     private Subject subject;
     @ManyToMany
     private List<Student> students;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @OneToMany
     @JoinColumn(name = "course_id")

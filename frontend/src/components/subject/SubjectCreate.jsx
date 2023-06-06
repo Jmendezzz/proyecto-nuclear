@@ -15,13 +15,18 @@ const validateForm = (values) => {
   const errors = {};
   if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
 
+  if (isEmpty(values.credits.toString())) errors.credits = 'El número de créditos no debe estar vacío';
+
+  if (values.academicHours <= 0) errors.academicHours = 'El número de horas de trabajo academico debe ser válido'
+
+  if (isEmpty(values.academicHours.toString())) errors.academicHours = 'El número de horas de trabajo academico no debe estar vacío'
+
   if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
 
   if (isEmpty(values.semester.toString())) errors.semester = 'El semestre no debe estar vacío';
 
-  if (isEmpty(values.credits.toString())) errors.credits = 'El número de créditos no debe estar vacío';
-
   if (values.credits <= 1) errors.credits = "El número de créditos deber ser válido";
+
 
   return errors;
 
@@ -48,12 +53,18 @@ const errorResponseAlert = (error) => {
     confirmButtonText: "Aceptar"
   })
 }
-
+//TODO Reformat carrer enum 
 export const SubjectCreate = () => {
   const [
     subjectCareerValue,
     subjectCareerValueChangeHandler
   ] = useState("INGENIERIA_DE_SOFTWARE");
+
+  const [period, setPeriod] = useState("SEMESTRAL")
+
+  const periodHandler = (event) => {
+    setPeriod(event.target.value);
+  }
 
   const navigate = useNavigate();
 
@@ -62,8 +73,11 @@ export const SubjectCreate = () => {
       name: values.name,
       career: subjectCareerValue,
       semester: values.semester,
-      credits: values.credits
+      credits: values.credits,
+      academicHours: values.academicHours,
+      period
     }
+    console.log(subject);
     saveSubject(subject)
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/asignaturas"))
@@ -105,7 +119,8 @@ export const SubjectCreate = () => {
             initialValues={{
               name: "",
               semester: "",
-              credits: ""
+              credits: "",
+              academicHours: "",
             }}
             onSubmit={createSubjectHandler}
             validate={validateForm}
@@ -123,6 +138,7 @@ export const SubjectCreate = () => {
                   <Field name="name" />
                   <ErrorMessage name="name" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
+
                 <Flex
                   direction={"column"}
                   height={"auto"}
@@ -134,6 +150,7 @@ export const SubjectCreate = () => {
                   <Field name="semester" type="number" />
                   <ErrorMessage name="semester" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
+
                 <Flex
                   direction={"column"}
                   height={"auto"}
@@ -153,6 +170,7 @@ export const SubjectCreate = () => {
                     }))}
                   />
                 </Flex>
+
                 <Flex
                   direction={"column"}
                   height={"auto"}
@@ -164,6 +182,41 @@ export const SubjectCreate = () => {
                   <Field name="credits" type="number" />
                   <ErrorMessage name="credits" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
+
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={errors.academicHours && touched.academicHours ? style["form__item-error"] : style["form__item"]}
+                >
+                  <label style={{ fontSize: "20px", color: errors.academicHours && touched.academicHours ? "red" : "black" }}>No. horas de trabajo acacémico</label>
+                  <Field name="academicHours" type="number" />
+                  <ErrorMessage name="academicHours" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                </Flex>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+
+                >
+                  <label style={{ fontSize: "20px", color: errors.academicHours && touched.academicHours ? "red" : "black" }}>Periodo</label>
+
+                  <label>
+                    Semestral
+                    <input type="checkbox" style={{ margin: "10px"}} value={"SEMESTRAL"} group="period" checked={period == "SEMESTRAL"} onChange={periodHandler} />
+
+                  </label>
+
+                  <label>
+                    Trimestral
+                    <input type="checkbox" style={{ margin: "10px"}} value={"TRIMESTRAL"} group="period" checked={period == "TRIMESTRAL"} onChange={periodHandler}/>
+
+                  </label>
+
+                </Flex>
+
                 <Flex width>
                   <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
                     Guardar

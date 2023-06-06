@@ -81,6 +81,8 @@ public class SubjectDAOImpl implements SubjectDAO {
         subjectEntity.setCareer(subject.career());
         subjectEntity.setSemester(subject.semester());
         subjectEntity.setCredits(subject.credits());
+        subjectEntity.setAcademicHours(subject.academicHours());
+        subjectEntity.setPeriod(subject.period());
         Subject subjectUpdated = entityManager.merge(subjectEntity);
         return mapper.mapFrom(subjectUpdated);
     }
