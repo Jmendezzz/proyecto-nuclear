@@ -13,7 +13,7 @@ public interface CourseService {
     Optional<CourseDTO> getCourseById(Long id);
     List<CourseDTO> getCoursesByProfessorId(Long professorId);
 
-    void createCourses();
+    List<CourseDTO> generateCourses();
 
 
     List<CourseStudentRequestDTO> getCoursesByStudentId(Long id);

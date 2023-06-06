@@ -54,4 +54,11 @@ public class StudentServiceImpl implements StudentService {
     public Optional<StudentDTO> getStudentById(Long id) {
         return studentDao.getStudentById(id);
     }
+
+    @Override
+    public List<StudentDTO> getStudentsBySubjectId(Long subjectId){
+
+        return   studentDao.getStudentsBySubjectId(subjectId);
+
+    }
 }

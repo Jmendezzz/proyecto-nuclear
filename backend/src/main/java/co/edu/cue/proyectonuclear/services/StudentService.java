@@ -19,4 +19,5 @@ public interface StudentService {
 
     Optional<StudentDTO> getStudentById(Long id);
 
+    List<StudentDTO> getStudentsBySubjectId(Long subjectId);
 }
