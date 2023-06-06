@@ -33,6 +33,14 @@ public class ProfessorController {
         return new ResponseEntity<>(professorDTO.get(), HttpStatus.OK);
     }
 
+    @GetMapping("/professors/subject/{id}")
+    public ResponseEntity<ProfessorDTO> getProfessorsBySubjectId(@PathVariable Long id){
+        Optional<ProfessorDTO> professorDTO = professorService.getProfessorBySubjectId(id);
+        if(professorDTO.isEmpty())
+            throw new ProfessorException("No se encontró profesor para la asignatura", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(professorDTO.get(), HttpStatus.OK);
+    }
+
     @GetMapping("/professors/{id}")
     public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id){
         Optional<ProfessorDTO> professorDTO = professorService.getProfessorById(id);
@@ -41,16 +49,16 @@ public class ProfessorController {
         return new ResponseEntity<>(professorDTO.get(), HttpStatus.OK);
     }
 
-    @PostMapping("/professors")
+    @PostMapping("/professors/create")
     public ProfessorDTO saveProfessor(@Valid @RequestBody CreateProfessorRequestDTO professor){
         return professorService.saveProfessor(professor);
     }
 
-    @DeleteMapping("/professors/{id}")
+    @DeleteMapping("/professors/delete/{id}")
     public ProfessorDTO deleteProfessorById( @PathVariable Long id){
         return professorService.deleteProfessorById(id);
     }
-    @PutMapping("/professors")
+    @PutMapping("/professors/update")
     public ProfessorDTO updateProfessor(@Valid @RequestBody ProfessorDTO professor){
         return professorService.updateProfessor(professor);
     }
@@ -58,7 +66,7 @@ public class ProfessorController {
     public ProfessorScheduleDTO setScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
         return professorService.setScheduleProfessor(id, professorSchedule);
     }
-    @DeleteMapping("/professors/{id}/schedule")
+    @DeleteMapping("/professors/{id}/schedule/delete")
     public ProfessorDTO deleteScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
         return professorService.deleteScheduleProfessor(id, professorSchedule);
     }
