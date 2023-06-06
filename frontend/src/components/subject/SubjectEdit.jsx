@@ -15,15 +15,20 @@ import { Loading } from "../../UI/loading/Loading";
 import { ErrorResponse } from "../../UI/error/ErrorResponse";
 
 const validateForm = (values) => {
+    console.log(values)
     const errors = {};
     if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
 
-    if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
-
-    if (isEmpty(values.semester.toString())) errors.semester = 'El semestre no debe estar vacío';
-
     if (isEmpty(values.credits.toString())) errors.credits = 'El número de créditos no debe estar vacío';
-
+  
+    if (values.academicHours <= 0) errors.academicHours = 'El número de horas de trabajo academico debe ser válido'
+  
+    if (isEmpty(values.academicHours.toString())) errors.academicHours = 'El número de horas de trabajo academico no debe estar vacío'
+  
+    if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
+  
+    if (isEmpty(values.semester.toString())) errors.semester = 'El semestre no debe estar vacío';
+  
     if (values.credits <= 1) errors.credits = "El número de créditos deber ser válido";
 
     return errors;
@@ -63,7 +68,13 @@ export const SubjectEdit = () => {
     const [error, setError] = useState(undefined);
 
     const [subject, setSubject] = useState();
-    
+
+    const [period, setPeriod] = useState();
+
+    const periodHandler = (event) => {
+        setPeriod(event.target.value);
+    }
+
     const [
         subjectCareerValue,
         subjectCareerValueChangeHandler
@@ -76,19 +87,21 @@ export const SubjectEdit = () => {
         setIsLoading(false);
         setError(error);
     }
-    
+
     useEffect(() => {
         window.scrollTo(0, 0);
         getSubjectById(subjectId)
             .then((response) => {
                 setSubject(response.data)
+                console.log(response)
+                setPeriod(response.data.period)
                 setIsLoading(false)
             })
             .catch((error) => errorResponseAction(error))
 
     }, [])
 
-    if(error){
+    if (error) {
         return <ErrorResponse errStatus={error.response.status} errMessage={error.response.data.message} />;
     }
 
@@ -98,8 +111,11 @@ export const SubjectEdit = () => {
             name: values.name,
             career: subjectCareerValue,
             semester: values.semester,
-            credits: values.credits
+            credits: values.credits,
+            academicHours: values.academicHours,
+            period:period
         }
+        console.log(subjectUpdated)
         updateSubject(subjectUpdated)
             .then(response => succesResponseAlert(response))
             .then(() => navigate("/asignaturas"))
@@ -143,7 +159,9 @@ export const SubjectEdit = () => {
                                     initialValues={{
                                         name: subject.name,
                                         semester: subject.semester,
-                                        credits: subject.credits
+                                        credits: subject.credits,
+                                        academicHours: subject.academicHours,
+
                                     }}
                                     onSubmit={editSubjectHandler}
                                     validate={validateForm}
@@ -203,7 +221,41 @@ export const SubjectEdit = () => {
                                                 <Field name="credits" type="number" />
                                                 <ErrorMessage name="credits" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                                             </Flex>
-                                            <Flex width>
+                                            <Flex
+                                                direction={"column"}
+                                                height={"auto"}
+                                                alignItems={"none"}
+                                                justifyContent={"none"}
+                                                className={errors.academicHours && touched.academicHours ? style["form__item-error"] : style["form__item"]}
+                                            >
+                                                <label style={{ fontSize: "20px", color: errors.academicHours && touched.academicHours ? "red" : "black" }}>No. horas de trabajo acacémico</label>
+                                                <Field name="academicHours" type="number" />
+                                                <ErrorMessage name="academicHours" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                                            </Flex>
+                                            <Flex
+                                                direction={"column"}
+                                                height={"auto"}
+                                                alignItems={"none"}
+                                                justifyContent={"none"}
+
+                                            >
+                                                <label style={{ fontSize: "20px"}}>Periodo</label>
+
+                                                <label>
+                                                    Semestral
+                                                    <input type="checkbox" style={{ margin: "10px" }} value={"SEMESTRAL"} group="period" checked={period == "SEMESTRAL"} onChange={periodHandler} />
+
+                                                </label>
+
+                                                <label>
+                                                    Trimestral
+                                                    <input type="checkbox" style={{ margin: "10px" }} value={"TRIMESTRAL"} group="period" checked={period == "TRIMESTRAL"} onChange={periodHandler} />
+
+                                                </label>
+
+                                            </Flex>
+
+                                            <Flex >
                                                 <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
                                                     Guardar
                                                 </Button>
