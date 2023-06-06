@@ -1,7 +1,6 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
-import co.edu.cue.proyectonuclear.exceptions.StudentException;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
@@ -87,6 +86,14 @@ public class StudentDAOImpl implements StudentDAO {
         }catch (NullPointerException ex){
             return Optional.empty();
         }
+    }
+
+    private StudentDTO validateStudentById(Long id){
+        Optional<StudentDTO> studentExist = getStudentById(id);
+        if (studentExist.isEmpty()){
+            throw new StudentException("no se encontro un estudiante con el id" + id, HttpStatus.BAD_REQUEST);
+        }
+        else return studentExist.get();
     }
 
     @Override
