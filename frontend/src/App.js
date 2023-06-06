@@ -10,6 +10,7 @@ import { SubjectEdit } from "./components/subject/SubjectEdit";
 import { Student } from "./components/student/Student";
 import{ClassroomEdit}from "./components/classroom/ClassroomEdit"
 import { StudentCreate } from "./components/student/StudentCreate";
+import { StudentEdit } from "./components/student/StudentEdit";
 import { Professor } from "./components/professor/Professor";
 import { ProfessorCreate } from "./components/professor/ProfessorCreate";
 import { ProfessorEdit } from "./components/professor/ProfessorEdit";
@@ -38,6 +39,7 @@ function App() {
             <Route path="salones/editar/:classroomId" element={<ClassroomEdit/>}></Route>
             <Route path="profesores/editar/:professorId" element={<ProfessorEdit/>}></Route>
 
+            <Route path="/estudiantes/editar/:subjectId" element={<StudentEdit/>}></Route>
 
           </Routes>
         </Sidebar>

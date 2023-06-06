@@ -4,7 +4,7 @@ import { getStudentById, updateStudent } from "../../api/StudentApiService";
 import { Button } from "../../UI/button/Button";
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
-import style from "./Subject.module.css";
+import style from "./Student.module.css";
 import { careers } from "../../enums/Career";
 import Select from "react-select";
 import Swal from "sweetalert2";
@@ -62,7 +62,7 @@ export const StudentEdit = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [student, setSubject] = useState();
+    const [student, setStudent] = useState();
     const [
         studentCareerValue,
         studentCareerValueChangeHandler
@@ -74,7 +74,7 @@ export const StudentEdit = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        getSubjectById(studentId)
+        getStudentById(studentId)
             .then((response) => {
                 setStudent(response.data)
                 setIsLoading(false)
@@ -225,7 +225,7 @@ export const StudentEdit = () => {
                                         <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
                                             Guardar
                                         </Button>
-                                        <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px" }} onClick={() => navigate("/asignaturas")}>
+                                        <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px" }} onClick={() => navigate("/estdiantes")}>
                                             Cancelar
                                         </Button>
                                     </Flex>
