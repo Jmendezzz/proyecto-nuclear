@@ -74,7 +74,6 @@
     border:1px solid lightgray;
     font-size: 20px;
     height: 10px;
-
 }
 
 .form__item > input:focus{
@@ -91,4 +90,20 @@
 }
 .form__item-error > input:focus{
     outline: 1px solid red;
+}
+.fom__item-error > label{
+    color: red;
+}
+.button__add-subject{
+    font-size: 25px;
+    color:rgba(52, 91, 175, 1);
+    cursor: pointer;
+}
+.subject-list {
+	font-size: 20px;
+	width: 150px;
+}
+.subject-list__remove {
+	color: red;
+	cursor: pointer;
 }

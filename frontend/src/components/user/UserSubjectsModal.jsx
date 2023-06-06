@@ -1,0 +1,74 @@
+import { useState } from "react";
+import style from "./User.module.css";
+import {AiFillCloseCircle} from "react-icons/ai";
+import { Button } from "../../UI/button/Button";
+
+
+
+export const UserSubjectsModal = (props) => {
+    const [subjectsAdded, setSubjectsAdded] = useState(props.subjectsAdded);
+    const [subjects, setSubjects] = useState(props.subjects);
+
+    const addSubject = (newSubject) => {
+        if (subjectsAdded.includes(newSubject)) {
+            removeSubject(newSubject);
+        } else {
+            setSubjectsAdded((prevSubject)=>[...prevSubject, newSubject]);
+        }
+    }
+    const removeSubject = (subjectToRemove) => {
+            setSubjectsAdded((prevSubject) => prevSubject.filter(s => s !== subjectToRemove));
+        };
+    
+    const confirmHandler = () => {
+        props.onConfirm(subjectsAdded);
+        props.onClick();
+    }
+
+    return (
+        <div className={style.backdrop}>
+            <div className={style.modal}>
+                <header className={style.header}>
+                    <h2>Elija materias</h2>
+                    <AiFillCloseCircle onClick={props.onClick} className={style["close__modal"]} />
+                </header>
+                <p>Puede seleccionar una o mas asignaturas</p>
+                <div className={style["subjects-container"]}>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Asignatura</th>
+                                <th>Carrera</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                subjects.map((subject, index) =>{
+                                    const isSelected = subjectsAdded.includes(subject);
+                                    const subjectClassName = isSelected ? `${style["subject-item"]} ${style.selected}` : style["subject-item"];
+                                    return (
+                                        <tr key={index}
+                                        className={subjectClassName}
+                                        onClick={() => addSubject(subject)}>
+                                            <td>
+                                                {subject.name}
+                                            </td>
+                                            <td>
+                                                {subject.career}
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <footer className={style.actions}>
+                    <Button onClick={confirmHandler} inLineStyle={ {width: "100px"} }>
+                        Confirmar
+                    </Button>
+                </footer>
+            </div>
+        </div>
+    );
+}

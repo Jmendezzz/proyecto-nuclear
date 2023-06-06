@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import Swal from "sweetalert2";
 import {Loading} from "../../UI/loading/Loading";
@@ -6,7 +6,7 @@ import {Header} from "../../UI/headers/Header";
 import {Flex} from "../../UI/flex/Flex";
 import style from "./Professor.module.css";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { updateProfessors } from "../../api/ProfessorApiService";
+import { getProfessorById, getProfessors, updateProfessors } from "../../api/ProfessorApiService";
 import { Button } from "../../UI/button/Button";
 import { isEmpty } from "../../validations/InputValidations";
 
@@ -58,6 +58,15 @@ export const ProfessorEdit = () => {
         .then(()=>navigate("/profesores"))
         .catch(error => errorResponseAlert(error))
     }
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        getProfessorById(professorId)
+        .then((response) => {
+            setProfessor(response.data)
+            setIsLoading(false)
+        })
+        .catch((error) => console.log(error))
+    }, [])
 
 	return isLoading ? (
 		<Loading />
