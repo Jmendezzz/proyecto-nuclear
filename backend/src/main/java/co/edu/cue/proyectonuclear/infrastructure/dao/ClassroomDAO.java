@@ -11,12 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClassroomDAO {
-   ClassroomDTO saveCourse(ClassroomDTO classroomDTO);
+   ClassroomDTO saveClassroom(ClassroomDTO classroomDTO);
     List<ClassroomDTO> getAllClassrrom();
 
-
-    Optional<ClassroomDTO> findClassroomById(Long id);
-    ClassroomDTO updateClassroom(ClassroomDTO subjectDTO);
+    ClassroomDTO updateClassroom(ClassroomDTO classroomDTO);
 
    Optional<ClassroomDTO> getClassroomById(Long id);
 

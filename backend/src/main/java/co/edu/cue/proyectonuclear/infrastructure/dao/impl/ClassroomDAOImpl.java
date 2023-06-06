@@ -35,7 +35,7 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
 
     @Override
-    public ClassroomDTO saveCourse(ClassroomDTO classroomDTO) {
+    public ClassroomDTO saveClassroom(ClassroomDTO classroomDTO) {
 
         Classroom classroom = classroomMapper.mapFromDTO(classroomDTO);
         Classroom classroomSaved = entityManager.merge(classroom);
@@ -50,13 +50,6 @@ public class ClassroomDAOImpl implements ClassroomDAO {
         List<Classroom> classrooms = entityManager.createQuery(query).getResultList();
         return mapEntityList(classrooms);
 
-    }
-
-
-    @Override
-    public Optional<ClassroomDTO> findClassroomById(Long id) {
-        Classroom classroom = entityManager.find(Classroom.class, id);
-        return Optional.of(classroomMapper.mapFromEntity(classroom));
     }
 
     @Override
@@ -75,8 +68,15 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
     @Override
     public Optional<ClassroomDTO> getClassroomById(Long id) {
-        Classroom classroom=entityManager.find(Classroom.class,id);
-        return Optional.of(classroomMapper.mapFromEntity(classroom));
+        try{
+            Classroom classroom = entityManager.find(Classroom.class, id);
+            return Optional.of(classroomMapper.mapFromEntity(classroom));
+
+        }catch (NullPointerException ex){
+            return Optional.empty();
+        }
+        //Classroom classroom=entityManager.find(Classroom.class,id);
+        //return Optional.of(classroomMapper.mapFromEntity(classroom));
 
     }
 
