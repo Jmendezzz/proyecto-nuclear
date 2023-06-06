@@ -10,6 +10,7 @@ public record ProfessorDTO(
         String nid,
         String name,
         String lastName,
+        String email,
         List<ProfessorSchedule> schedule,
         List<Subject> subjects
 ) {
