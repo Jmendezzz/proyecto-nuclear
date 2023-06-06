@@ -5,27 +5,24 @@ import { saveStudent } from "../../api/StudentApiService";
 import style from "./Student.module.css";
 import { careers } from "../../enums/Career";
 import Select from "react-select";
-import { useState } from "react";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 import { isEmpty } from "../../validations/InputValidations";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
+import { UserSubjectsModal } from "../user/UserSubjectsModal";
+import { IoIosAddCircle } from "react-icons/io";
+import { AiOutlineClose } from "react-icons/ai";
+import { getSubjects } from "../../api/SubjectApiService";
 
 
 const validateForm = (values) => {
-console.log(values);
-
   const errors = {};
+  if (isEmpty(values.nid)) errors.nid = 'El nid no debe estar vacío';
   if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
-
   if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
-
   if (isEmpty(values.semester.toString())) errors.semester = 'El semestre no debe estar vacío';
-
-  //TODO:validation for subjects 
-
   if (isEmpty(values.email)) errors.email = 'El email no debe estar vacío';
-  
   return errors;
 }
 
@@ -54,31 +51,59 @@ const errorResponseAlert = (error) => {
 
 
 export const StudentCreate = () => {
+
+  const [subjects, setSubjects] = useState([]);
+	const succesResponse = (res) => {
+		setSubjects(res.data);
+	}
+
+	useEffect(()=>{
+		getSubjects()
+		.then((response) => succesResponse(response))
+		.catch((error) => console.log(error));
+	}, []);
+
+	const [subjectsAdded, setSubjectsAdded] = useState([]);
+	const [subjectsModal, setSubjectsModal] = useState(undefined);
+
   const [
     studentCareerValue,
     studentCareerValueChangeHandler
   ] = useState("INGENIERIA_DE_SOFTWARE");
 
   const navigate = useNavigate();
-
   const createStudentHandler = (values) => {
     const student = {
+      nid: values.nid,
       name: values.name,
       career: studentCareerValue,
       semester: values.semester,
-      subject: values.subject,
+      subjects: subjectsAdded.map((subject) => {return {id: subject.id, name: subject.name}} ),
       email: values.email
     }
     saveStudent(student)
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/estudiantes"))
       .catch(error => errorResponseAlert(error))
-
   }
+
+  const hideSubjectsModalHandler = () => {
+		setSubjectsModal(undefined);
+	}
+	const showSubjectsModalHandler = () => {
+        setSubjectsModal(true);
+    }
+	const confirmSubjectsAddedHandler = (subjects) =>{
+		setSubjectsAdded(subjects);
+	}
+	const removeSubject = (subjectToRemove) => {
+		setSubjectsAdded((prevSubject) => prevSubject.filter((subject) => subject !== subjectToRemove));
+	}
   
   const selectCareerHandler = ({ value }) => {
     studentCareerValueChangeHandler(value);
   }
+
   return (
     <Flex
       height={"100%"}
@@ -87,6 +112,8 @@ export const StudentCreate = () => {
       alignItems={"center"}
       justifyContent={"none"}
     >
+
+      {subjectsModal && <UserSubjectsModal subjectsAdded={subjectsAdded} subjects={subjects} onConfirm={confirmSubjectsAddedHandler} onClick={hideSubjectsModalHandler} />}
       <Header>
         <h2 style={{ fontSize: "60px" }}>CREAR ESTUDIANTES</h2>
       </Header>
@@ -108,6 +135,7 @@ export const StudentCreate = () => {
         >
           <Formik
             initialValues={{
+              nid:"",
               name: "",
               semester: "",
               subject: "",
@@ -118,6 +146,20 @@ export const StudentCreate = () => {
           >
             {({ errors, touched }) => (
               <Form className={style.form}>
+                <Flex
+									direction={"column"}
+									height={"auto"}
+									alignItems={"none"}
+									justifyContent={"none"}
+									className={ errors.nid && touched.nid ? style["form__item-error"] : style["form__item"] }
+								>
+									<label style={{fontSize: "20px",color: errors.nid && touched.nid ? "red" : "black" }}>
+										Numero de identificación
+									</label>
+									<Field name="nid" />
+									<ErrorMessage name="nid" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+								</Flex>
+
                 <Flex
                   direction={"column"}
                   height={"auto"}
@@ -167,24 +209,26 @@ export const StudentCreate = () => {
                   height={"auto"}
                   alignItems={"none"}
                   justifyContent={"none"}
-                  className={errors.subject && touched.subject ? style["form__item-error"] : style["form__item"]}
-                >
-                  <label style={{ fontSize: "20px" }}>materias</label>
-                  <Field name="subject" type="number" />
-                  <ErrorMessage name="subject" style={{ fontSize: "17px", color: "red" }} component={"small"} />
-                </Flex>
-
-                <Flex
-                  direction={"column"}
-                  height={"auto"}
-                  alignItems={"none"}
-                  justifyContent={"none"}
                   className={errors.email && touched.email ? style["form__item-error"] : style["form__item"]}
                 >
                   <label style={{ fontSize: "20px", color: errors.email && touched.email ? "red" : "black" }}>Email</label>
                   <Field name="email" />
                   <ErrorMessage name="email" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
+
+                <Flex direction={"column"}	height={"auto"} alignItems={"none"} justifyContent={"none"}>
+									<Flex justifyContent={"none"} gap={"10px"}>
+										<label style={{ fontSize: "20px" }}>Materias </label>
+										<IoIosAddCircle className={style["button__add-subject"]} onClick={showSubjectsModalHandler} />
+									</Flex>
+									{subjectsAdded.length === 0 ? <p>No hay materias agregadas</p> : 
+									subjectsAdded.map((subject, index) => (
+										<Flex key={index} justifyContent={"none"} height={"50px"}>
+											<p className={style["subject-list"]}>{subject.name}</p>
+											<AiOutlineClose className={style["subject-list__remove"]} onClick={removeSubject.bind(null, subject)} />
+										</Flex>
+									))}
+								</Flex>
 
                 <Flex width>
                   <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
