@@ -1,6 +1,6 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
-import co.edu.cue.proyectonuclear.infrastructure.constrains.StudentConstrain;
+
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
@@ -18,7 +18,6 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDao;
     private final UserConstrain userConstrain;
-    private final StudentConstrain studentConstrain;
     @Override
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
