@@ -37,7 +37,7 @@ const errorResponseAlert = (error) => {
 	Swal.fire({
 		icon: "error",
 		title: "Oops...",
-		text: error.response.data.detail,
+		text: error.response.data.message,
 		confirmButtonColor: "red",
 		confirmButtonText: "Aceptar",
 	});
@@ -47,7 +47,6 @@ const errorResponseAlert = (error) => {
 export const ProfessorCreate = () => {
 
 	const [subjects, setSubjects] = useState([]);
-	const [subjectsChange, setSubjectsChange] = useState(false);
 	const succesResponse = (res) => {
 		setSubjects(res.data);
 	}
@@ -55,9 +54,7 @@ export const ProfessorCreate = () => {
 		getSubjects()
 		.then((response) => succesResponse(response))
 		.catch((error) => console.log(error));
-		setSubjectsChange(false);
-	}, [subjectsChange]);//?Subjects Change no es necesario
-
+	}, []);
 
 	const [subjectsAdded, setSubjectsAdded] = useState([]);
 	const [subjectsModal, setSubjectsModal] = useState(undefined);
@@ -69,7 +66,7 @@ export const ProfessorCreate = () => {
 			name: values.name,
 			lastName: values.lastName,
 			email: values.email,
-			subjects: subjectsAdded.map((subject) =>subject.value)
+			subjects: subjectsAdded.map((subject) => {return {id: subject.id, name: subject.name}} )
 		};
 		saveProfessor(professor)
 			.then((response) => succesResponseAlert(response))

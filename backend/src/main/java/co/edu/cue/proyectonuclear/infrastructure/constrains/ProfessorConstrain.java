@@ -21,7 +21,7 @@ public class ProfessorConstrain {
         subjects.forEach(s->{
             if (professorDAO.getProfessorBySubject(s.id()).isPresent()) {
                 System.out.println(s.name());
-                throw new UserException("The subject "+ s.name() + " already has a professor", HttpStatus.BAD_REQUEST);
+                throw new UserException("La materia "+ s.name() + " ya cuenta con profesor", HttpStatus.BAD_REQUEST);
             }
         });
     }
