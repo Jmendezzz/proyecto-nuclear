@@ -29,7 +29,7 @@ public class StudentController {
 
     }
 
-    @GetMapping("/students/{nid}")
+    @GetMapping("/students/nid/{nid}")
     public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable String nid){
 
         Optional<StudentDTO> studentDTO = studentService.getStudentByNid(nid);
