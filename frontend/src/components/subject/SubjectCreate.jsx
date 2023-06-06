@@ -77,7 +77,6 @@ export const SubjectCreate = () => {
       academicHours: values.academicHours,
       period
     }
-    console.log(subject);
     saveSubject(subject)
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/asignaturas"))
@@ -134,7 +133,7 @@ export const SubjectCreate = () => {
                   justifyContent={"none"}
                   className={errors.name && touched.name ? style["form__item-error"] : style["form__item"]}
                 >
-                  <label style={{ fontSize: "20px", color: errors.name && touched.name ? "red" : "black" }}>Nombre</label>
+                  <label style={{ fontSize: "20px", color: errors.name && touched.name ? "red" : "black",fontWeight:"bolder"  }}>Nombre</label>
                   <Field name="name" />
                   <ErrorMessage name="name" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
@@ -146,7 +145,7 @@ export const SubjectCreate = () => {
                   justifyContent={"none"}
                   className={errors.semester && touched.semester ? style["form__item-error"] : style["form__item"]}
                 >
-                  <label style={{ fontSize: "20px", color: errors.semester && touched.semester ? "red" : "black" }}>Semestre</label>
+                  <label style={{ fontSize: "20px", color: errors.semester && touched.semester ? "red" : "black",fontWeight:"bolder" }}>Semestre</label>
                   <Field name="semester" type="number" />
                   <ErrorMessage name="semester" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
@@ -158,7 +157,7 @@ export const SubjectCreate = () => {
                   justifyContent={"none"}
                   className={style["form__item"]}
                 >
-                  <label style={{ fontSize: "20px" }}>Carrera</label>
+                  <label style={{ fontSize: "20px",fontWeight:"bolder"  }}>Carrera</label>
                   <Select
                     onChange={selectCareerHandler}
                     defaultValue={{ label: careers[0].name, value: careers[0].value }}
@@ -178,7 +177,7 @@ export const SubjectCreate = () => {
                   justifyContent={"none"}
                   className={errors.credits && touched.credits ? style["form__item-error"] : style["form__item"]}
                 >
-                  <label style={{ fontSize: "20px", color: errors.credits && touched.credits ? "red" : "black" }}>Créditos</label>
+                  <label style={{ fontSize: "20px", color: errors.credits && touched.credits ? "red" : "black",fontWeight:"bolder"  }}>Créditos</label>
                   <Field name="credits" type="number" />
                   <ErrorMessage name="credits" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
@@ -190,7 +189,7 @@ export const SubjectCreate = () => {
                   justifyContent={"none"}
                   className={errors.academicHours && touched.academicHours ? style["form__item-error"] : style["form__item"]}
                 >
-                  <label style={{ fontSize: "20px", color: errors.academicHours && touched.academicHours ? "red" : "black" }}>No. horas de trabajo acacémico</label>
+                  <label style={{ fontSize: "20px", color: errors.academicHours && touched.academicHours ? "red" : "black" ,fontWeight:"bolder" }}>No. horas de trabajo acacémico</label>
                   <Field name="academicHours" type="number" />
                   <ErrorMessage name="academicHours" style={{ fontSize: "17px", color: "red" }} component={"small"} />
                 </Flex>
@@ -201,15 +200,15 @@ export const SubjectCreate = () => {
                   justifyContent={"none"}
 
                 >
-                  <label style={{ fontSize: "20px", color: errors.academicHours && touched.academicHours ? "red" : "black" }}>Periodo</label>
+                  <label style={{ fontSize: "20px", color: errors.academicHours && touched.academicHours ? "red" : "black",fontWeight:"bolder"  }}>Periodo</label>
 
-                  <label>
+                  <label style= { {fontSize: "20px"}}>
                     Semestral
                     <input type="checkbox" style={{ margin: "10px"}} value={"SEMESTRAL"} group="period" checked={period == "SEMESTRAL"} onChange={periodHandler} />
 
                   </label>
 
-                  <label>
+                  <label style= { {fontSize: "20px"}}>
                     Trimestral
                     <input type="checkbox" style={{ margin: "10px"}} value={"TRIMESTRAL"} group="period" checked={period == "TRIMESTRAL"} onChange={periodHandler}/>
 

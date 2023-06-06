@@ -10,6 +10,7 @@ import { Pagination } from "../pagination/Pagination";
 import { getSubjects, deleteSubjectById } from "../../api/SubjectApiService";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { careers } from "../../enums/Career";
 
 
 const succesResponseAlert = (response) => {
@@ -29,24 +30,32 @@ const errorResponseAlert = (error) => {
   })
 
 }
-
+const reformatSubjectCareer = (subject) => {
+  const foundCareer = careers.find((career) => career.value === subject.career);
+  return foundCareer ? foundCareer.name : "";
+}
 export const Subject = () => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [subjectsChange, setSubjectsChange] = useState(false);
-  const subjectsPerPage = 7;
+  const [search, setSearch] = useState("");
+  
   const succesResponse = (res) => {
     setSubjects(res.data);
   };
+
   useEffect(() => {
     getSubjects()
       .then((response) => succesResponse(response))
       .catch((error) => console.log(error)); // TODO
     setSubjectsChange(false);
   }, [subjectsChange]);
+
+  const subjectsPerPage = 7;
   const lastSubjectIndex = currentPage * subjectsPerPage;
   const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
-  const currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
+  let currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
+
   const navigate = useNavigate();
 
   const deleteSubjectHandler = (id) => {
@@ -74,6 +83,14 @@ export const Subject = () => {
         }
       })
 
+  }
+
+  const searchHandler = (event)=>{
+    setSearch(event.target.value);
+  }
+
+  if(search.trim() !== ""){
+    currentSubjects = subjects.filter(subject=> subject.name.toLowerCase().includes(search))
   }
 
   return (
@@ -105,7 +122,7 @@ export const Subject = () => {
             </Button>
           </div>
           <Input
-            input={{ placeholder: "Nombre de la asignatura" }}
+            input={{ placeholder: "Nombre de la asignatura", onChange:searchHandler }}
             style={{ height: "20px" }}
           ></Input>
           <Button
@@ -114,7 +131,7 @@ export const Subject = () => {
             Buscar
           </Button>
         </Flex>
-        {subjects.length > 0 ?
+        {currentSubjects.length > 0 ?
           <>
             <table className={style.table}>
               <thead>
@@ -124,6 +141,8 @@ export const Subject = () => {
                   <th>Carrera</th>
                   <th>Semestre</th>
                   <th>Créditos</th>
+                  <th>No. Horas </th>
+                  <th>Periodo</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -132,9 +151,11 @@ export const Subject = () => {
                   <tr key={subject.id}>
                     <td className={style.id}>{subject.id}</td>
                     <td>{subject.name}</td>
-                    <td>{subject.career}</td>
-                    <td>{subject.semester}</td>
+                    <td>{reformatSubjectCareer(subject)}</td>
+                    <td style={{width:"10px"}}>{subject.semester}</td>
                     <td>{subject.credits}</td>
+                    <td>{subject.academicHours}h</td>
+                    <td>{subject.period}</td>
                     <td className={style["actions__container"]}>
                       <div className={style["icon__edit"]}>
                         <BiEdit onClick={() => navigate(`/asignaturas/editar/${subject.id}`)} />

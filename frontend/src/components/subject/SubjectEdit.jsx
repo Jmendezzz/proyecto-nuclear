@@ -15,7 +15,6 @@ import { Loading } from "../../UI/loading/Loading";
 import { ErrorResponse } from "../../UI/error/ErrorResponse";
 
 const validateForm = (values) => {
-    console.log(values)
     const errors = {};
     if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
 
@@ -93,7 +92,6 @@ export const SubjectEdit = () => {
         getSubjectById(subjectId)
             .then((response) => {
                 setSubject(response.data)
-                console.log(response)
                 setPeriod(response.data.period)
                 setIsLoading(false)
             })
