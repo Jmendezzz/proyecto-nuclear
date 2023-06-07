@@ -72,6 +72,7 @@ public class StudentDAOImpl implements StudentDAO {
         studentEntity.setName(studentDTO.name());
         studentEntity.setLastName(studentDTO.lastName());
         studentEntity.setEmail(studentDTO.email());
+        studentEntity.setSubjects(studentDTO.subjects());
         Student studentUpdated = entityManager.merge(studentEntity);
         return studentMapper.mapFromEntity(studentUpdated);
     }
