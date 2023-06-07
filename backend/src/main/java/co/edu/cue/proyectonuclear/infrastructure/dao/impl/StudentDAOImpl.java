@@ -66,9 +66,14 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public StudentDTO updateStudent(StudentDTO studentDTO) {
-        Student studentEntity = studentMapper.mapFromDTO(studentDTO);
-        Student studentSaved = entityManager.merge(studentEntity);
-        return studentMapper.mapFromEntity(studentSaved);
+        validateStudentById(studentDTO.id());
+        Student studentEntity = entityManager.find(Student.class,studentDTO.id());
+        if (studentEntity == null) throw new StudentException("Can not update, the id:" + studentDTO.id() + " does not exists", HttpStatus.BAD_REQUEST);
+        studentEntity.setName(studentDTO.name());
+        studentEntity.setLastName(studentDTO.lastName());
+        studentEntity.setEmail(studentDTO.email());
+        Student studentUpdated = entityManager.merge(studentEntity);
+        return studentMapper.mapFromEntity(studentUpdated);
     }
 
     @Override

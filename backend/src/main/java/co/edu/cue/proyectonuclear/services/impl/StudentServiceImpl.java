@@ -17,7 +17,6 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDao;
-    private final UserConstrain userConstrain;
     @Override
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
