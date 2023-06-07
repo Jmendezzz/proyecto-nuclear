@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class StudentDAOImpl implements StudentDAO {
         }
     }
 
-    @Override
+    @Override // El DAO recibe el DTO para crear el student y lo mapea y lo guarda en la base de datos para luego hacer otro mappeo de otro DTO como respuesta.
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
         Student student = studentMapper.mapFromDTO(createStudentRequestDTO);
         Student studentSave = entityManager.merge(student);
@@ -71,13 +72,13 @@ public class StudentDAOImpl implements StudentDAO {
         studentEntity.setName(studentDTO.name());
         studentEntity.setLastName(studentDTO.lastName());
         studentEntity.setEmail(studentDTO.email());
+        studentEntity.setSubjects(studentDTO.subjects());
         Student studentUpdated = entityManager.merge(studentEntity);
         return studentMapper.mapFromEntity(studentUpdated);
     }
 
     @Override
     public StudentDTO deleteStudent(Long id) {
-        validateStudentById(id);
         Student studentEntity = entityManager.find(Student.class,id);
         if(studentEntity == null) throw new  SubjectException("Can not delete, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
         entityManager.remove(studentEntity);
@@ -100,5 +101,24 @@ public class StudentDAOImpl implements StudentDAO {
             throw new StudentException("no se encontro un estudiante con el id" + id, HttpStatus.BAD_REQUEST);
         }
         else return studentExist.get();
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsBySubjectId(Long subjectId) {
+
+        String query = "SELECT s.id from student s INNER JOIN student_subjects sc on s.id = sc.student_id WHERE sc.subjects_id = :subjectId";
+
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("subjectId",subjectId);
+
+
+        try{
+            List<Long> studentsIds = nativeQuery.getResultList();
+            return studentsIds.stream()
+                    .map(id->getStudentById(id).get())
+                    .toList();
+        }catch (NoResultException e){
+            throw new StudentException("No se encontraron estudiantes registrados en la asignatura identificada por el id:" + subjectId ,HttpStatus.BAD_REQUEST);
+        }
     }
 }

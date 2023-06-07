@@ -7,6 +7,7 @@ import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
 import co.edu.cue.proyectonuclear.services.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class CourseController {
     public List<CourseDTO> getAllCourses(){
         return courseService.getAllCourses();
     }
-    @PostMapping("/courses")
+    @PostMapping("/courses/create")
     public CourseDTO createCourse(@RequestBody CourseDTO course){
         return courseService.saveCourse(course);
     }
@@ -43,6 +44,11 @@ public class CourseController {
         return courseService.getCoursesByStudentId(id);
 
     }
+    @GetMapping("/courses/generate")
+    public ResponseEntity<List<CourseDTO>> generateCourses(){
+        return null;
+    }
+
 
 
 }

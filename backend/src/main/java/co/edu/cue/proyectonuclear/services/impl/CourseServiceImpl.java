@@ -1,10 +1,12 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
+import co.edu.cue.proyectonuclear.domain.entities.Professor;
+import co.edu.cue.proyectonuclear.infrastructure.constrains.CourseConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.domain.entities.Course;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
-import co.edu.cue.proyectonuclear.services.CourseService;
+import co.edu.cue.proyectonuclear.infrastructure.dao.SubjectDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.*;
+import co.edu.cue.proyectonuclear.services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,14 @@ import java.util.Optional;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseDAO courseDAO;
+    private final ProfessorService professorService;
+    private final SubjectService subjectService;
+    private final StudentService studentService;
+    private final ClassroomService classroomService;
+
+    private final CourseConstrain courseConstrain;
+
+
     @Override
     public CourseDTO saveCourse(CourseDTO course) {
         return courseDAO.saveCourse(course);
@@ -42,7 +52,21 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void createCourses() {
+    public List<CourseDTO>  generateCourses() {
+
+        List<CourseDTO> courseDTOS;
+
+        subjectService.getAllSubjects().stream().forEach(subject ->{
+            ProfessorDTO professorDTO = courseConstrain.validateSubjectIsAssignedToProfessor(subject);
+            List<StudentDTO> students =studentService.getStudentsBySubjectId(subject.id());
+
+
+        });
+
+
+
+        return null;
+
         //TODO
     }
 
