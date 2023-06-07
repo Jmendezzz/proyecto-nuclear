@@ -131,7 +131,9 @@ export const Student = () => {
                   <td>{student.name}</td>
                   <td>{student.career}</td>
                   <td>{student.semester}</td>
-                  <td>{student.subjects}</td>
+                  <td><ul> {student.subjects.map((subject,index) =>(
+                    <li key={index}>{subject.name}</li>
+                  ) )}</ul></td>
                   <td>{student.email}</td>
                   <td className={style["actions__container"]}>
                     <div className={style["icon__edit"]}>

@@ -1,13 +1,19 @@
 package co.edu.cue.proyectonuclear.infrastructure.constrains;
 
+import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
+import co.edu.cue.proyectonuclear.domain.enums.DayOfWeek;
 import co.edu.cue.proyectonuclear.exceptions.CourseException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
+import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
+import co.edu.cue.proyectonuclear.utils.TimeSlotUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -15,6 +21,7 @@ import java.util.Optional;
 public class CourseConstrain {
 
     private final ProfessorDAO professorDAO;
+    private final StudentDAO studentDAO;
 
     public ProfessorDTO validateSubjectIsAssignedToProfessor(SubjectDTO subject){
         Optional<ProfessorDTO> professor = professorDAO.getProfessorBySubject(subject.id());
@@ -25,5 +32,47 @@ public class CourseConstrain {
         return professor.get();
 
     }
+    public List<StudentDTO> validateStudentsAssignedToSubject(SubjectDTO subject){
+        List<StudentDTO> students = studentDAO.getStudentsBySubjectId(subject.id());
+
+        if(students.size() == 0) throw new CourseException("La asignatura "+subject.name() + " no cuenta con estudiantes registrados"
+                ,HttpStatus.BAD_REQUEST);
+
+        return students;
+    }
+
+    public void validateProfessorHasSufficientAvailableSchedule(ProfessorDTO professorDTO, SubjectDTO subject,Integer weeklyHours){
+        List<TimeSlot> timeSlots =
+                professorDTO.schedule()
+                .stream()
+                .flatMap(s->s.timeSlots().stream())
+                .toList();
+
+
+        List<Integer> hours =
+                timeSlots.stream()
+                .map(ts-> TimeSlotUtil.between(ts)).
+                toList();
+
+        Integer totalHours =
+                hours
+                .stream()
+                .reduce(0,(total,current)->total+current);
+
+        if(weeklyHours > totalHours) throw new CourseException(
+                        "El profesor "+ professorDTO.name() + " " + professorDTO.lastName() +
+                        " no tiene la disponibilidad necesaria para dictar la materia: "+ subject.name(), HttpStatus.BAD_REQUEST
+        );
+    }
+
+    public boolean validateScheduleTimeSlot(DayOfWeek day, TimeSlot timeSlot, ProfessorDTO professor, List<StudentDTO> students) {
+
+
+            return false;
+
+    }
+
+
+
 
 }

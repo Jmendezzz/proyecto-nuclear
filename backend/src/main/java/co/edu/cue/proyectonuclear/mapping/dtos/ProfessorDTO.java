@@ -11,7 +11,7 @@ public record ProfessorDTO(
         String name,
         String lastName,
         String email,
-        List<ProfessorSchedule> schedule,
+        List<ProfessorScheduleDTO> schedule,
         List<Subject> subjects
 ) {
 }
