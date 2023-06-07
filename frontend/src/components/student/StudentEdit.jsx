@@ -15,6 +15,8 @@ import { Field, Form, Formik, ErrorMessage } from "formik";
 import { Loading } from "../../UI/loading/Loading";
 import { UserSubjectsModal } from "../user/UserSubjectsModal";
 
+import { AiOutlineClose } from "react-icons/ai";
+import { IoIosAddCircle } from "react-icons/io";
 const validateForm = (values) => {    
       const errors = {};
       if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
