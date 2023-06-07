@@ -56,7 +56,7 @@ export const Classroom = () => {
   }, [classroomsChange]);
   const lastClassroomIndex = currentPage * classroomsPerPage;
   const firstClassroomIndex = lastClassroomIndex - classroomsPerPage;
-  const currentClassroom = classroom.slice(firstClassroomIndex, lastClassroomIndex);
+  let currentClassroom = classroom.slice(firstClassroomIndex, lastClassroomIndex);
 
   const navigate = useNavigate();
   const deleteSubjectHandler = (id) => {
@@ -86,8 +86,14 @@ export const Classroom = () => {
 
     }
    
+    const [search, setSearch] = useState("");
+    const searchHandler = (event)=>{
+      setSearch(event.target.value);
+    }
   
-  
+    if(search.trim() !== ""){
+      currentClassroom = classroom.filter(classroom=> classroom.name.toLowerCase().includes(search))
+    }
    
 
   
@@ -120,7 +126,7 @@ export const Classroom = () => {
             </Button>
           </div>
           {<Input
-            input={{ placeholder: "Nombre del id" }}
+            input={{ placeholder: "Nombre de la persona" ,onChange:searchHandler}}
             style={{ height: "20px" }}
           ></Input> }
           
@@ -132,7 +138,7 @@ export const Classroom = () => {
           </Button> }
        
         </Flex>
-        {classroom.length > 0 ?
+        {currentClassroom.length > 0 ?
           <>
         <table className={style.table}>
           <thead>

@@ -22,7 +22,7 @@ public class ClassroomController {
     public List<ClassroomDTO> getAllClassroom(){
         return classroomService.getAllClassroom();
     }
-    @PostMapping("/classrooms")
+    @PostMapping("/classrooms/create")
     public ResponseEntity<ClassroomDTO> createClassroom(@RequestBody ClassroomDTO classroomDTO){
      ClassroomDTO classroomDTOCreated=classroomService.saveClassroom(classroomDTO);
       return new ResponseEntity<>(classroomDTOCreated,HttpStatus.CREATED);
@@ -36,7 +36,7 @@ public class ClassroomController {
         if(classroomDTO.isEmpty()) throw  new ClassroomException("Classroom not found with the ID:"+id, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(classroomDTO.get(), HttpStatus.OK);
     }
-    @PutMapping("/classrooms")
+    @PutMapping("/classrooms/update")
     public ResponseEntity<ClassroomDTO> updateClassroom(@RequestBody ClassroomDTO classroomDTO) {
         ClassroomDTO classroom = classroomService.updateClassroom(classroomDTO);
         return new ResponseEntity<>(classroom, HttpStatus.OK);

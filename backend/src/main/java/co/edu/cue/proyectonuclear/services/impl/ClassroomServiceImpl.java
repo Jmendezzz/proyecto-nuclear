@@ -17,7 +17,7 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public ClassroomDTO saveClassroom(ClassroomDTO classroom) {
-        return classroomDAO.saveCourse(classroom);
+        return classroomDAO.saveClassroom(classroom);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public Optional<ClassroomDTO> getClassroomById(Long id) {
-        return classroomDAO.findClassroomById(id);
+        return classroomDAO.getClassroomById(id);
     }
 
     @Override
