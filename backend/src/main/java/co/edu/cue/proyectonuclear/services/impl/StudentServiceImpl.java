@@ -1,5 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
+
+import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
@@ -36,5 +38,14 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO deleteStudent(Long id) {return studentDao.deleteStudent(id);}
 
     @Override
-    public Optional<StudentDTO> getStudentById(Long id) {return studentDao.getStudentById(id);}
+    public Optional<StudentDTO> getStudentById(Long id) {
+        return studentDao.getStudentById(id);
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsBySubjectId(Long subjectId){
+
+        return   studentDao.getStudentsBySubjectId(subjectId);
+
+    }
 }

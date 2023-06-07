@@ -9,9 +9,9 @@ import java.util.List;
 
 public record CourseDTO(
         Long id,
-        Professor professor,
-        Subject subject,
-        List<Student>students,
+        ProfessorDTO professor,
+        SubjectDTO subject,
+        List<StudentDTO>students,
         List<CourseSchedule> courseSchedule
 
 
