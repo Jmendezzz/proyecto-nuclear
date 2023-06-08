@@ -21,17 +21,20 @@ public class User {
     @Column(length = 50)
     private String name;
 
+    @Column(length = 50)
+    private String username;
+
     @Column(name = "last_name" , length = 50)
     private String lastName;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     @Column(length = 50)
     private String email;
 
-
     @Column(length = 50)
     private String password;
+
+    private Boolean active;
 }
