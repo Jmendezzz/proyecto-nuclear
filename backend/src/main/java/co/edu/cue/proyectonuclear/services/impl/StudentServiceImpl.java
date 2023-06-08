@@ -1,6 +1,6 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
-import co.edu.cue.proyectonuclear.infrastructure.constrains.StudentConstrain;
+
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
@@ -17,8 +17,6 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDao;
-    private final UserConstrain userConstrain;
-    private final StudentConstrain studentConstrain;
     @Override
     public List<StudentDTO> getAllStudent(){return studentDao.getAllStudent();}
 
@@ -27,31 +25,27 @@ public class StudentServiceImpl implements StudentService {
         return studentDao.getStudentByNid(nid);
     }
 
-    @Override //Recibimos el DTO para crear y se lo pasamos al DAO
-    public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
-        userConstrain.validateNidUser(createStudentRequestDTO.nid());
-        return studentDao.saveStudent(createStudentRequestDTO);
-    }
+    @Override
+    public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {return studentDao.saveStudent(createStudentRequestDTO);}
 
     @Override
     public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
 
     @Override
-    public StudentDTO updateStudent(StudentDTO studentDTO) { //TODO:the student just can update the password and email
-        studentConstrain.validateStudentById(studentDTO.id());
-        return studentDao.updateStudent(studentDTO);
-    }
+    public StudentDTO updateStudent(StudentDTO studentDTO) {return studentDao.updateStudent(studentDTO);}
 
     @Override
-    public StudentDTO deleteStudent(Long id) {
-        Optional<StudentDTO> studentDTODelete = studentDao.getStudentById(id);
-        if (studentDTODelete.isPresent()){
-            return studentDao.deleteStudent(id);
-        }else return null;
-    }
+    public StudentDTO deleteStudent(Long id) {return studentDao.deleteStudent(id);}
 
     @Override
     public Optional<StudentDTO> getStudentById(Long id) {
         return studentDao.getStudentById(id);
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsBySubjectId(Long subjectId){
+
+        return   studentDao.getStudentsBySubjectId(subjectId);
+
     }
 }

@@ -15,23 +15,17 @@ import { Field, Form, Formik, ErrorMessage } from "formik";
 import { Loading } from "../../UI/loading/Loading";
 import { UserSubjectsModal } from "../user/UserSubjectsModal";
 
-const validateForm = (values) => {    
-      const errors = {};
-      if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
+const validateForm = (values) => {
 
-      if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
-    
-      if (isEmpty(values.semester.toString())) errors.semester = 'El semestre no debe estar vacío';
-    
-      //TODO:validation for subjects 
-    
-      if (isEmpty(values.email)) errors.email = 'El email no debe estar vacío';
-
-      if (isEmpty(values.password)) errors.password = 'La contrasena no debe estar vacío';
-
-      
-      return errors;
-    }
+    const errors = {};
+    if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
+    if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
+    if (isEmpty(values.semester.toString())) errors.semester = 'El semestre no debe estar vacío';
+    if (isEmpty(values.email)) errors.email = 'El email no debe estar vacío';
+    if ((values.semester <= 0 || values.semester > 10)) errors.semester = "El semestre deber ser válido";
+    if (isEmpty(values.semester)) errors.semester = 'El semestre no debe estar vacío';
+    return errors;
+}
 
 const succesResponseAlert = (response) => {
     Swal.fire({

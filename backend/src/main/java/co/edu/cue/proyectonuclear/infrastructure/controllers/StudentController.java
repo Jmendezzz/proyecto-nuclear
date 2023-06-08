@@ -21,7 +21,9 @@ public class StudentController {
     @GetMapping("/students")
     public List<StudentDTO> getAllStudent(){ return studentService.getAllStudent();}
 
-    @GetMapping("/students/{nid}")
+
+
+    @GetMapping("/students/nid/{nid}")
     public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable String nid){
 
         Optional<StudentDTO> studentDTO = studentService.getStudentByNid(nid);
@@ -37,20 +39,20 @@ public class StudentController {
         return studentService.getBySemester(semesterNumber);
     }
 
-    @PostMapping("/students")
-    public StudentDTO createStudent(@Valid @RequestBody CreateStudentRequestDTO student){
-
-        return studentService.saveStudent(student);
+    @PostMapping("/students/create")
+    public ResponseEntity<StudentDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO student){
+        StudentDTO studentDTOcreated = studentService.saveStudent(student);
+        return new ResponseEntity<>(studentDTOcreated, HttpStatus.CREATED);
     }
 
-    @PutMapping("/students")
+    @PutMapping("/students/update")
     public ResponseEntity<StudentDTO> updateStudent(@Valid @RequestBody StudentDTO studentDTO){
 
         StudentDTO student = studentService.updateStudent(studentDTO);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @DeleteMapping("/students/{id}")
+    @DeleteMapping("/students/delete/{id}")
     public ResponseEntity<StudentDTO> deleteStudentById(@PathVariable Long id) {
 
         StudentDTO studentDTO = studentService.deleteStudent(id);
@@ -66,4 +68,10 @@ public class StudentController {
         return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
 
     }
+
+    @GetMapping("/students/subjects/{id}")
+    public List<StudentDTO> getStudentsBySubjectId(@PathVariable Long id){
+        return studentService.getStudentsBySubjectId(id);
+    }
+
 }

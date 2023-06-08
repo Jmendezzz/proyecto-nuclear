@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Student;
+import co.edu.cue.proyectonuclear.exceptions.StudentException;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
@@ -65,9 +66,15 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public StudentDTO updateStudent(StudentDTO studentDTO) {
-        Student studentEntity = studentMapper.mapFromDTO(studentDTO);
-        Student studentSaved = entityManager.merge(studentEntity);
-        return studentMapper.mapFromEntity(studentSaved);
+        validateStudentById(studentDTO.id());
+        Student studentEntity = entityManager.find(Student.class,studentDTO.id());
+        if (studentEntity == null) throw new StudentException("Can not update, the id:" + studentDTO.id() + " does not exists", HttpStatus.BAD_REQUEST);
+        studentEntity.setName(studentDTO.name());
+        studentEntity.setLastName(studentDTO.lastName());
+        studentEntity.setEmail(studentDTO.email());
+        studentEntity.setSubjects(studentDTO.subjects());
+        Student studentUpdated = entityManager.merge(studentEntity);
+        return studentMapper.mapFromEntity(studentUpdated);
     }
 
     @Override
@@ -85,6 +92,33 @@ public class StudentDAOImpl implements StudentDAO {
             return Optional.of(studentMapper.mapFromEntity(student));
         }catch (NullPointerException ex){
             return Optional.empty();
+        }
+    }
+
+    private StudentDTO validateStudentById(Long id){
+        Optional<StudentDTO> studentExist = getStudentById(id);
+        if (studentExist.isEmpty()){
+            throw new StudentException("no se encontro un estudiante con el id" + id, HttpStatus.BAD_REQUEST);
+        }
+        else return studentExist.get();
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsBySubjectId(Long subjectId) {
+
+        String query = "SELECT s.id from student s INNER JOIN student_subjects sc on s.id = sc.student_id WHERE sc.subjects_id = :subjectId";
+
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("subjectId",subjectId);
+
+
+        try{
+            List<Long> studentsIds = nativeQuery.getResultList();
+            return studentsIds.stream()
+                    .map(id->getStudentById(id).get())
+                    .toList();
+        }catch (NoResultException e){
+            throw new StudentException("No se encontraron estudiantes registrados en la asignatura identificada por el id:" + subjectId ,HttpStatus.BAD_REQUEST);
         }
     }
 }
