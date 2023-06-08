@@ -98,11 +98,12 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 
     @Override
     public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        ProfessorDTO professorExisting = validateProfessorExisting(id);
+        Professor professorExisting = validateProfessorExistingEntity(id);
+
         validateTime(professorScheduleDTO);
         ProfessorSchedule professorSchedule = mapper.mapFrom(professorScheduleDTO);
         Boolean dayExists = false;
-        for (ProfessorSchedule s : professorExisting.schedule()) {
+        for (ProfessorSchedule s : professorExisting.getSchedule()) {
             if (s.getDay().equals(professorScheduleDTO.day())) {
                 s.getTimeSlots().clear();
                 s.getTimeSlots().addAll(professorSchedule.getTimeSlots());
@@ -111,7 +112,7 @@ public class ProfessorDAOImpl implements ProfessorDAO {
             }
         }
         if (!dayExists) {
-            professorExisting.schedule().add(professorSchedule);
+            professorExisting.getSchedule().add(professorSchedule);
         }
         entityManager.merge(professorExisting);
         return professorScheduleDTO;
@@ -131,6 +132,11 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 
     private ProfessorDTO validateProfessorExisting(Long id){
         Optional<ProfessorDTO> professorExisting = getProfessorById(id);
+        if (professorExisting.isEmpty()) throw new ProfessorException("ID incorrecto, no se encontró ningún profesor con id: "+id, HttpStatus.BAD_REQUEST);
+        return professorExisting.get();
+    }
+    private Professor validateProfessorExistingEntity(Long id){
+        Optional<Professor> professorExisting = Optional.of(entityManager.find(Professor.class, id));
         if (professorExisting.isEmpty()) throw new ProfessorException("ID incorrecto, no se encontró ningún profesor con id: "+id, HttpStatus.BAD_REQUEST);
         return professorExisting.get();
     }
