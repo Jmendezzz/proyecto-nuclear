@@ -2,16 +2,19 @@ package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.*;
 import co.edu.cue.proyectonuclear.domain.enums.Period;
+import co.edu.cue.proyectonuclear.exceptions.CourseException;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.CourseConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
-import co.edu.cue.proyectonuclear.infrastructure.dao.SubjectDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.*;
 import co.edu.cue.proyectonuclear.services.*;
-import co.edu.cue.proyectonuclear.utils.TimeSlotUtil;
+import co.edu.cue.proyectonuclear.infrastructure.utils.TimeSlotUtil;
 import lombok.AllArgsConstructor;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ChronoUnit;
+import javax.swing.text.html.Option;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,20 +58,28 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseDTO>  generateCourses() {
+    public List<GenerateCourseDTO>  generateCourses() {
 
-        List<CourseDTO> coursesDTO;
+        List<GenerateCourseDTO> coursesDTO = new ArrayList<>();
 
-        subjectService.getAllSubjects().stream().forEach(subject ->{
+        subjectService.getAllSubjects().stream().map(subject ->{
             ProfessorDTO professorDTO = courseConstrain.validateSubjectIsAssignedToProfessor(subject); //Throws CourseException
 
             List<StudentDTO> students = courseConstrain.validateStudentsAssignedToSubject(subject); //Throws CourseException
 
-        });
-        return null;
+            return new GenerateCourseDTO(
+                    professorDTO,
+                    subject,
+                    students,
+                    generateCourseSchedule(students,professorDTO,subject)
+
+            );
+
+        }).forEach(c->coursesDTO.add(c));
+        return  coursesDTO;
     }
 
-    private List<CourseScheduleDTO> generateCourseSchedule(List<StudentDTO> students,ProfessorDTO professor, SubjectDTO subject){
+    private List<GenerateCourseScheduleDTO> generateCourseSchedule(List<StudentDTO> students,ProfessorDTO professor, SubjectDTO subject){
 
 
         Integer weeklyHours = (int)  Math.floor(subject.academicHours() / (subject.period().equals(Period.TRIMESTRAL) ? 10 :20));
@@ -81,24 +92,45 @@ public class CourseServiceImpl implements CourseService {
 
         List <ProfessorScheduleDTO> professorSchedule= professor.schedule();
 
-        List<CourseScheduleDTO> courseSchedule = new ArrayList<>();
+        List<GenerateCourseScheduleDTO> courseSchedules = new ArrayList<>();
 
-        while(filledHours!=weeklyHours){
-
-            professorSchedule.stream().forEach(ps->{
+            professorSchedule.stream().map(ps->{ //Iterating over each ProfessorSchedule
 
                 if(weeklyHours > 6){
-
                     List<TimeSlot> possibleTimeSlots =  ps.timeSlots().stream()
                             .filter( timeSlot -> TimeSlotUtil.between(timeSlot) >2)
+                            .map(timeSlot -> TimeSlotUtil.splitTimeSlot(timeSlot,3))
+                            .flatMap(timeSlots -> timeSlots.stream())
                             .toList();
 
+                    Optional<TimeSlot> timeSlot = possibleTimeSlots.stream()
+                            .filter(ts-> !courseConstrain.validateCrossingScheduleTimeSlotForStudents(
+                                    ps.day(),
+                                    ts,
+                                    students)
+                            ).findFirst();
+
+                    if(timeSlot.isPresent()){
+                        System.out.println("TIME SLOT:"+ timeSlot.get().getEndTime());
+                        return new GenerateCourseScheduleDTO(
+                                ps.day(),
+                                timeSlot.get()
+                        );
+                    }else{
+                        return  null;
+
+                    }
+
+
                 }
+                else {
+                    return null;
+                }
+            }).filter(cs->cs!=null).forEach(cs->courseSchedules.add(cs));
 
-            });
+        System.out.println("SIZE:" + courseSchedules.size());
 
-
-        }
+        return courseSchedules;
 
     }
 

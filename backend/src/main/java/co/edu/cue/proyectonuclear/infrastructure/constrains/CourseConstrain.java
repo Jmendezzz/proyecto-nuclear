@@ -3,22 +3,27 @@ package co.edu.cue.proyectonuclear.infrastructure.constrains;
 import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
 import co.edu.cue.proyectonuclear.domain.enums.DayOfWeek;
 import co.edu.cue.proyectonuclear.exceptions.CourseException;
+import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
-import co.edu.cue.proyectonuclear.utils.TimeSlotUtil;
+import co.edu.cue.proyectonuclear.infrastructure.utils.TimeSlotUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
 @Component
 public class CourseConstrain {
+
+    private final CourseDAO courseDAO;
 
     private final ProfessorDAO professorDAO;
     private final StudentDAO studentDAO;
@@ -65,10 +70,27 @@ public class CourseConstrain {
         );
     }
 
-    public boolean validateScheduleTimeSlot(DayOfWeek day, TimeSlot timeSlot, ProfessorDTO professor, List<StudentDTO> students) {
+    public boolean validateCrossingScheduleTimeSlotForStudents(DayOfWeek day, TimeSlot timeSlot,List<StudentDTO> students) {
 
+        return students.stream()
+                .map(student -> courseDAO.getCoursesByStudentId(student.id()))
+                .flatMap(c-> c.stream())
+                .flatMap(c->c.courseSchedule().stream())
+                .filter(c->c.day().equals(day))
+                .anyMatch(courseSchedule -> TimeSlotUtil.validateTimeCrossing(courseSchedule.timeSlot(),timeSlot));
+    }
 
-            return false;
+    public boolean validateScheduleTimeSlotForProfessor(DayOfWeek day, TimeSlot timeSlot, ProfessorDTO professor){
+
+        //TODO
+
+        return false;
+
+    }
+
+    public boolean validateScheduleCrossing(TimeSlot timeSlot, CourseDTO courseDTO){
+
+        return courseDTO.courseSchedule().stream().anyMatch(cs-> TimeSlotUtil.validateTimeCrossing(cs.timeSlot(),timeSlot));
 
     }
 

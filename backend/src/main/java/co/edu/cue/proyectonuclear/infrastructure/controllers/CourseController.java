@@ -4,6 +4,7 @@ package co.edu.cue.proyectonuclear.infrastructure.controllers;
 import co.edu.cue.proyectonuclear.exceptions.CourseException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
 import co.edu.cue.proyectonuclear.services.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,8 +46,8 @@ public class CourseController {
 
     }
     @GetMapping("/courses/generate")
-    public ResponseEntity<List<CourseDTO>> generateCourses(){
-        return null;
+    public ResponseEntity<List<GenerateCourseDTO>> generateCourses(){
+        return new ResponseEntity<>(courseService.generateCourses(),HttpStatus.OK);
     }
 
 

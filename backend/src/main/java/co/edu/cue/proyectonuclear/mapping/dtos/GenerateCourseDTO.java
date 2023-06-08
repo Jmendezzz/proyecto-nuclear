@@ -8,6 +8,6 @@ public record GenerateCourseDTO(
         ProfessorDTO professor,
         SubjectDTO subject,
         List<StudentDTO> students,
-        List<CourseSchedule> courseSchedule
+        List<GenerateCourseScheduleDTO> courseSchedule
 ) {
 }
