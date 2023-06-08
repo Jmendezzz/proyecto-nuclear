@@ -12,6 +12,7 @@ public interface ProfessorService {
     List<ProfessorDTO> getAllProfessors();
     Optional<ProfessorDTO> getProfessorByNid(String nid);
     Optional<ProfessorDTO> getProfessorById(Long id);
+    Optional<ProfessorDTO> getProfessorBySubjectId(Long idSubject);
     ProfessorDTO deleteProfessorById(Long id);
     ProfessorDTO updateProfessor(ProfessorDTO professor);
     ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO);

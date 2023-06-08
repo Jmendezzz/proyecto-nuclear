@@ -20,20 +20,15 @@ public class StudentController {
     StudentService studentService;
     @GetMapping("/students")
     public List<StudentDTO> getAllStudent(){ return studentService.getAllStudent();}
-    @GetMapping("/students/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
 
-        Optional<StudentDTO> studentDTO =  studentService.getStudentById(id);
-        if(studentDTO.isEmpty()) throw  new SubjectException("Subject not found with the id: "+ id,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
 
-    }
 
-    @GetMapping("/students/{nid}")
+    @GetMapping("/students/nid/{nid}")
     public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable String nid){
 
         Optional<StudentDTO> studentDTO = studentService.getStudentByNid(nid);
-        if(studentDTO.isEmpty()) throw new StudentException("No se ha encontrado un estudiante con numero de identificacion: "+nid, HttpStatus.BAD_REQUEST);
+        if(studentDTO.isEmpty())
+            throw new StudentException("No se ha encontrado un estudiante con numero de identificacion: "+nid, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
 
     }
@@ -64,4 +59,19 @@ public class StudentController {
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
 
     }
+
+    @GetMapping("/students/{id}")
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
+
+        Optional<StudentDTO> studentDTO =  studentService.getStudentById(id);
+        if(studentDTO.isEmpty()) throw  new SubjectException("Subject not found with the id: "+ id,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/students/subjects/{id}")
+    public List<StudentDTO> getStudentsBySubjectId(@PathVariable Long id){
+        return studentService.getStudentsBySubjectId(id);
+    }
+
 }

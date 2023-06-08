@@ -15,7 +15,7 @@ import { IoIosAddCircle } from "react-icons/io";
 import Swal from "sweetalert2";
 import { ClassroomElementsModal } from "./ClassroomElementsModal";
 import { AiOutlineClose } from "react-icons/ai";
-
+import ClassroomForm from './ClassroomForm';
 
 
 const validateForm = (values) => {
@@ -58,62 +58,31 @@ const errorResponseAlert = (error) => {
 
 
 export const ClassroomCreate = () => {
-  const [elementsAdded, setElementsAdded] = useState([]);
-
-  const [
-    classroomLocationValue,
-    classroomLocationValueChangeHandler
-  ] = useState("PRINCIPAL");
-
-  const [
-    classroomTipologyValue,
-    classroomTipologyValueChangeHandler
-  ] = useState("NORMAL");
-
-  const [elementsModal, setElementsModal] = useState(undefined);
-
-
 
   const navigate = useNavigate();
 
   const createClassroomHandler = (values) => {
     const classroom = {
       name: values.name,
-      location: classroomLocationValue,
+      location: values.location,
       capability: values.capability,
-      elements: elementsAdded.map((element)=>element.value),
-      tipology: classroomTipologyValue
-    }
-
+      elements: values.elements,
+      tipology: values.tipology
+    };
+  
+    // Aquí puedes realizar la lógica para guardar el salón
+    // Puedes llamar a tu API o servicio correspondiente para guardar los datos
+  
+    // Ejemplo:
     saveClassroom(classroom)
+
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/salones"))
-      .catch(error => errorResponseAlert(error))
+      .catch(error => errorResponseAlert(error));
+      console.log(classroom);
+  };
 
-  }
 
-  const selectLocationHandler = ({ value }) => {
-    classroomLocationValueChangeHandler(value);
-  }
-  const selectTipologyHandler = ({ value }) => {
-    classroomTipologyValueChangeHandler(value)
-  }
-  const hideElementsModalHandler = () => {
-    setElementsModal(undefined);
-
-  }
-  const showElementsModalHandler = () => {
-    setElementsModal(true)
-  }
-  const confirmElementsAddedHandler = (elements) => {
-    setElementsAdded(elements);
-  }
-
-  const removeElement=(elementToRemove)=>{
-    setElementsAdded((prevElements) =>
-    prevElements.filter((element) => element !== elementToRemove)
-  );
-  }
   return (
     <Flex
       height={"100%"}
@@ -122,7 +91,7 @@ export const ClassroomCreate = () => {
       alignItems={"center"}
       justifyContent={"none"}
     >
-      {elementsModal && <ClassroomElementsModal elements={elementsAdded} onConfirm={confirmElementsAddedHandler} onClick={hideElementsModalHandler} />}
+   
       <Header>
         <h2 style={{ fontSize: "60px" }}>CREAR SALONES</h2>
       </Header>
@@ -134,119 +103,8 @@ export const ClassroomCreate = () => {
         justifyContent={"none"}
         alignItems={"center"}
       >
-        <Flex
-          justifyContent={"none"}
-          alignItems={"center"}
-          direction={"column"}
-          gap="20px"
-          width={"90%"}
-          className={style["create-classroom-container"]}
-        >
-          <Formik
-            initialValues={{
-              name: "",
-              capability: "",
-            }}
-            onSubmit={createClassroomHandler}
-            validate={validateForm}
-          >
-            {({ errors, touched }) => (
-              <Form className={style.form}>
-                <Flex
-                  direction={"column"}
-                  height={"auto"}
-                  alignItems={"none"}
-                  justifyContent={"none"}
-                  className={errors.name && touched.name ? style["form__item-error"] : style["form__item"]}
-                >
-                  <label style={{ fontSize: "20px", color: errors.name && touched.name ? "red" : "black" }}>Nombre</label>
-                  <Field name="name" />
-                  <ErrorMessage name="name" style={{ fontSize: "17px", color: "red" }} component={"small"} />
-                </Flex>
-                <Flex
-                  direction={"column"}
-                  height={"auto"}
-                  alignItems={"none"}
-                  justifyContent={"none"}
-                  className={style["form__item"]}
-                >
-
-                  <label style={{ fontSize: "20px" }}></label>
-                  <Select
-                    onChange={selectLocationHandler}
-                    defaultValue={{ label: location[0].name, value: location[0].value }}
-                    noOptionsMessage={() => "No se encontraron carreras "}
-                    className={style.select}
-                    options={location.map((location) => ({
-                      label: location.name,
-                      value: location.value,
-                    }))}
-                  />
-
-                </Flex>
-                <Flex
-                  direction={"column"}
-                  height={"auto"}
-                  alignItems={"none"}
-                  justifyContent={"none"}
-                  className={errors.capability && touched.capability ? style["form__item-error"] : style["form__item"]}
-                >
-                  <label style={{ fontSize: "20px", color: errors.capability && touched.capability ? "red" : "black" }}>Capacidad</label>
-                  <Field name="capability" type="number" />
-                  <ErrorMessage name="capability" style={{ fontSize: "17px", color: "red" }} component={"small"} />
-                </Flex>
-                <Flex
-                  direction={"column"}
-                  height={"auto"}
-                  alignItems={"none"}
-                  justifyContent={"none"}
-                >
-                  <Flex justifyContent={"none"} gap={"10px"} >
-                    <label style={{ fontSize: "20px" }}>Elementos</label>
-                    <IoIosAddCircle className={style["button__add-element"]} onClick={showElementsModalHandler} />
-                  </Flex>
-                  {elementsAdded.length === 0 ? <p>Aún no se han agregado elementos</p>
-                    :
-                    elementsAdded.map((element) => (
-                      <Flex justifyContent={"none"} height={"50px"} >
-                        <p className={style["element-list"]}>{element.name}</p>
-                        <AiOutlineClose className={style["element-list__remove"]} onClick={removeElement.bind(null,element)} />
-                      </Flex>
-                    ))}
-
-                </Flex>
-                <Flex
-                  direction={"column"}
-                  height={"auto"}
-                  alignItems={"none"}
-                  justifyContent={"none"}
-                >
-                  <label style={{ fontSize: "20px" }}>Tipologia</label>
-                  <Select
-                    onChange={selectTipologyHandler}
-                    defaultValue={{ label: tipologies[0].name, value: tipologies[0].value }}
-                    noOptionsMessage={() => "No se encontraron tipologias. "}
-                    className={style.select}
-                    options={tipologies.map((tipology) => ({
-                      label: tipology.name,
-                      value: tipology.value,
-                    }))}
-                  />
-                </Flex>
-
-                <Flex width>
-                  <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
-                    Guardar
-                  </Button>
-                  <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px" }} onClick={() => navigate("/salones")}>
-                    Cancelar
-                  </Button>
-                </Flex>
-              </Form>
-            )}
-          </Formik>
-
-        </Flex>
+        <ClassroomForm onSubmit={createClassroomHandler}/>
+        
       </Flex>
     </Flex>
 

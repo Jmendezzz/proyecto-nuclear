@@ -15,4 +15,5 @@ public interface StudentService {
     StudentDTO deleteStudent(Long id);
     Optional<StudentDTO> getStudentById(Long id);
 
+    List<StudentDTO> getStudentsBySubjectId(Long subjectId);
 }

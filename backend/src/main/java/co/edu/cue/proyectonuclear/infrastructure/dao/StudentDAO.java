@@ -16,4 +16,5 @@ public interface StudentDAO {
 
     Optional<StudentDTO> getStudentById(Long id);
 
+    List<StudentDTO> getStudentsBySubjectId(Long subjectId);
 }
