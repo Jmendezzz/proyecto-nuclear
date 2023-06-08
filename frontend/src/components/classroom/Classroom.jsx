@@ -10,6 +10,7 @@ import { BiEdit } from "react-icons/bi";
 import { Form, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { elements } from "../../enums/Element";
+import { tipologies } from "../../enums/Tipology";
 import { getClassrooms, deleteClassroomById } from "../../api/ClassroomApiService";
 import Swal from "sweetalert2";
 
@@ -20,6 +21,12 @@ const reformatElement=(element)=>{
 
   const foundElement = elements.find((e) => e.value === element);
   return foundElement ? foundElement.name : "";
+ }
+
+ const reformatTipology=(tipology)=>{
+
+  const foundTipology = tipologies.find((e) => e.value === tipology);
+  return foundTipology ? foundTipology.name : "";
   }
 
   const succesResponseAlert= (response)=>{
@@ -42,6 +49,7 @@ const reformatElement=(element)=>{
 
 export const Classroom = () => {
   const [classroom, setClassroom] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [classroomsChange, setClassroomsChange] = useState(false);
   const classroomsPerPage = 5;
@@ -59,7 +67,7 @@ export const Classroom = () => {
   let currentClassroom = classroom.slice(firstClassroomIndex, lastClassroomIndex);
 
   const navigate = useNavigate();
-  const deleteSubjectHandler = (id) => {
+  const deleteClassroomHandler = (id) => {
     Swal.fire({
       title: '¿Estas seguro de eliminar este salon?',
       text: "Estos cambios son irreversibles",
@@ -75,7 +83,7 @@ export const Classroom = () => {
           deleteClassroomById(id)
             .then((response) => {
               succesResponseAlert(response);
-              setClassroomsChange(true) //Indicates to the useEffect to update the subject list
+              setClassroomsChange(true)
             }
             )
             .catch((error) => {
@@ -94,9 +102,6 @@ export const Classroom = () => {
     if(search.trim() !== ""){
       currentClassroom = classroom.filter(classroom=> classroom.name.toLowerCase().includes(search))
     }
-   
-
-  
 
   return (
     <Flex
@@ -154,30 +159,39 @@ export const Classroom = () => {
           </thead>
           <tbody>
             {currentClassroom.map((classroom) => (
+               
               <tr key={classroom.id}>
                 <td className={style.id}>{classroom.id}</td>
                 <td>{classroom.name}</td>
                 <td>{classroom.location}</td>
                 <td>{classroom.capability}</td>
+               
                 <td style={{textAlign:"left"}}>
                   <ul>
                     {classroom.elements.map((element,index) => (
                       <li style={{fontSize:"20px"}} key={index}>{reformatElement(element)}</li>
+                      
                     ))}
-
                   </ul>
                 </td>
-                <td>{classroom.tipology}</td>
+                <td style={{textAlign:"left"}}>
+                  <ul>
+                 
+                  <li>{reformatTipology(classroom.tipology)}</li>
+               
+                  </ul> 
+                </td>
 
                 <td className={style["actions__container"]}>
                     <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/salones/editar/${classroom.id}`)} />
-                    <MdDeleteForever className={style["icon__delete"]}  onClick={deleteSubjectHandler.bind(null, classroom.id)}/>
+                    <MdDeleteForever className={style["icon__delete"]}  onClick={deleteClassroomHandler.bind(null, classroom.id)}/>
                 </td>
               </tr>
             ))}
 
           </tbody>
         </table>
+      
         {classroom.length > 8 && (
           <Pagination
             totalItems={classroom.length}
