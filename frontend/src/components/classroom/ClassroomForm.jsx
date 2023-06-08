@@ -64,18 +64,14 @@ const validateForm = (values) => {
       }
       const submitButtonHandler = (values) => {
    
-        onSubmit(  // Con el spread (...) copia todo lo que llegue de values o sea lo que envia el Formik y le adjunto la carrera y periodo al objeto.
+        onSubmit(
             {
                 ...values,
                 tipology: classroomTipologyValue,
                 location:classroomLocationValue,
                 elements: elementsAdded.map((element)=>element.value)
-                
-
-                
-              
             }
-        ); // Llama a la función que llega por parametro, ya sea enviada por el componente de editar o crear.
+        );
 
     }
     return(
@@ -91,17 +87,14 @@ const validateForm = (values) => {
              {elementsModal && <ClassroomElementsModal elements={elementsAdded} onConfirm={confirmElementsAddedHandler} onClick={hideElementsModalHandler} />}
             <Formik
               initialValues={
-                classroom ? { // Valida si llega por props una asignatura en caso de que sí, los valores iniciales serán asignados.
+                classroom ? {
                     name: classroom.name,
                     capability:classroom.capability,
-                    
-                   
-
                 } :
                     {
                         name: "",
                         capability: "",
-                       
+                
                     }
 
             }
@@ -172,7 +165,6 @@ const validateForm = (values) => {
                           <AiOutlineClose className={style["element-list__remove"]} onClick={removeElement.bind(null,element)} />
                         </Flex>
                       ))}
-  
                   </Flex>
                   <Flex
                     direction={"column"}
