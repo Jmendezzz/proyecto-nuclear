@@ -32,7 +32,7 @@ public class CourseServiceImpl implements CourseService {
 
 
     @Override
-    public CourseDTO saveCourse(CourseDTO course) {
+    public CourseDTO saveCourse(GenerateCourseDTO course) {
         return courseDAO.saveCourse(course);
     }
 
@@ -81,7 +81,7 @@ public class CourseServiceImpl implements CourseService {
 
             );
 
-        }).forEach(c -> coursesDTO.add(c));
+        }).forEach(c -> saveCourse(c));
         return coursesDTO;
     }
 
