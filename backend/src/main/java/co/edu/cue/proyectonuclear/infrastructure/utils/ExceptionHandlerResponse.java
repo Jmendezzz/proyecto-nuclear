@@ -1,9 +1,6 @@
 package co.edu.cue.proyectonuclear.infrastructure.utils;
 
-import co.edu.cue.proyectonuclear.exceptions.ClassroomException;
-import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
-import co.edu.cue.proyectonuclear.exceptions.SubjectException;
-import co.edu.cue.proyectonuclear.exceptions.UserException;
+import co.edu.cue.proyectonuclear.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,6 +31,12 @@ public class ExceptionHandlerResponse extends ResponseEntityExceptionHandler { /
     }
     @ExceptionHandler(ProfessorException.class)
     public final ResponseEntity<ErrorDetail> professorException(ProfessorException ex, WebRequest req){
+        ErrorDetail errorDetail = new ErrorDetail(LocalDate.now(), ex.getMessage(), req.getDescription(false));
+        return new ResponseEntity<>(errorDetail, ex.getHttpStatus());
+    }
+
+    @ExceptionHandler(CourseException.class)
+    public final ResponseEntity<ErrorDetail> professorException(CourseException ex, WebRequest req){
         ErrorDetail errorDetail = new ErrorDetail(LocalDate.now(), ex.getMessage(), req.getDescription(false));
         return new ResponseEntity<>(errorDetail, ex.getHttpStatus());
     }

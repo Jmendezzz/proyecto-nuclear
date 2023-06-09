@@ -9,7 +9,7 @@ import java.util.List;
 public record CourseStudentRequestDTO(
         Professor professor,
         Subject subject,
-        List<CourseSchedule> courseSchedule
+        List<CourseScheduleDTO> courseSchedule
 
 
 ) {

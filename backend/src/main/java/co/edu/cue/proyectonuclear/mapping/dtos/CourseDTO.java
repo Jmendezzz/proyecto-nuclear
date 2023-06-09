@@ -12,7 +12,7 @@ public record CourseDTO(
         ProfessorDTO professor,
         SubjectDTO subject,
         List<StudentDTO>students,
-        List<CourseSchedule> courseSchedule
+        List<CourseScheduleDTO> courseSchedule
 
 
 ) {

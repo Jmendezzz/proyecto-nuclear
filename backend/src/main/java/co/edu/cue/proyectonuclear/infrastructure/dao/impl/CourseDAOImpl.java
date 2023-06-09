@@ -61,6 +61,14 @@ public class CourseDAOImpl  implements CourseDAO {
         return mapEntityList(nativeQuery.getResultList());
 
     }
+
+    @Override
+    public List<CourseDTO> getCoursesByClassroomId(Long id){
+        String query = "SELECT c.* FROM course c INNER JOIN course_schedule cs ON c.id = cs.course_id WHERE classroom_id = :classroomId ";
+        Query nativeQuery = entityManager.createNativeQuery(query,Course.class);
+        nativeQuery.setParameter("classroomId", id);
+        return nativeQuery.getResultList();
+    }
     private List<CourseStudentRequestDTO>  mapEntityList(List<Course> courses){//TODO Crear una función generica para esto.
         return courses.stream()
                 .map(s-> courseMapper.mapStudentRequestFromEntity(s))

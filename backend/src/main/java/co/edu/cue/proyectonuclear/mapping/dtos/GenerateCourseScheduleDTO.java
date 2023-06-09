@@ -4,8 +4,9 @@ import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
 import co.edu.cue.proyectonuclear.domain.enums.DayOfWeek;
 
 public record GenerateCourseScheduleDTO(
-        ClassroomDTO classroom,
         DayOfWeek day,
+        ClassroomDTO classroom,
+
         TimeSlot timeSlot
 ) {
 }
