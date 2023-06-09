@@ -43,7 +43,7 @@ function App() {
             <Route path="salones/editar/:classroomId" element={<ClassroomEdit/>}></Route>
             <Route path="profesores/editar/:professorId" element={<ProfessorEdit/>}></Route>
 
-            <Route path="/estudiantes/editar/:subjectId" element={<StudentEdit/>}></Route>
+            <Route path="/estudiantes/editar/:studentId" element={<StudentEdit/>}></Route>
 
           </Routes>
         </Sidebar>

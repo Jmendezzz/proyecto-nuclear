@@ -167,7 +167,7 @@ public class CourseServiceImpl implements CourseService {
                 .stream()
                 .filter(c -> c.capability() > studentsNumber
                         &&
-                        c.capability() > studentsNumber + finalMaxAcceptableDifference)
+                        c.capability() < studentsNumber + finalMaxAcceptableDifference)
                 .toList();
 
 

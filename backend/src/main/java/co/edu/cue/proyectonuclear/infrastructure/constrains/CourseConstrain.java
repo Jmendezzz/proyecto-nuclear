@@ -110,7 +110,7 @@ public class CourseConstrain {
                 .flatMap(c -> c.courseSchedule().stream())
                 .filter(cs-> cs.day().equals(day))
                 .filter(cs-> cs.timeSlot().getEndTime().getHour() == timeSlot.getStartTime().getHour())
-                .anyMatch(cs-> cs.classroom().location().equals(classroom.location()));
+                .noneMatch(cs-> cs.classroom().location().equals(classroom.location()));
 
     }
 
