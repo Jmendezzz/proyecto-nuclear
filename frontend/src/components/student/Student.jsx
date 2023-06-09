@@ -148,6 +148,13 @@ export const Student = () => {
                       <td>{student.semester}</td>
                       <td>{student.subjects}</td>
                       <td>{student.email}</td>
+                      <td>
+                        <ul>
+                          {student.subjects.map((subject) => (
+                            <li key={subject.id}>{subject.name}</li>
+                          ))}
+                        </ul>
+                      </td>
                       <td className={style["actions__container"]}>
                         <div className={style["icon__edit"]}>
                           <BiEdit onClick={() => navigate(`/estudiantes/editar/${student.id}`)}  />
