@@ -10,7 +10,6 @@ import { Loading } from "../../UI/loading/Loading";
 import { ErrorResponse } from "../../UI/error/ErrorResponse";
 import {ClassroomForm} from './ClassroomForm';
 
-
 const succesResponseAlert = (response) => {
   Swal.fire({
     title: "Salon editado",
@@ -103,8 +102,7 @@ export const ClassroomEdit = () => {
                     alignItems={"center"}
                 >
                 <ClassroomForm
-                    classroom={classroom}
-            
+                    classroom={classroom}    
                     onSubmit={editClassroomHandler}
                 />
 
