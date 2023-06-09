@@ -11,38 +11,43 @@ import { useNavigate } from "react-router-dom";
 import { getStudents, deleteStudentById } from "../../api/StudentApiService";
 import Swal from "sweetalert2";
 
+
+const succesResponseAlert= (response)=>{
+  Swal.fire(
+    'Eliminado!',
+    `El estudiante ${response.data.name} ha sido eliminada`,
+    'success',
+  )
+}
+const errorResponseAlert = (error)=>{
+  Swal.fire({
+    title: "Error",
+    text: error.response.data.message,
+    icon: "error",
+    confirmButtonColor: "red",
+    confirmButtonText: "Aceptar",
+  })
+}
+
 export const Student = () => {
-  const succesResponseAlert= (response)=>{
-    Swal.fire(
-      'Eliminado!',
-      `La asignatura ${response.data.name} ha sido eliminada`,
-      'success',
-    )
-  }
-  const errorResponseAlert = (error)=>{
-    Swal.fire({
-      title: "Error",
-      text: error.response.data.message,
-      icon: "error",
-      confirmButtonColor: "red",
-      confirmButtonText: "Aceptar",
-    })
-  }
 
     const [students, setStudents] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [studentsChange, setStudentsChange] = useState(false);
-    const studentsPerPage = 7;
+    const [search, setSearch] = useState("");
+
     const succesResponses = (res) => {
-      console.log(res.data);
       setStudents(res.data);
     };
+
     useEffect(() => {
       getStudents()
       .then((response) => succesResponses(response))
       .catch((error) => console.log(error));
       setStudentsChange(false);
     }, [studentsChange]);
+
+    const studentsPerPage = 7;
     const lastStudentIndex = currentPage * studentsPerPage;
     const firstStudentIndex = lastStudentIndex - studentsPerPage;
     const currentStudents = students.slice(firstStudentIndex, lastStudentIndex);
@@ -74,6 +79,14 @@ export const Student = () => {
           }
         })
   
+    }
+
+    const searchHandler = (event)=>{
+      setSearch(event.target.value);
+    }
+  
+    if(search.trim() !== ""){
+      currentStudents = students.filter(student=> students.name.toLowerCase().includes(search))
     }
   
     return (
@@ -113,44 +126,52 @@ export const Student = () => {
               Buscar
             </Button>
           </Flex>
-          <table className={style.table}>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Carrera</th>
-                <th>Semestre</th>
-                <th>asignaturas</th>
-                <th>email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentStudents.map((student) => (
-                <tr key={student.id}>
-                  <td className={style.id}>{student.id}</td>
-                  <td>{student.name}</td>
-                  <td>{student.career}</td>
-                  <td>{student.semester}</td>
-                  <td>{student.subjects}</td>
-                  <td>{student.email}</td>
-                  <td className={style["actions__container"]}>
-                    <div className={style["icon__edit"]}>
-                      <BiEdit onClick={() => navigate(`/estudiantes/editar/${student.id}`)}  />
-                    </div>
-                    <div className={style["icon__delete"]}>
-                      <MdDeleteForever onClick={deleteStudentHandler.bind(null, student.id)} />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination 
-            totalitems={students.length}
-            itemsPerPage={studentsPerPage}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-          ></Pagination>
+          {currentStudents.length > 0 ?
+            <>
+              <table className={style.table}>
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Carrera</th>
+                    <th>Semestre</th>
+                    <th>asignaturas</th>
+                    <th>email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentStudents.map((student) => (
+                    <tr key={student.id}>
+                      <td className={style.id}>{student.id}</td>
+                      <td>{student.name}</td>
+                      <td>{student.career}</td>
+                      <td>{student.semester}</td>
+                      <td>{student.subjects}</td>
+                      <td>{student.email}</td>
+                      <td className={style["actions__container"]}>
+                        <div className={style["icon__edit"]}>
+                          <BiEdit onClick={() => navigate(`/estudiantes/editar/${student.id}`)}  />
+                        </div>
+                        <div className={style["icon__delete"]}>
+                          <MdDeleteForever onClick={deleteStudentHandler.bind(null, student.id)} />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {students.length > 8 &&(
+                <Pagination 
+                  totalitems={students.length}
+                  itemsPerPage={studentsPerPage}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage}
+                ></Pagination>
+              )}
+            </>
+            :
+            <p style={{ fontSize: "30px" }}>No hay estudiantes para mostrar</p>
+          }
         </Flex>
       </Flex>
     );

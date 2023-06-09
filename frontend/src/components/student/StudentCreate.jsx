@@ -38,8 +38,8 @@ export const StudentCreate = () => {
 			name: values.name,
 			lastName: values.lastName,
 			email: values.email,
-			subjects: subjectsAdded.map((subject) => { return { id: subject.id, name: subject.name } }),
-			career: studentCareerValue,
+			subjects: values.subjects.map((subject) => {return {id: subject.id, name: subject.name }}),
+			career: values.career,
 			semester: values.semester
 		}
 		saveStudent(student)
