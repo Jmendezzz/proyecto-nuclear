@@ -5,6 +5,8 @@ import co.edu.cue.proyectonuclear.domain.enums.DayOfWeek;
 
 public record GenerateCourseScheduleDTO(
         DayOfWeek day,
+        ClassroomDTO classroom,
+
         TimeSlot timeSlot
 ) {
 }

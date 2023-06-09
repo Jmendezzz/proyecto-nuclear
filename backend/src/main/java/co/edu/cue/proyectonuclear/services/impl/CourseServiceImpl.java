@@ -1,20 +1,18 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.*;
+import co.edu.cue.proyectonuclear.domain.enums.DayOfWeek;
 import co.edu.cue.proyectonuclear.domain.enums.Period;
-import co.edu.cue.proyectonuclear.exceptions.CourseException;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.CourseConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
+import co.edu.cue.proyectonuclear.infrastructure.utils.SubjectUtil;
 import co.edu.cue.proyectonuclear.mapping.dtos.*;
 import co.edu.cue.proyectonuclear.services.*;
 import co.edu.cue.proyectonuclear.infrastructure.utils.TimeSlotUtil;
 import lombok.AllArgsConstructor;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,88 +48,139 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseDTO> getCoursesByProfessorId(Long professorId) {
-        return  courseDAO.getCoursesByProfessorId(professorId);
+        return courseDAO.getCoursesByProfessorId(professorId);
     }
+
     @Override
     public List<CourseStudentRequestDTO> getCoursesByStudentId(Long id) {
         return courseDAO.getCoursesByStudentId(id);
     }
 
     @Override
-    public List<GenerateCourseDTO>  generateCourses() {
+    public List<GenerateCourseDTO> generateCourses(List<SubjectDTO> subjects) {
 
         List<GenerateCourseDTO> coursesDTO = new ArrayList<>();
 
-        subjectService.getAllSubjects().stream().map(subject ->{
+            subjects.stream().map(subject -> {
             ProfessorDTO professorDTO = courseConstrain.validateSubjectIsAssignedToProfessor(subject); //Throws CourseException
 
             List<StudentDTO> students = courseConstrain.validateStudentsAssignedToSubject(subject); //Throws CourseException
 
-            return new GenerateCourseDTO(
+            List<GenerateCourseScheduleDTO> courseSchedule = generateCourseSchedule(students,professorDTO,subject);
+
+            LocalDate startDate =  generateCourseStartDate();
+
+
+                return new GenerateCourseDTO(
                     professorDTO,
                     subject,
                     students,
-                    generateCourseSchedule(students,professorDTO,subject)
+                    courseSchedule,
+                    startDate,
+                    generateCourseEndDate(startDate)
 
             );
 
-        }).forEach(c->coursesDTO.add(c));
-        return  coursesDTO;
+        }).forEach(c -> coursesDTO.add(c));
+        return coursesDTO;
     }
 
-    private List<GenerateCourseScheduleDTO> generateCourseSchedule(List<StudentDTO> students,ProfessorDTO professor, SubjectDTO subject){
+    private List<GenerateCourseScheduleDTO> generateCourseSchedule(List<StudentDTO> students, ProfessorDTO professor, SubjectDTO subject) {
 
 
-        Integer weeklyHours = (int)  Math.floor(subject.academicHours() / (subject.period().equals(Period.TRIMESTRAL) ? 10 :20));
+        Integer weeklyHours = SubjectUtil.getWeeklyHours(subject);
 
-        courseConstrain.validateProfessorHasSufficientAvailableSchedule(professor,subject,weeklyHours);
+        courseConstrain.validateProfessorHasSufficientAvailableSchedule(professor, subject, weeklyHours);
 
-        Integer filledHours = 0;
-
-        Integer maxHours = 3;
-
-        List <ProfessorScheduleDTO> professorSchedule= professor.schedule();
+        List<ProfessorScheduleDTO> professorSchedule = professor.schedule();
 
         List<GenerateCourseScheduleDTO> courseSchedules = new ArrayList<>();
 
-            professorSchedule.stream().map(ps->{ //Iterating over each ProfessorSchedule
-
-                if(weeklyHours > 6){
-                    List<TimeSlot> possibleTimeSlots =  ps.timeSlots().stream()
-                            .filter( timeSlot -> TimeSlotUtil.between(timeSlot) >2)
-                            .map(timeSlot -> TimeSlotUtil.splitTimeSlot(timeSlot,3))
+        professorSchedule.stream().map(ps -> { //Iterating over each ProfessorSchedule
+                    List<TimeSlot> possibleTimeSlots = ps.timeSlots().stream()
+                            .filter(timeSlot -> weeklyHours <= 6 || TimeSlotUtil.between(timeSlot) > 2)
+                            .map(timeSlot -> TimeSlotUtil.splitTimeSlot(timeSlot, weeklyHours > 6 && subject.period().equals(Period.TRIMESTRAL) ? 3 : 2))//Splits the timeSlots
                             .flatMap(timeSlots -> timeSlots.stream())
                             .toList();
 
                     Optional<TimeSlot> timeSlot = possibleTimeSlots.stream()
-                            .filter(ts-> !courseConstrain.validateCrossingScheduleTimeSlotForStudents(
-                                    ps.day(),
-                                    ts,
-                                    students)
+                            .filter(ts ->
+                                    !courseConstrain.validateCrossingScheduleTimeSlotForStudents(
+                                            ps.day(),
+                                            ts,
+                                            students)
+                                            &&
+                                            !courseConstrain.validateScheduleTimeSlotForProfessor(
+                                                    ps.day(),
+                                                    ts,
+                                                    professor
+                                            )
                             ).findFirst();
 
-                    if(timeSlot.isPresent()){
-                        System.out.println("TIME SLOT:"+ timeSlot.get().getEndTime());
-                        return new GenerateCourseScheduleDTO(
-                                ps.day(),
-                                timeSlot.get()
-                        );
-                    }else{
-                        return  null;
+                    return timeSlot.map(slot -> new GenerateCourseScheduleDTO(
+                            ps.day(),
+                            findAvailableClassroom(ps.day(),slot,students),
+                            slot
+                    )).orElse(null);
 
-                    }
-
-
-                }
-                else {
-                    return null;
-                }
-            }).filter(cs->cs!=null).forEach(cs->courseSchedules.add(cs));
-
-        System.out.println("SIZE:" + courseSchedules.size());
+                })
+                .filter(cs -> cs != null)
+                .forEach(courseSchedules::add);
 
         return courseSchedules;
+    }
+
+    private ClassroomDTO findAvailableClassroom(DayOfWeek day, TimeSlot timeSlot, List<StudentDTO> students) {
+
+        int studentsSize = students.size();
+
+        Optional<ClassroomDTO> classroom =
+                findSuitableClassrooms(studentsSize)
+                        .stream()
+                        .filter(
+                                c ->
+                                        !courseConstrain.validateClassroomAvailability(day, c, timeSlot)
+                                                &&
+                                                courseConstrain.validateClassroomLocation(day,c,timeSlot,students)
+                        )
+                        .findFirst();
+
+        return classroom.orElse(null);
 
     }
 
+    private List<ClassroomDTO> findSuitableClassrooms(int studentsNumber) {
+
+        int maxAcceptableDifference = 0;
+
+        //Set the max acceptable difference to choose the best classroom option.
+
+        if (studentsNumber <= 10) maxAcceptableDifference = 15;
+
+        if (studentsNumber <= 15) maxAcceptableDifference = 10;
+
+        if (studentsNumber <= 20) maxAcceptableDifference = 8;
+
+        int finalMaxAcceptableDifference = maxAcceptableDifference;
+
+        return classroomService.getAllClassroom()
+                .stream()
+                .filter(c -> c.capability() > studentsNumber
+                        &&
+                        c.capability() > studentsNumber + finalMaxAcceptableDifference)
+                .toList();
+
+
+    }
+
+    private LocalDate generateCourseStartDate(){
+        LocalDate localDate = LocalDate.now();
+        if(localDate.getMonth().getValue() >= 6 ){
+            return LocalDate.of(localDate.getYear(), 7,5);
+        }else return LocalDate.of(localDate.getYear(),1,16);
+    }
+
+    private LocalDate generateCourseEndDate(LocalDate startDate){
+        return LocalDate.of(startDate.getYear(), startDate.getMonth().getValue() + 5, startDate.getDayOfMonth()+15 );
+    }
 }
