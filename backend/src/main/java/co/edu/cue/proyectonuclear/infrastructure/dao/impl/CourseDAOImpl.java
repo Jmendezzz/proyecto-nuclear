@@ -4,6 +4,7 @@ import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.CourseMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -23,16 +24,21 @@ public class CourseDAOImpl  implements CourseDAO {
     EntityManager entityManager;
     CourseMapper courseMapper;
     @Override
-    public CourseDTO saveCourse(CourseDTO courseDTO) {
-        Course course = courseMapper.mapFromDTO(courseDTO);
+    public CourseDTO saveCourse(GenerateCourseDTO courseDTO) {
+        Course course = courseMapper.mapFromGenerateDTO(courseDTO);
         Course courseSaved =  entityManager.merge(course);
         return courseMapper.mapFromEntity(courseSaved);
     }
 
+
+
     @Override
     public List<CourseDTO> getAllCourses() {
         String query = "FROM Course";
-        return entityManager.createQuery(query).getResultList();
+        List<Course>  courses= entityManager.createQuery(query).getResultList();
+        courses.stream().forEach(c-> System.out.println(c));
+
+        return mapEntityList(entityManager.createQuery(query).getResultList());
     }
 
 
@@ -69,9 +75,9 @@ public class CourseDAOImpl  implements CourseDAO {
         nativeQuery.setParameter("classroomId", id);
         return nativeQuery.getResultList();
     }
-    private List<CourseStudentRequestDTO>  mapEntityList(List<Course> courses){//TODO Crear una función generica para esto.
+    private List<CourseDTO>  mapEntityList(List<Course> courses){//TODO Crear una función generica para esto.
         return courses.stream()
-                .map(s-> courseMapper.mapStudentRequestFromEntity(s))
+                .map(c-> courseMapper.mapFromEntity(c))
                 .toList();
     }
 }

@@ -30,7 +30,7 @@ public class Course {
 
     private LocalDate endDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "course_id")
     private List<CourseSchedule> courseSchedule;
 

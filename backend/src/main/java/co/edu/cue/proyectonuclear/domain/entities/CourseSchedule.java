@@ -16,7 +16,7 @@ public class CourseSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
-    @OneToOne
+    @ManyToOne
     private Classroom classroom;
     @Enumerated(EnumType.STRING)
     private DayOfWeek day;

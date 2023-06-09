@@ -113,6 +113,4 @@ public class CourseConstrain {
                 .noneMatch(cs-> cs.classroom().location().equals(classroom.location()));
 
     }
-
-
 }

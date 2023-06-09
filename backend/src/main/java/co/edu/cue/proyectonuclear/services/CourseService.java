@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CourseService {
-    CourseDTO saveCourse(CourseDTO course);
+    CourseDTO saveCourse(GenerateCourseDTO course);
     List<CourseDTO> getAllCourses();
     Optional<CourseDTO> getCourseById(Long id);
     List<CourseDTO> getCoursesByProfessorId(Long professorId);
