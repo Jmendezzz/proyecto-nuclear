@@ -26,7 +26,8 @@ const validateForm = (values) => {
  export const ClassroomForm=({ classroom, onSubmit })=>{
      
     const navigate = useNavigate();
-    const [elementsAdded, setElementsAdded] = useState([...classroom.elements]);
+    console.log( classroom && classroom.elements)
+    const [elementsAdded, setElementsAdded] = useState( classroom ?  [...classroom.elements]: []) ;
 
 
     const [
