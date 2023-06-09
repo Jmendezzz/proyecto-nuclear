@@ -9,6 +9,7 @@ import { Flex } from "../../UI/flex/Flex";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
+import { elements } from "../../enums/Element";
 import { AiOutlineClose } from "react-icons/ai";
 import { ClassroomElementsModal } from "./ClassroomElementsModal";
 const validateForm = (values) => {
@@ -24,7 +25,7 @@ const validateForm = (values) => {
   
   }
  export const ClassroomForm=({ classroom, onSubmit })=>{
-     
+     console.log(onSubmit+"sss");
     const navigate = useNavigate();
     console.log( classroom && classroom.elements)
     const [elementsAdded, setElementsAdded] = useState( classroom ?  [...classroom.elements]: []) ;
@@ -58,6 +59,7 @@ const validateForm = (values) => {
         setElementsModal(undefined);
     
       }
+      
       const removeElement=(elementToRemove)=>{
         setElementsAdded((prevElements) =>
         prevElements.filter((element) => element !== elementToRemove)
@@ -74,6 +76,13 @@ const validateForm = (values) => {
         );
 
     }
+    const reformatElement=(element)=>{
+
+      const foundElement = elements.find((e) => e.value === element);
+      return foundElement ? foundElement.name : "";
+     }
+    
+    
     return(
        
           <Flex
@@ -161,7 +170,8 @@ const validateForm = (values) => {
                       :
                       elementsAdded.map((element,index) => (
                         <Flex justifyContent={"none"} height={"50px"} >
-                          <p className={style["element-list"]} key={index}>{element.name}</p>
+                               
+                          <p className={style["element-list"]} key={index}>{reformatElement(element)} {element.name}</p>
                           <AiOutlineClose className={style["element-list__remove"]} onClick={removeElement.bind(null,element)} />
                         </Flex>
                       ))}
