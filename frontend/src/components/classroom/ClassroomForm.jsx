@@ -6,7 +6,7 @@ import Select from "react-select";
 import { Button } from "../../UI/button/Button";
 import style from "./Classroom.module.css";
 import { Flex } from "../../UI/flex/Flex";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
@@ -23,11 +23,11 @@ const validateForm = (values) => {
     return errors;
   
   }
- const ClassroomFrom=({ classroom, onSubmit })=>{
+ export const ClassroomForm=({ classroom, onSubmit })=>{
      
     const navigate = useNavigate();
- 
-    const [elementsAdded, setElementsAdded] = useState([]);
+    const [elementsAdded, setElementsAdded] = useState([...classroom.elements]);
+
 
     const [
       classroomLocationValue,
@@ -62,8 +62,7 @@ const validateForm = (values) => {
         prevElements.filter((element) => element !== elementToRemove)
       );
       }
-      const submitButtonHandler = (values) => {
-   
+      const submitButtonHandler = (values) => {   
         onSubmit(
             {
                 ...values,
@@ -159,9 +158,9 @@ const validateForm = (values) => {
                     </Flex>
                     {elementsAdded.length === 0 ? <p>Aún no se han agregado elementos</p>
                       :
-                      elementsAdded.map((element) => (
+                      elementsAdded.map((element,index) => (
                         <Flex justifyContent={"none"} height={"50px"} >
-                          <p className={style["element-list"]}>{element.name}</p>
+                          <p className={style["element-list"]} key={index}>{element.name}</p>
                           <AiOutlineClose className={style["element-list__remove"]} onClick={removeElement.bind(null,element)} />
                         </Flex>
                       ))}
@@ -201,4 +200,3 @@ const validateForm = (values) => {
        
     )
 }
-export default ClassroomFrom;

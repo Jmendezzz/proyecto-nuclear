@@ -37,6 +37,7 @@ export const Student = () => {
     const [search, setSearch] = useState("");
 
     const succesResponses = (res) => {
+      console.log(res);
       setStudents(res.data);
     };
 
@@ -146,8 +147,6 @@ export const Student = () => {
                       <td>{student.name}</td>
                       <td>{student.career}</td>
                       <td>{student.semester}</td>
-                      <td>{student.subjects}</td>
-                      <td>{student.email}</td>
                       <td>
                         <ul>
                           {student.subjects.map((subject) => (
@@ -155,6 +154,7 @@ export const Student = () => {
                           ))}
                         </ul>
                       </td>
+                      <td>{student.email}</td>
                       <td className={style["actions__container"]}>
                         <div className={style["icon__edit"]}>
                           <BiEdit onClick={() => navigate(`/estudiantes/editar/${student.id}`)}  />

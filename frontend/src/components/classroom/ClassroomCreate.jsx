@@ -5,7 +5,7 @@ import style from "./Classroom.module.css";
 import { useNavigate } from "react-router-dom";
 import { saveClassroom } from "../../api/ClassroomApiService";
 import Swal from "sweetalert2";
-import ClassroomForm from './ClassroomForm';
+import {ClassroomForm} from './ClassroomForm';
 
 const succesResponseAlert = (response) => {
   Swal.fire({

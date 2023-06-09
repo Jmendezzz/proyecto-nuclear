@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Loading } from "../../UI/loading/Loading";
 import { ErrorResponse } from "../../UI/error/ErrorResponse";
-import ClassroomForm from './ClassroomForm';
+import {ClassroomForm} from './ClassroomForm';
 
 
 const succesResponseAlert = (response) => {
