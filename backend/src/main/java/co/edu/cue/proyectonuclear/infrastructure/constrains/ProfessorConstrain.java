@@ -6,6 +6,7 @@ import co.edu.cue.proyectonuclear.exceptions.UserException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestSubjectDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorScheduleDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -25,4 +26,11 @@ public class ProfessorConstrain {
             }
         });
     }
+
+    public void validateTimeSlotsPerWeek(Long id, ProfessorScheduleDTO professorScheduleDTO){
+        Optional<ProfessorDTO> professor = professorDAO.getProfessorById(id);
+        if (professor.isEmpty()) throw new ProfessorException("ID inválido", HttpStatus.BAD_REQUEST);
+        professor.get().subjects().forEach();
+    }
+
 }
