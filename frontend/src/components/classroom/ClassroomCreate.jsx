@@ -7,6 +7,10 @@ import { saveClassroom } from "../../api/ClassroomApiService";
 import Swal from "sweetalert2";
 import {ClassroomForm} from './ClassroomForm';
 
+
+/**
+ * La función muestra un mensaje de alerta de éxito con el nombre de una sala creada.
+ */
 const succesResponseAlert = (response) => {
   Swal.fire({
     title: "Salón creado",
@@ -19,6 +23,9 @@ const succesResponseAlert = (response) => {
 
 }
 
+/**
+ * La función muestra una alerta de error con el mensaje de error de un objeto de respuesta.
+ */
 const errorResponseAlert = (error) => {
   Swal.fire({
     title: "Error",
@@ -32,6 +39,9 @@ const errorResponseAlert = (error) => {
 
 export const ClassroomCreate = () => {
 
+
+/* Este código define un componente de función llamado `ClassroomCreate` que crea un nuevo salón de clases
+cuando se envía un formulario. */
   const navigate = useNavigate();
 
   const createClassroomHandler = (values) => {
