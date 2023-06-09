@@ -14,6 +14,7 @@ import { careers } from "../../enums/Career";
 
 export const UserForm = ({user, role, onSubmit}) => {
 	const validateForm = (values) => {
+		console.log(values);
 		const errors = {};
 		if (role === "PROFESSOR") {
 			if (isEmpty(values.nid)) errors.nid = "El nid no puede ser vacío";
@@ -71,7 +72,7 @@ export const UserForm = ({user, role, onSubmit}) => {
 	};
 
 	const submitButtonHandler = (values) => {
-		onSubmit({...values, subjects: subjectsAdded});
+		onSubmit({...values, subjects: subjectsAdded, career:studentCareerValue});
 	};
 
     const [

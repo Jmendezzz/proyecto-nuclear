@@ -42,10 +42,11 @@ export const StudentCreate = () => {
 			career: values.career,
 			semester: values.semester
 		}
+		console.log(student);
 		saveStudent(student)
 			.then(response => succesResponseAlert(response))
 			.then(() => navigate("/estudiantes"))
-			.catch(error => errorResponseAlert(error))
+			.catch(error => console.log(error))
 	}
 
 	return (
@@ -59,7 +60,7 @@ export const StudentCreate = () => {
 			<Header>
 				<h2 style={{fontSize: "60px"}}>CREAR ESTUDIANTE</h2>
 			</Header>
-			<UserForm user={null} role="ESTUDENT" onSubmit={createStudentHandler}/>
+			<UserForm user={null} role="STUDENT" onSubmit={createStudentHandler}/>
 		</Flex>
 	);
 

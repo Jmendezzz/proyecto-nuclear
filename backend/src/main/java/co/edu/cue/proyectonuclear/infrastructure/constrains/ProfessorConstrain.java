@@ -30,7 +30,7 @@ public class ProfessorConstrain {
     public void validateTimeSlotsPerWeek(Long id, ProfessorScheduleDTO professorScheduleDTO){
         Optional<ProfessorDTO> professor = professorDAO.getProfessorById(id);
         if (professor.isEmpty()) throw new ProfessorException("ID inválido", HttpStatus.BAD_REQUEST);
-        professor.get().subjects().forEach();
+        //professor.get().subjects().forEach();
     }
 
 }
