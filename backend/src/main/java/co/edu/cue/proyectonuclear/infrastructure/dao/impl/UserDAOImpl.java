@@ -30,4 +30,17 @@ public class UserDAOImpl implements UserDAO {
             return Optional.empty();
         }
     }
+
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        String query = "SELECT u FROM User u WHERE u.username = :username";
+        TypedQuery<User> nativeQuery = entityManager.createQuery(query,User.class);
+        nativeQuery.setParameter("username",username);
+        try{
+            User user = nativeQuery.getSingleResult();
+            return Optional.of(user);
+        }catch (NoResultException ex){
+            return Optional.empty();
+        }
+    }
 }

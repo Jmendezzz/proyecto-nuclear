@@ -46,6 +46,7 @@ const succesResponseAlert = (response) => {
 }
 
 const errorResponseAlert = (error) => {
+  console.log(error);
   Swal.fire({
     title: "Error",
     text: error.response.data.detail,
@@ -68,6 +69,7 @@ export const SubjectCreate = () => {
       academicHours: values.academicHours,
       period: values.period
     }
+    console.log(subject);
     saveSubject(subject)
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/asignaturas"))

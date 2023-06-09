@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.domain.entities.ProfessorSchedule;
+import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
@@ -13,6 +14,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -78,14 +80,17 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public ProfessorDTO deleteProfessor(ProfessorDTO professorDTO) {
-        Professor professorEntity = entityManager.find(Professor.class, professorDTO.id());
+    public ProfessorDTO deleteProfessor(Long id) {
+        validateProfessorExisting(id);
+        Professor professorEntity = entityManager.find(Professor.class, id);
         entityManager.remove(professorEntity);
         return mapper.mapFrom(professorEntity);
+
     }
 
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
+        validateProfessorExisting(professor.id());
         Professor professorEntity = mapper.mapFrom(professor);
         Professor professorSaved =  entityManager.merge(professorEntity);
         return mapper.mapFrom(professorSaved);
@@ -93,10 +98,12 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 
     @Override
     public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+        Professor professorExisting = validateProfessorExistingEntity(id);
+
+        validateTime(professorScheduleDTO);
         ProfessorSchedule professorSchedule = mapper.mapFrom(professorScheduleDTO);
-        Professor professor = entityManager.find(Professor.class, id);
         Boolean dayExists = false;
-        for (ProfessorSchedule s : professor.getSchedule()) {
+        for (ProfessorSchedule s : professorExisting.getSchedule()) {
             if (s.getDay().equals(professorScheduleDTO.day())) {
                 s.getTimeSlots().clear();
                 s.getTimeSlots().addAll(professorSchedule.getTimeSlots());
@@ -105,9 +112,9 @@ public class ProfessorDAOImpl implements ProfessorDAO {
             }
         }
         if (!dayExists) {
-            professor.getSchedule().add(professorSchedule);
+            professorExisting.getSchedule().add(professorSchedule);
         }
-        entityManager.merge(professor);
+        entityManager.merge(professorExisting);
         return professorScheduleDTO;
     }
 
@@ -121,5 +128,23 @@ public class ProfessorDAOImpl implements ProfessorDAO {
         });
         entityManager.merge(professor);
         return mapper.mapFrom(professor);
+    }
+
+    private ProfessorDTO validateProfessorExisting(Long id){
+        Optional<ProfessorDTO> professorExisting = getProfessorById(id);
+        if (professorExisting.isEmpty()) throw new ProfessorException("ID incorrecto, no se encontró ningún profesor con id: "+id, HttpStatus.BAD_REQUEST);
+        return professorExisting.get();
+    }
+    private Professor validateProfessorExistingEntity(Long id){
+        Optional<Professor> professorExisting = Optional.of(entityManager.find(Professor.class, id));
+        if (professorExisting.isEmpty()) throw new ProfessorException("ID incorrecto, no se encontró ningún profesor con id: "+id, HttpStatus.BAD_REQUEST);
+        return professorExisting.get();
+    }
+    private void validateTime(ProfessorScheduleDTO professorScheduleDTO){
+        professorScheduleDTO.timeSlots().forEach(ts->{
+            if (ts.getStartTime().isAfter(ts.getEndTime())){
+                throw new ProfessorException("El horario ingresado no es válido, la fecha de fin no puede ser antes de la de inicio.", HttpStatus.BAD_REQUEST);
+            }
+        });
     }
 }
