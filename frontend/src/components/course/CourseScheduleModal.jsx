@@ -1,9 +1,7 @@
 import React from "react";
 import style from "./Course.module.css";
 import { Button } from "../../UI/button/Button";
-import { useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { Input } from "../../UI/inputs/Input";
 import { Flex } from "../../UI/flex/Flex";
 
 
@@ -51,7 +49,7 @@ export const CourseScheduleModal = (props)=>{
                            
                         </>
                         :
-                        <p style={{ fontSize: "30px" }}>No hay estudiantes para mostrar</p>
+                        <p style={{ fontSize: "30px" }}>No hay horarios para mostrar</p>
                     }
                     <footer className={style.actions}>
                         <Button onClick={confirmHandler} inLineStyle={{ width: "100px", height:"50px" }}>

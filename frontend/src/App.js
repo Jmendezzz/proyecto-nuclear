@@ -16,7 +16,7 @@ import { ProfessorCreate } from "./components/professor/ProfessorCreate";
 import { ProfessorEdit } from "./components/professor/ProfessorEdit";
 import { PageNotFoundError } from "./UI/error/PageNotFoundError";
 import { Course } from "./components/course/Course";
-import { GenerateCourse } from "./components/course/CreateCourse";
+import { GenerateCourse } from "./components/course/GenerateCourse";
 
 
 

@@ -11,6 +11,7 @@ import co.edu.cue.proyectonuclear.mapping.mappers.CourseScheduleMapper;
 import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
 import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
@@ -39,25 +40,23 @@ public class CourseDAOImpl  implements CourseDAO {
         String query  = "SELECT * FROM course where subject_id = :subjectId";
         Query nativeQuery =   entityManager.createNativeQuery(query,Course.class);
         nativeQuery.setParameter("subjectId", courseDTO.subject().id());
-        Course existingCourse = (Course) nativeQuery.getSingleResult();
 
-        if(existingCourse != null) {
+        try{
+            Course existingCourse = (Course) nativeQuery.getSingleResult();
+
             existingCourse.setStudents(studentMapper.mapFromListDTO(courseDTO.students()));
             existingCourse.setCourseSchedule(courseScheduleMapper.mapFromDTOList(courseDTO.courseSchedule()));
             existingCourse.setProfessor( professorMapper.mapFrom(courseDTO.professor()));
             Course courseSaved =  entityManager.merge(existingCourse);
             return courseMapper.mapFromEntity(courseSaved);
 
+        } catch (NoResultException ex){
+            Course course = courseMapper.mapFromGenerateDTO(courseDTO);
+            Course courseSaved =  entityManager.merge(course);
+            return courseMapper.mapFromEntity(courseSaved);
         }
 
-        Course course = courseMapper.mapFromGenerateDTO(courseDTO);
-        Course courseSaved =  entityManager.merge(course);
-        return courseMapper.mapFromEntity(courseSaved);
-
-
     }
-
-
 
     @Override
     public List<CourseDTO> getAllCourses() {
@@ -65,7 +64,7 @@ public class CourseDAOImpl  implements CourseDAO {
         List<Course>  courses= entityManager.createQuery(query).getResultList();
         courses.stream().forEach(c-> System.out.println(c));
 
-        return mapEntityList(entityManager.createQuery(query).getResultList());
+        return courseMapper.mapFromEntity(entityManager.createQuery(query).getResultList());
     }
 
 
@@ -91,7 +90,7 @@ public class CourseDAOImpl  implements CourseDAO {
         String query = "SELECT c.* FROM course c INNER JOIN course_students cs on c.id = cs.course_id WHERE students_id = :studentId";
         Query nativeQuery = entityManager.createNativeQuery(query,Course.class);
         nativeQuery.setParameter("studentId",id);
-        return mapEntityList(nativeQuery.getResultList());
+        return courseMapper.mapFromEntity(nativeQuery.getResultList());
 
     }
 
@@ -100,11 +99,6 @@ public class CourseDAOImpl  implements CourseDAO {
         String query = "SELECT c.* FROM course c INNER JOIN course_schedule cs ON c.id = cs.course_id WHERE classroom_id = :classroomId ";
         Query nativeQuery = entityManager.createNativeQuery(query,Course.class);
         nativeQuery.setParameter("classroomId", id);
-        return nativeQuery.getResultList();
-    }
-    private List<CourseDTO>  mapEntityList(List<Course> courses){//TODO Crear una función generica para esto.
-        return courses.stream()
-                .map(c-> courseMapper.mapFromEntity(c))
-                .toList();
+        return courseMapper.mapFromEntity(nativeQuery.getResultList());
     }
 }

@@ -90,6 +90,7 @@ public class CourseServiceImpl implements CourseService {
 
         Integer weeklyHours = SubjectUtil.getWeeklyHours(subject);
 
+
         courseConstrain.validateProfessorHasSufficientAvailableSchedule(professor, subject, weeklyHours);
 
         List<ProfessorScheduleDTO> professorSchedule = professor.schedule();
@@ -122,9 +123,8 @@ public class CourseServiceImpl implements CourseService {
                             findAvailableClassroom(ps.day(),slot,students),
                             slot
                     )).orElse(null);
-
                 })
-                .filter(cs -> cs != null)
+                .filter(cs -> cs != null && !courseConstrain.validateWeeklyHoursLimit(courseSchedules,weeklyHours)  )
                 .forEach(courseSchedules::add);
 
         return courseSchedules;

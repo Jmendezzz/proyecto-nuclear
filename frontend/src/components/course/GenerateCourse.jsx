@@ -1,31 +1,60 @@
 import { Flex } from "../../UI/flex/Flex";
 import { useState, useEffect } from "react";
-import { getCourses, deleteCourseById } from "../../api/CourseApiService";
+import { generateCourses } from "../../api/CourseApiService";
 import { Header } from "../../UI/headers/Header";
 import style from "./Course.module.css";
 import { Button } from "../../UI/button/Button";
 import { Input } from "../../UI/inputs/Input";
 import { getSubjects } from "../../api/SubjectApiService";
 import { Pagination } from "../pagination/Pagination";
+import Swal from "sweetalert2";
 
-export const CreateCourse = () => {
+
+const succesResponseAlert = () => {
+    Swal.fire(
+        'Generados!',
+        `Se han generado los cursos!`,
+        'success',
+    )
+}
+const errorResponseAlert = (error) => {
+    Swal.fire({
+        title: "Error",
+        text: error ,
+        icon: "error",
+        confirmButtonColor: "red",
+        confirmButtonText: "Aceptar",
+    })
+}
+
+export const GenerateCourse = () => {
 
     const [subjects, setSubjects] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
     const [subjectsAdded, setSubjectsAdded] = useState([]);
 
-    const createCourseHandler = () => {
+    const createCourseHandler = () => { 
+        if(subjectsAdded.length===0) {
+            errorResponseAlert("No ha seleccionado ninguna asignatura, por favor seleccione al menos una.");
+            return;
+        }
 
+        generateCourses(subjectsAdded)
+        .then(()=> succesResponseAlert())
+        .catch((error)=> errorResponseAlert(error.response.data.message))
     }
+    const subjectsPerPage = 7;
+    const lastSubjectIndex = currentPage * subjectsPerPage;
+    const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
+    let currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
 
     const addSubjectHandler = (subject) => {
 
-        if (!subjects.includes(subject)){
-
-            setSubjects(prevSubjects => setSubjectsAdded([...prevSubjects],subject));
-        }else{
-            setSubjects(prevSubjects=> prevSubjects.filter(s=> s.id != subject.id));
+        if (!subjectsAdded.includes(subject)) {
+            setSubjectsAdded(prevSubjects => [...prevSubjects, subject]);
+        } else {
+            setSubjectsAdded(prevSubjects => prevSubjects.filter(s => s.id != subject.id));
         }
 
     }
@@ -37,10 +66,7 @@ export const CreateCourse = () => {
             .catch((err) => console.log(err))
         window.scrollTo(0, 0);
     }, []);
-    const subjectsPerPage = 7;
-    const lastSubjectIndex = currentPage * subjectsPerPage;
-    const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
-    let currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
+
 
     return (
         <Flex
@@ -61,6 +87,7 @@ export const CreateCourse = () => {
                 justifyContent={"none"}
                 alignItems={"center"}
             >
+                <p style={{fontSize:"30px"}}>Seleccione las asignaturas a las cuales quiere generar un curso</p>
 
                 {currentSubjects.length > 0 ?
                     <>
@@ -74,19 +101,17 @@ export const CreateCourse = () => {
                             </thead>
                             <tbody>
                                 {currentSubjects.map((subject) => {
-                                const isSelected  = subjectsAdded.includes(subject);
-                                const classStyle = isSelected
-                                ? `${style["element-item"]} ${style.selected}`
-                                : style["element-item"];
-                                return(
-                                                       
-                                    <tr key={subject.id} className={classStyle} onClick={addSubjectHandler.bin(null,subject)}>
-                                        <td>{subject.name}</td>
-                                        <td>{subject.semester}</td>
-                                        <td>{subject.career}</td>
-                                    </tr>
-                                    
-                                )
+                                    const isSelected = subjectsAdded.includes(subject);
+                                    const classStyle = isSelected ? `${style["element-item"]} ${style.selected}` : style["element-item"];
+                                    return (
+
+                                        <tr key={subject.id} className={classStyle} onClick={addSubjectHandler.bind(null, subject)}>
+                                            <td>{subject.name}</td>
+                                            <td>{subject.semester}</td>
+                                            <td>{subject.career}</td>
+                                        </tr>
+
+                                    )
                                 })}
                             </tbody>
                         </table>
@@ -100,8 +125,9 @@ export const CreateCourse = () => {
                         )}
                     </>
                     :
-                    <p style={{ fontSize: "30px" }}>No hay estudiantes para mostrar</p>
+                    <p style={{ fontSize: "30px" }}>No hay asignaturas para mostrar</p>
                 }
+                <Button  inLineStyle={{width:"100px"}} onClick={createCourseHandler}>Generar</Button>
             </Flex>
 
         </Flex>

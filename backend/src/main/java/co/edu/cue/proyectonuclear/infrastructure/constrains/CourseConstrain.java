@@ -1,5 +1,6 @@
 package co.edu.cue.proyectonuclear.infrastructure.constrains;
 
+import co.edu.cue.proyectonuclear.domain.entities.CourseSchedule;
 import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
 import co.edu.cue.proyectonuclear.domain.enums.DayOfWeek;
 import co.edu.cue.proyectonuclear.exceptions.CourseException;
@@ -33,7 +34,6 @@ public class CourseConstrain {
                     , HttpStatus.BAD_REQUEST);
 
         return professor.get();
-
     }
 
     public List<StudentDTO> validateStudentsAssignedToSubject(SubjectDTO subject) {
@@ -102,6 +102,17 @@ public class CourseConstrain {
                 .anyMatch(courseSchedule -> TimeSlotUtil.validateTimeCrossing(courseSchedule.timeSlot(), timeSlot));
     }
 
+    public boolean validateWeeklyHoursLimit(List<GenerateCourseScheduleDTO> courseSchedule, int weeklyHours ){
+
+        int totalHours =  courseSchedule
+                .stream()
+                .map(cs-> TimeSlotUtil.between(cs.timeSlot()))
+                .reduce(0,(total,current)-> total+current);
+
+
+        return totalHours >= weeklyHours;
+
+    }
     public boolean validateClassroomLocation(DayOfWeek day, ClassroomDTO classroom, TimeSlot timeSlot, List<StudentDTO> students) {
 
         return students.stream()

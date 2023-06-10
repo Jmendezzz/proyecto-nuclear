@@ -16,7 +16,6 @@ public class TimeSlotUtil {
     public static List<TimeSlot> splitTimeSlot(TimeSlot timeSlot, int duration ) {
         List<LocalTime> hours = getHoursOfTimeSlot(timeSlot);
 
-
         List<TimeSlot> timeSlotsSplited = hours.stream()
                 .filter(h -> h.plusHours(duration).isBefore(timeSlot.getEndTime()))
                 .map(h -> new TimeSlot(h, h.plusHours(duration)))
@@ -37,15 +36,10 @@ public class TimeSlotUtil {
             return false;
         }
 
-
         List<LocalTime> hoursA = getHoursOfTimeSlot(timeSlotA);
         List<LocalTime> hoursB = getHoursOfTimeSlot(timeSlotB);
 
-
         return hoursA.stream().anyMatch(h-> hoursB.contains(h));
-
-
-
     }
 
      private static List<LocalTime> getHoursOfTimeSlot (TimeSlot timeSlot){
