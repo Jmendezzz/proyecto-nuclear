@@ -136,9 +136,9 @@ export const Course = () => {
                     <div style={{ width: "60%", margin: "10px" }}>
                         <Button
                             inLineStyle={{ width: "180px", height: "60px" }}
-                            onClick={() => navigate("/cursos/crear")}
+                            onClick={() => navigate("/cursos/generar")}
                         >
-                            Crear curso
+                            Generar cursos
                         </Button>
                     </div>
                     <Input

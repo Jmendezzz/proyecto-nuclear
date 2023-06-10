@@ -142,3 +142,24 @@
 .modal__content{
     margin: 20px;
 }
+.element-item{
+    font-size: 30px;
+    padding: 10px;
+    width: 300px;
+    outline: 1px solid gray;
+    transition: all .5s;
+    cursor: pointer;
+}
+.element-item:hover{
+    color :white;
+    background: rgba(52, 91, 175, 1);
+
+}
+.selected{
+    color :white;
+    background: rgba(52, 91, 175, 1);
+}
+.selected:hover{
+    color :white;
+    background: rgb(189, 16, 25);
+}
