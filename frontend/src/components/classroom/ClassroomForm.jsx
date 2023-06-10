@@ -38,8 +38,11 @@ const validateForm = (values) => {
    
     const navigate = useNavigate();
     console.log( classroom && classroom.elements)
+  
+ 
+   
     const [elementsAdded, setElementsAdded] = useState( classroom ?  [...classroom.elements]: []) ;
-
+  
 
     const [
       classroomLocationValue,
@@ -226,11 +229,11 @@ const validateForm = (values) => {
                       :
                       elementsAdded.map((element,index) => (
                         <Flex justifyContent={"none"} height={"50px"} >
-                               
-                          <p className={style["element-list"]} key={index}>{element.name}</p>
-                        
-                         {console.log(classroom.elements)+"ss"}
-                      
+                          <p className={style["element-list"]} key={index}>{reformatElement(element)}{element.name}</p>
+                          {console.log(element.name+"...")}
+                          
+                         
+                          
                           <AiOutlineClose className={style["element-list__remove"]} onClick={removeElement.bind(null,element)} />
                         </Flex>
                       ))}

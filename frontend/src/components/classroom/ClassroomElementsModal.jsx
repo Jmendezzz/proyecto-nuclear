@@ -12,7 +12,7 @@ export const ClassroomElementsModal = (props) => {
     función llamada `setElementsAdded` para actualizar la variable de estado. Esto está usando `useState`
     gancho de React. */
     const [elementsAdded, setElementsAdded] = useState(props.elements);
-
+    console.log(props.elements+"s");
 
 
    /**
@@ -41,6 +41,7 @@ export const ClassroomElementsModal = (props) => {
 
       const confirmHandler=()=>{
         props.onConfirm(elementsAdded)
+
         props.onClick();
       }
 
@@ -56,17 +57,25 @@ export const ClassroomElementsModal = (props) => {
 
           <div className={style["elements-container"]}>
             {elements.map((element, index) => {
+            
               const isSelected = elementsAdded.includes(element);
+            
+           
               const elementClassName = isSelected
+            
                 ? `${style["element-item"]} ${style.selected}`
                 : style["element-item"];
               return (
+
                 <div
                   key={index}
                   className={elementClassName}
                   onClick={() => addElement(element)}
+                 
+      
                 >
                   {element.name}
+                 
                 </div>
               );
             })}
