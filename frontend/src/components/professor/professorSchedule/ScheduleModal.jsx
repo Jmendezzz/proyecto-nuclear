@@ -7,6 +7,26 @@ import { days } from "../../../enums/Days"
 import { IoIosAddCircle } from 'react-icons/io';
 import { setScheduleProfessor } from "../../../api/ProfessorApiService";
 
+//Alerts
+const succesResponseAlert = (response) => {
+	Swal.fire({
+		title: "Profesor creado",
+		text: "Se ha creado el profesor " + response.data.name,
+		icon: "success",
+		confirmButtonColor: "green",
+		confirmButtonText: "Aceptar",
+	});
+};
+const errorResponseAlert = (error) => {
+	Swal.fire({
+		icon: "error",
+		title: "Oops...",
+		text: error.response.data.message,
+		confirmButtonColor: "red",
+		confirmButtonText: "Aceptar",
+	});
+};
+
 export const ScheduleModal = (props) => {
 
     const [day, setDay] = useState('');
@@ -39,10 +59,10 @@ export const ScheduleModal = (props) => {
 
         setScheduleProfessor(props.professor.id, professorSchedule)
             .then((response) => {
-                console.log(response);
+                succesResponseAlert(response);
             })
             .catch((error) => {
-                console.log(error);
+                errorResponseAlert(error);
             });
     };
 

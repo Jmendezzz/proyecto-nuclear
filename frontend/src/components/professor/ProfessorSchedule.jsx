@@ -10,25 +10,6 @@ import { Button } from "../../UI/button/Button";
 import { ScheduleDays } from "./professorSchedule/ScheduleDays";
 import { ScheduleModal } from "./professorSchedule/ScheduleModal";
 
-//Alerts
-const succesResponseAlert = (response) => {
-	Swal.fire({
-		title: "Profesor creado",
-		text: "Se ha creado el profesor " + response.data.name,
-		icon: "success",
-		confirmButtonColor: "green",
-		confirmButtonText: "Aceptar",
-	});
-};
-const errorResponseAlert = (error) => {
-	Swal.fire({
-		icon: "error",
-		title: "Oops...",
-		text: error.response.data.message,
-		confirmButtonColor: "red",
-		confirmButtonText: "Aceptar",
-	});
-};
 
 export const ProfessorSchedule = () => {
 
@@ -41,6 +22,7 @@ export const ProfessorSchedule = () => {
 		setIsLoading(false);
 		setError(error);
 	};
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		getProfessorById(professorId)
@@ -58,15 +40,6 @@ export const ProfessorSchedule = () => {
 		);
 	}
 
-	const setScheduleHandler = (values) => {
-		const professorSchedule = {
-			day: values.DayOfWeek,
-			timeSlots: values.timeSlots.map((ts) => {
-				return { startTime: ts.startTime, endTime: ts.endTime };
-			}),
-		};
-	}
-
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -79,7 +52,19 @@ export const ProfessorSchedule = () => {
 				<Header>
 					<h2>AGREGUE SU DISPONIBILIDAD</h2>
 				</Header>
-			<ScheduleDays professor={professor} />
+			{
+				professor.schedule ? <>
+				<Button>Ingrese su horario</Button>
+				</> : <>
+				{
+				professor.schedule.map((sch) => (
+					<div>
+						<ScheduleDays professor={professor} />
+					</div>
+				))
+				}
+				</>
+			}
 		</Flex>
 	);
 }
