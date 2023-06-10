@@ -3,7 +3,6 @@ import style from "./User.module.css";
 import {AiFillCloseCircle} from "react-icons/ai";
 import { Button } from "../../UI/button/Button";
 import { careers } from "../../enums/Career"
-import { useNavigate } from "react-router-dom";
 import { Pagination } from "../pagination/Pagination";
 
 const reformatSubjectCareer = (subject) => {
