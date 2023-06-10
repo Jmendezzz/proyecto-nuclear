@@ -24,7 +24,7 @@ public class CourseController {
         return courseService.getAllCourses();
     }
     @PostMapping("/courses/create")
-    public CourseDTO createCourse(@RequestBody CourseDTO course){
+    public CourseDTO createCourse(@RequestBody GenerateCourseDTO course){
         return courseService.saveCourse(course);
     }
     @GetMapping("/courses/{id}")
