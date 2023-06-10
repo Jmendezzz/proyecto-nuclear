@@ -37,7 +37,6 @@ export const Student = () => {
     const [search, setSearch] = useState("");
 
     const succesResponses = (res) => {
-      console.log(res);
       setStudents(res.data);
     };
 
@@ -51,7 +50,7 @@ export const Student = () => {
     const studentsPerPage = 7;
     const lastStudentIndex = currentPage * studentsPerPage;
     const firstStudentIndex = lastStudentIndex - studentsPerPage;
-    const currentStudents = students.slice(firstStudentIndex, lastStudentIndex);
+    let currentStudents = students.slice(firstStudentIndex, lastStudentIndex);
 
     const navigate = useNavigate();
 
@@ -87,7 +86,7 @@ export const Student = () => {
     }
   
     if(search.trim() !== ""){
-      currentStudents = students.filter(student=> students.name.toLowerCase().includes(search))
+      currentStudents = students.filter(student=> student.name.toLowerCase().includes(search.toLowerCase()) || student.lastName.toLowerCase().includes(search.toLowerCase()) )
     }
   
     return (
@@ -118,7 +117,7 @@ export const Student = () => {
               </Button>
             </div>
             <Input
-              input={{ placeholder: "Nombre del estudiante" }}
+              input={{ placeholder: "Nombre del estudiante" , onChange:searchHandler}}
               style={{ height: "20px" }}
             ></Input>
             <Button
@@ -136,8 +135,8 @@ export const Student = () => {
                     <th>Nombre</th>
                     <th>Carrera</th>
                     <th>Semestre</th>
-                    <th>asignaturas</th>
-                    <th>email</th>
+                    <th>Asignaturas</th>
+                    <th>Email</th>
                   </tr>
                 </thead>
                 <tbody>

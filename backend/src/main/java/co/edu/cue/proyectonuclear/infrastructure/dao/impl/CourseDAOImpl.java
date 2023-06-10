@@ -1,11 +1,15 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 
 import co.edu.cue.proyectonuclear.domain.entities.Course;
+import co.edu.cue.proyectonuclear.domain.entities.CourseSchedule;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.CourseMapper;
+import co.edu.cue.proyectonuclear.mapping.mappers.CourseScheduleMapper;
+import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
+import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -23,11 +27,34 @@ public class CourseDAOImpl  implements CourseDAO {
     @PersistenceContext
     EntityManager entityManager;
     CourseMapper courseMapper;
+
+    StudentMapper studentMapper;
+
+    ProfessorMapper professorMapper;
+
+    CourseScheduleMapper courseScheduleMapper;
     @Override
     public CourseDTO saveCourse(GenerateCourseDTO courseDTO) {
+
+        String query  = "SELECT * FROM course where subject_id = :subjectId";
+        Query nativeQuery =   entityManager.createNativeQuery(query,Course.class);
+        nativeQuery.setParameter("subjectId", courseDTO.subject().id());
+        Course existingCourse = (Course) nativeQuery.getSingleResult();
+
+        if(existingCourse != null) {
+            existingCourse.setStudents(studentMapper.mapFromListDTO(courseDTO.students()));
+            existingCourse.setCourseSchedule(courseScheduleMapper.mapFromDTOList(courseDTO.courseSchedule()));
+            existingCourse.setProfessor( professorMapper.mapFrom(courseDTO.professor()));
+            Course courseSaved =  entityManager.merge(existingCourse);
+            return courseMapper.mapFromEntity(courseSaved);
+
+        }
+
         Course course = courseMapper.mapFromGenerateDTO(courseDTO);
         Course courseSaved =  entityManager.merge(course);
         return courseMapper.mapFromEntity(courseSaved);
+
+
     }
 
 
@@ -60,7 +87,7 @@ public class CourseDAOImpl  implements CourseDAO {
     }
 
     @Override
-    public List<CourseStudentRequestDTO> getCoursesByStudentId(Long id) {//TODO Test
+    public List<CourseDTO> getCoursesByStudentId(Long id) {//TODO Test
         String query = "SELECT c.* FROM course c INNER JOIN course_students cs on c.id = cs.course_id WHERE students_id = :studentId";
         Query nativeQuery = entityManager.createNativeQuery(query,Course.class);
         nativeQuery.setParameter("studentId",id);

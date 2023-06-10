@@ -12,28 +12,6 @@
     overflow: auto;
     table-layout: fixed;
 }
-.table thead >tr > th{
-    text-align: center;
-    font-size: 30px;
-    padding: 20px;
-
-
-}
-.table tbody>  tr > td{
-    font-size: 25px;
-    text-align: center;
-    padding: 3px;
-
-
-}
-.id{
-    text-align: center;
-    width: 5px;
-    padding: 1px;
-}
- table > tbody >tr:not(:last-child) {
-    border-bottom: 1px solid rgb(169, 168, 168);
-}
 .actions__container{
     display: flex;
     flex-direction: row;
@@ -47,4 +25,120 @@
     cursor: pointer;
     transition: all .2s ease-in-out; 
 
+}
+.icon__delete{
+    color: rgb(255, 0, 0);
+    font-size: 50px;
+    cursor: pointer;
+    transition: all .2s ease-in-out; 
+}
+.icon__edit:hover{
+    transform: scale(1.1); 
+
+}
+.icon__delete:hover{
+    transform: scale(1.1); 
+}
+
+.students__icon{
+    color: rgba(52, 91, 175, 1);
+    font-size: 40px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;     
+}
+.students__icon:hover{
+    transform: scale(1.1); 
+
+}
+
+.schedule__icon{
+    color: rgba(52, 91, 175, 1);
+    font-size: 40px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;     
+
+}
+.schedule__icon:hover{
+    transform: scale(1.1); 
+
+}
+.table{
+    width: 95%;
+    margin: 10px;
+    background-color: white !important;
+    border-collapse:collapse !important;
+    flex: 1;
+    overflow: auto;
+    table-layout: fixed;
+}
+.table thead >tr > th{
+    text-align: center;
+    font-size: 30px;
+
+
+}
+.table tbody>  tr > td{
+    font-size: 20px;
+    text-align: center;
+
+}
+
+ table > tbody >tr:not(:last-child) {
+    border-bottom: 1px solid rgb(169, 168, 168);
+}
+
+
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    background:rgb(0, 0,0,0.90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal{
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    align-items: center;
+    justify-content: space-between;
+    height: 600px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 100;
+    overflow: hidden;
+    
+}
+.modal p{
+    font-size: 20px
+
+}
+.header {
+    text-align: center;
+    width: 100%;
+    background: rgba(52, 91, 175, 1);
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .header h2 {
+    margin: 0;
+    color: white;
+  }
+  
+  .close__modal{
+    color: white;
+    position: absolute;
+    font-size: 30px;
+    top: 30%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.modal__content{
+    margin: 20px;
 }

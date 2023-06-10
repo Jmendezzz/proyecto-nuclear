@@ -14,9 +14,6 @@ public interface CourseService {
     List<CourseDTO> getAllCourses();
     Optional<CourseDTO> getCourseById(Long id);
     List<CourseDTO> getCoursesByProfessorId(Long professorId);
-
     List<GenerateCourseDTO> generateCourses(List<SubjectDTO> subjects);
-
-
-    List<CourseStudentRequestDTO> getCoursesByStudentId(Long id);
+    List<CourseDTO> getCoursesByStudentId(Long id);
 }

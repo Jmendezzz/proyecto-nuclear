@@ -52,7 +52,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseStudentRequestDTO> getCoursesByStudentId(Long id) {
+    public List<CourseDTO> getCoursesByStudentId(Long id) {
         return courseDAO.getCoursesByStudentId(id);
     }
 

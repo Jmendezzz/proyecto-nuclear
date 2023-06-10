@@ -14,6 +14,6 @@ public interface CourseDAO {
     List<CourseDTO> getAllCourses();
     CourseDTO findCourseById(Long id);
     List<CourseDTO> getCoursesByProfessorId(Long professorId);
-    List<CourseStudentRequestDTO> getCoursesByStudentId(Long id);
+    List<CourseDTO> getCoursesByStudentId(Long id);
     List<CourseDTO> getCoursesByClassroomId(Long classroomId);
 }
