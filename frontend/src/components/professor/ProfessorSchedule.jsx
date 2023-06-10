@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ErrorResponse } from "../../UI/error/ErrorResponse";
-import Swal from "sweetalert2";
 import { getProfessorById } from "../../api/ProfessorApiService";
 import { Loading } from "../../UI/loading/Loading";
 import { Header } from "../../UI/headers/Header";
@@ -17,6 +16,14 @@ export const ProfessorSchedule = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [professor, setProfessor] = useState();
 	const [error, setError] = useState(undefined);
+	const [scheduleModal, setScheduleModal] = useState(undefined);
+
+	const showScheduleModalHandler = () => {
+        setScheduleModal(true);
+    }
+    const hideScheduleModalHandler = () => {
+            setScheduleModal(undefined);
+    }
 
 	const errorResponseAction = (error) => {
 		setIsLoading(false);
@@ -48,13 +55,15 @@ export const ProfessorSchedule = () => {
 			direction={"column"}
 			alignItems={"center"}
 			justifyContent={"none"}>
-				
+				{scheduleModal && (
+					<ScheduleModal onClick={hideScheduleModalHandler} professor={professor} />
+				)}
 				<Header>
 					<h2>AGREGUE SU DISPONIBILIDAD</h2>
 				</Header>
 			{
 				professor.schedule ? <>
-				<Button>Ingrese su horario</Button>
+				<Button onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				</> : <>
 				{
 				professor.schedule.map((sch) => (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Flex } from "../../../UI/flex/Flex";
-import { days } from "../../enums/Days"
+import { days } from "../../../enums/Days"
 import { TbEditCircle } from "react-icons/tb";
 import { ScheduleModal } from "./ScheduleModal";
 
@@ -13,20 +13,10 @@ const reformatDay = (schedule) => {
 export const ScheduleDays = ({ professor }) => {
 
     const [schedule, setSchedule] = useState(professor.schedule);
-    const [scheduleModal, setScheduleModal] = useState(undefined);
-
-    const showScheduleModalHandler = () => {
-        setScheduleModal(true);
-    }
-    const hideScheduleModalHandler = () => {
-            setScheduleModal(undefined);
-    }
+    console.log(schedule);
 
     return (
         <Flex>
-            {scheduleModal && (
-					<ScheduleModal onClick={hideScheduleModalHandler} professor={professor} />
-				)}
             <div>{reformatDay(schedule)}</div>
             <div>
                 {
@@ -40,7 +30,6 @@ export const ScheduleDays = ({ professor }) => {
                                     }
                                 </div>)
                             )}
-                            <TbEditCircle onClick={showScheduleModalHandler}/>
                         </div>
                     )
                     )

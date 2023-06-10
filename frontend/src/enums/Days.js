@@ -2,7 +2,6 @@ export const days = [
     {   
         name:"Lunes",
         value:"MONDAY"
-    
     },
     {
         name: "Martes",
@@ -10,18 +9,14 @@ export const days = [
     },
     {
         name:"Miércoles",
-        value:"INGENIERIA_CIVIL"
-
+        value:"WEDNESDAY"
     },
     {
         name:"Jueves",
         value:"THURSDAY"
-
-
     },
     {
         name:"Viernes",
         value:"FRIDAY"
-
     }
 ]

@@ -2,10 +2,11 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { Header } from "../../../UI/headers/Header";
 import { useState } from "react";
 import { TimeSlots } from "./TimeSlot";
-import Select from "react-select/dist/declarations/src/Select";
+import Select from "react-select";
 import { days } from "../../../enums/Days"
 import { IoIosAddCircle } from 'react-icons/io';
 import { setScheduleProfessor } from "../../../api/ProfessorApiService";
+import Swal from "sweetalert2";
 
 //Alerts
 const succesResponseAlert = (response) => {
@@ -29,7 +30,7 @@ const errorResponseAlert = (error) => {
 
 export const ScheduleModal = (props) => {
 
-    const [day, setDay] = useState('');
+    const [day, setDay] = useState();
     const [slots, setSlots] = useState([]);
 
     const handleStartTimeChange = (index, startTime) => {
@@ -48,12 +49,12 @@ export const ScheduleModal = (props) => {
         setSlots([...slots, { startTime: '', endTime: '' }]);
     };
 
-    handleSubmit = () => {
+    const handleSubmit = () => {
         const professorSchedule = {
             day: day,
             timeSlots: slots.map((slot) => ({
                 startTime: slot.startTime,
-                endTime: slot.endTime,
+                endTime: slot.endTime
             })),
         };
 
@@ -66,8 +67,8 @@ export const ScheduleModal = (props) => {
             });
     };
 
-    const setDayHandler = ({ day }) => {
-        setDay(day);
+    const setDayHandler = ({ value }) => {
+        setDay(value);
     }
 
     return (

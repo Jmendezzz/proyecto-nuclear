@@ -12,7 +12,9 @@ export const TimeSlots = ( {onStartTimeChange, onEndTimeChange } ) => {
 
     return (
         <div>
+            <p>Hora inicio</p>
             <input type="time" onChange={handleStartTimeChange}/>
+            <p>Hora fin</p>
             <input type="time" onChange={handleEndTimeChange} />
         </div>
     );
