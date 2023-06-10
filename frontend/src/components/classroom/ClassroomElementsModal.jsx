@@ -7,8 +7,18 @@ import { useState} from "react";
 import {AiFillCloseCircle} from "react-icons/ai";
 export const ClassroomElementsModal = (props) => {
 
+  
+/* Inicializar una variable de estado llamada `elementsAdded` con el valor de `props.elements` y un
+    función llamada `setElementsAdded` para actualizar la variable de estado. Esto está usando `useState`
+    gancho de React. */
     const [elementsAdded, setElementsAdded] = useState(props.elements);
 
+
+
+   /**
+    * La función agrega o elimina un elemento de una matriz en función de si ya existe en el
+    * matriz.
+    */
     const addElement = (newElement)=>{
         if (elementsAdded.includes(newElement)) {
             removeElement(newElement);
@@ -16,6 +26,13 @@ export const ClassroomElementsModal = (props) => {
             setElementsAdded((prevElements) => [...prevElements, newElement]);
           }
     }
+
+
+
+  
+/**
+    * Esta función elimina un elemento específico de una matriz de elementos.
+    */
     const removeElement = (elementToRemove) => {
         setElementsAdded((prevElements) =>
           prevElements.filter((element) => element !== elementToRemove)
