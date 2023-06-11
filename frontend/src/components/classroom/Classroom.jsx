@@ -109,7 +109,7 @@ export const Classroom = () => {
           deleteClassroomById(id)
             .then((response) => {
               succesResponseAlert(response);
-              setClassroomsChange(true) //Indicates to the useEffect to update the subject list
+              setClassroomsChange(true) //Indicates to the useEffect to update the classroom list
             }
             )
             .catch((error) => {
@@ -122,9 +122,18 @@ export const Classroom = () => {
    
   
   
+/**
+ * The function updates the state of a search query based on user input.
+ */
     const searchHandler = (event)=>{
       setSearch(event.target.value);
     }
+ /* Este bloque de código comprueba si la variable de estado `buscar` no es una cadena vacía. Si no está vacío,
+  filtra la matriz `aula` usando el método `filter()` para crear una nueva matriz llamada
+  `aula actual`. El método `filter()` verifica si la propiedad `name` de cada objeto en el
+  La matriz `aula` incluye la cadena `buscar` (ignorando la distinción entre mayúsculas y minúsculas) usando `includes()`
+  método. La matriz `currentClassroom` resultante contiene solo los objetos cuya propiedad `name`
+  incluye la cadena `buscar`. */
   
     if(search.trim() !== ""){
       currentClassroom = classroom.filter(classroom=> classroom.name.toLowerCase().includes(search))
