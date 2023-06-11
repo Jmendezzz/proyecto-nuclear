@@ -95,7 +95,6 @@ export const ScheduleModal = (props) => {
                         value: day.value
                     }))}
                 />
-                {console.log(day)}
                 <div className={style.timeSlots}>
                 <p className={style.startTime}>Hora inicio</p>
                 <p className={style.endTime}>Hora fin</p>

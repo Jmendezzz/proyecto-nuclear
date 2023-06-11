@@ -8,6 +8,7 @@ import { Flex } from "../../UI/flex/Flex";
 import { Button } from "../../UI/button/Button";
 import { ScheduleDays } from "./professorSchedule/ScheduleDays";
 import { ScheduleModal } from "./professorSchedule/ScheduleModal";
+import style from "./Professor.module.css";
 
 
 export const ProfessorSchedule = () => {
@@ -67,6 +68,12 @@ export const ProfessorSchedule = () => {
 				<Header>
 					<h2>AGREGUE SU DISPONIBILIDAD</h2>
 				</Header>
+				<Flex height={"auto"}
+						width={"80%"}
+						direction={"column"}
+						className={style["main-container"]}
+						justifyContent={"none"}
+						alignItems={"center"}>
 				{console.log(subjectThreeHours)}
 				{
 					subjectThreeHours.length !== 0 ?
@@ -84,6 +91,7 @@ export const ProfessorSchedule = () => {
 				<Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				</>
 			}
+			</Flex>
 		</Flex>
 	);
 }

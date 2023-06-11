@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,17 +34,11 @@ public class ProfessorConstrain {
         });
     }
 
-    public void validateTimeSlotsPerWeek(Long id, ProfessorScheduleDTO professorScheduleDTO){
-        Optional<ProfessorDTO> professor = professorDAO.getProfessorById(id);
-
-    }
-
-    public void validateTimeSlotsByProfessorSubject(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        Optional<ProfessorDTO> professor = professorDAO.getProfessorById(id);
-        if (professor.isPresent()) {
-            List<SubjectDTO> subjects = professor.get().subjects().stream()
-                    .filter(subject -> subject.period() == Period.TRIMESTRAL && subject.academicHours() == 96)
-                    .toList();
-        }
+    public void validateTimeSlotsByProfessorSubject(ProfessorScheduleDTO professorScheduleDTO) {
+        professorScheduleDTO.timeSlots().forEach(timeSlot -> {
+            if (ChronoUnit.HOURS.between(timeSlot.getEndTime(), timeSlot.getStartTime()) <= 1 ){
+                throw new ProfessorException("La disponibilidad debe ser de al menos 2 horas", HttpStatus.BAD_REQUEST);
+            }
+        });
     }
 }
