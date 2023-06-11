@@ -19,11 +19,11 @@ import { AiOutlineClose } from "react-icons/ai";
 
 
 /**
- * This function validates a form by checking if the name and capability fields are not empty and if
- * the capability value is valid.
- * @returns The function `validateForm` returns an object `errors` that contains error messages for any
- * validation errors found in the `values` object passed as an argument. The error messages are
- * specific to the validation rules defined in the function.
+ * Esta función valida un formulario comprobando si los campos de nombre y capacidad no están vacíos y si
+ * el valor de capacidad es válido.
+ * @returns La función `validateForm` devuelve un objeto `errors` que contiene mensajes de error para cualquier
+ * errores de validación encontrados en el objeto `values` pasado como argumento. Los mensajes de error son
+ * específico de las reglas de validación definidas en la función.
  */
 const validateForm = (values) => {
   const errors = {};
@@ -39,7 +39,7 @@ const validateForm = (values) => {
 }
 
 /**
- * This function displays a success alert message with the name of a created room.
+ * Esta función muestra un mensaje de alerta de éxito con el nombre de una sala creada.
  */
 const succesResponseAlert = (response) => {
   Swal.fire({
@@ -52,8 +52,9 @@ const succesResponseAlert = (response) => {
   })
 
 }
+
 /**
- * The function displays an error alert with a message from the error response.
+ * La función muestra una alerta de error con un mensaje de la respuesta de error.
  */
 
 const errorResponseAlert = (error) => {
@@ -71,46 +72,49 @@ const errorResponseAlert = (error) => {
 
 
 export const ClassroomCreate = () => {
-/* Declaring a state variable `elementsAdded` and a function `setElementsAdded` to update it using the
-`useState` hook. The initial value of `elementsAdded` is an empty array `[]`. This state variable is
-used to keep track of the elements added to a classroom. */
+
+/* Declarar una variable de estado `elementsAdded` y una función `setElementsAdded` para actualizarla usando el
+Gancho `useState`. El valor inicial de `elementsAdded` es una matriz vacía `[]`. Esta variable de estado es
+Se utiliza para realizar un seguimiento de los elementos añadidos a un aula. */
   const [elementsAdded, setElementsAdded] = useState([]);
 
-  /* This code is using the `useState` hook to declare a state variable `classroomLocationValue` and a
-  function `classroomLocationValueChangeHandler` to update it. The initial value of
-  `classroomLocationValue` is set to `"PRINCIPAL"`. This is used to keep track of the selected
-  location value in a dropdown menu. */
+
+/* Este código usa el gancho `useState` para declarar una variable de estado `classroomLocationValue` y un
+  función `classroomLocationValueChangeHandler` para actualizarlo. El valor inicial de
+  `classroomLocationValue` se establece en `"PRINCIPAL"`. Esto se utiliza para realizar un seguimiento de los seleccionados
+  valor de ubicación en un menú desplegable. */
   const [
     classroomLocationValue,
     classroomLocationValueChangeHandler
   ] = useState("PRINCIPAL");
 
- /* This code is using the `useState` hook to declare a state variable `classroomTipologyValue` and a
- function `classroomTipologyValueChangeHandler` to update it. The initial value of
- `classroomTipologyValue` is set to `"NORMAL"`. This is used to keep track of the selected tipology
- value in a dropdown menu. */
+/* Este código usa el gancho `useState` para declarar una variable de estado `classroomTipologyValue` y un
+ función `classroomTipologyValueChangeHandler` para actualizarlo. El valor inicial de
+ `classroomTipologyValue` se establece en `"NORMAL"`. Se utiliza para realizar un seguimiento de la tipología seleccionada
+ valor en un menú desplegable. */
   const [
     classroomTipologyValue,
     classroomTipologyValueChangeHandler
   ] = useState("NORMAL");
 
-  /* This line of code is using the `useState` hook to declare a state variable `elementsModal` and a
-  function `setElementsModal` to update it. The initial value of `elementsModal` is set to
-  `undefined`. This state variable is used to keep track of whether the modal for adding elements to
-  a classroom is currently displayed or not. */
+/* Esta línea de código usa el gancho `useState` para declarar una variable de estado `elementsModal` y un
+  función `setElementsModal` para actualizarlo. El valor inicial de `elementsModal` se establece en
+  `indefinido`. Esta variable de estado se utiliza para realizar un seguimiento de si el modal para agregar elementos a
+  un salón de clases se muestra actualmente o no. */
   const [elementsModal, setElementsModal] = useState(undefined);
 
 
 
-  /* `const navigate = useNavigate();` is using the `useNavigate` hook from the `react-router-dom`
-  library to declare a `navigate` constant that can be used to navigate to different pages within
-  the application. It allows the user to navigate to a different page when a certain event occurs,
-  such as clicking a button or submitting a form. */
+
+/* `const navegar = useNavigate();` está usando el gancho `useNavigate` de `react-router-dom`
+  biblioteca para declarar una constante `navegar` que se puede usar para navegar a diferentes páginas dentro
+  la aplicación. Permite al usuario navegar a una página diferente cuando ocurre un evento determinado,
+  como hacer clic en un botón o enviar un formulario. */
   const navigate = useNavigate();
 
 /**
- * The function creates a classroom object with specified values and saves it, displaying success or
- * error alerts accordingly.
+ * La función crea un objeto de clase con valores específicos y lo guarda, mostrando éxito o
+ * alertas de error en consecuencia.
  */
   const createClassroomHandler = (values) => {
     const classroom = {
@@ -128,9 +132,10 @@ used to keep track of the elements added to a classroom. */
 
   }
 
-  /**
-   * This function calls another function to handle a change in the value of a classroom location
-   * selection.
+
+/**
+   * Esta función llama a otra función para manejar un cambio en el valor de la ubicación de un salón de clases
+   * selección.
    */
   const selectLocationHandler = ({ value }) => {
     classroomLocationValueChangeHandler(value);
@@ -142,28 +147,32 @@ used to keep track of the elements added to a classroom. */
   const selectTipologyHandler = ({ value }) => {
     classroomTipologyValueChangeHandler(value)
   }
-  /**
-   * This function sets the state of an elements modal to undefined, effectively hiding it.
+/**
+   * Esta función maneja la selección de un valor de tipología de aula y lo pasa a otra
+   * función.
    */
   const hideElementsModalHandler = () => {
     setElementsModal(undefined);
 
   }
-  /**
-   * This function sets the state of a modal to true, indicating that it should be shown.
+
+/**
+   * Esta función establece el estado de un modal en verdadero, lo que indica que debe mostrarse.
    */
   const showElementsModalHandler = () => {
     setElementsModal(true)
   }
+
 /**
- * This function sets the state of "elementsAdded" to the value of the "elements" parameter.
+ * Esta función establece el estado de "elementsAdded" al valor del parámetro "elements".
  */
   const confirmElementsAddedHandler = (elements) => {
     setElementsAdded(elements);
   }
 
- /**
-  * This function removes a specified element from an array of elements.
+
+/**
+  * Esta función elimina un elemento específico de una matriz de elementos.
   */
   const removeElement=(elementToRemove)=>{
     setElementsAdded((prevElements) =>
