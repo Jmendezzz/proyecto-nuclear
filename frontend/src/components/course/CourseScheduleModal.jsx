@@ -8,9 +8,6 @@ import { Flex } from "../../UI/flex/Flex";
 export const CourseScheduleModal = (props)=>{
 
     let courseSchedules = props.schedule;
-
-    console.log(courseSchedules);
-
     
     const confirmHandler = () => {
         props.onConfirm();
@@ -40,7 +37,7 @@ export const CourseScheduleModal = (props)=>{
                                         <tr key={courseSchedule.id}>
                                             <td>{courseSchedule.day}</td>
                                             <td>{courseSchedule.timeSlot.startTime + " - " + courseSchedule.timeSlot.endTime}</td>
-                                            <td>{courseSchedule.classroom.name + " " + courseSchedule.classroom.location}</td>
+                                            <td>{ courseSchedule.classroom ? courseSchedule.classroom.name + " " + courseSchedule.classroom.location :"Sin asignar."}</td>
 
                                         </tr>
                                     ))}
