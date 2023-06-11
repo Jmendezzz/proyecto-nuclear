@@ -1,4 +1,3 @@
-
 import React from "react";
 import style from "./Classroom.module.css";
 import { Button } from "../../UI/button/Button";
@@ -7,18 +6,8 @@ import { useState} from "react";
 import {AiFillCloseCircle} from "react-icons/ai";
 export const ClassroomElementsModal = (props) => {
 
-  
-/* Inicializar una variable de estado llamada `elementsAdded` con el valor de `props.elements` y un
-    función llamada `setElementsAdded` para actualizar la variable de estado. Esto está usando `useState`
-    gancho de React. */
     const [elementsAdded, setElementsAdded] = useState(props.elements);
-    console.log(props.elements+"s");
 
-
-   /**
-    * La función agrega o elimina un elemento de una matriz en función de si ya existe en el
-    * matriz.
-    */
     const addElement = (newElement)=>{
         if (elementsAdded.includes(newElement)) {
             removeElement(newElement);
@@ -26,13 +15,6 @@ export const ClassroomElementsModal = (props) => {
             setElementsAdded((prevElements) => [...prevElements, newElement]);
           }
     }
-
-
-
-  
-/**
-    * Esta función elimina un elemento específico de una matriz de elementos.
-    */
     const removeElement = (elementToRemove) => {
         setElementsAdded((prevElements) =>
           prevElements.filter((element) => element !== elementToRemove)
@@ -41,7 +23,6 @@ export const ClassroomElementsModal = (props) => {
 
       const confirmHandler=()=>{
         props.onConfirm(elementsAdded)
-
         props.onClick();
       }
 
@@ -57,25 +38,17 @@ export const ClassroomElementsModal = (props) => {
 
           <div className={style["elements-container"]}>
             {elements.map((element, index) => {
-            
               const isSelected = elementsAdded.includes(element);
-            
-           
               const elementClassName = isSelected
-            
                 ? `${style["element-item"]} ${style.selected}`
                 : style["element-item"];
               return (
-
                 <div
                   key={index}
                   className={elementClassName}
                   onClick={() => addElement(element)}
-                 
-      
                 >
                   {element.name}
-                 
                 </div>
               );
             })}

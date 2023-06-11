@@ -2,14 +2,44 @@ import React from "react";
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import style from "./Classroom.module.css";
+import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import { location } from "../../enums/Location";
+import { tipologies } from "../../enums/Tipology";
+import { Field, Form, Formik, ErrorMessage } from "formik";
+import { isEmpty } from "../../validations/InputValidations";
+import { useState } from "react";
+import { Button } from "../../UI/button/Button";
 import { saveClassroom } from "../../api/ClassroomApiService";
+import { IoIosAddCircle } from "react-icons/io";
 import Swal from "sweetalert2";
-import {ClassroomForm} from './ClassroomForm';
+import { ClassroomElementsModal } from "./ClassroomElementsModal";
+import { AiOutlineClose } from "react-icons/ai";
+
 
 
 /**
- * La función muestra un mensaje de alerta de éxito con el nombre de una sala creada.
+ * This function validates a form by checking if the name and capability fields are not empty and if
+ * the capability value is valid.
+ * @returns The function `validateForm` returns an object `errors` that contains error messages for any
+ * validation errors found in the `values` object passed as an argument. The error messages are
+ * specific to the validation rules defined in the function.
+ */
+const validateForm = (values) => {
+  const errors = {};
+  if (isEmpty(values.name)) errors.name = 'El nombre no debe estar vacío';
+
+  if ((values.capability <= 0 || values.capability > 40)) errors.capability = "La capacidad debe ser válida";
+
+  if (isEmpty(values.capability.toString())) errors.capability = 'La capacidad no debe estar vacío';
+
+
+  return errors;
+
+}
+
+/**
+ * This function displays a success alert message with the name of a created room.
  */
 const succesResponseAlert = (response) => {
   Swal.fire({
@@ -22,10 +52,10 @@ const succesResponseAlert = (response) => {
   })
 
 }
-
 /**
- * La función muestra una alerta de error con el mensaje de error de un objeto de respuesta.
+ * The function displays an error alert with a message from the error response.
  */
+
 const errorResponseAlert = (error) => {
   Swal.fire({
     title: "Error",
@@ -37,27 +67,109 @@ const errorResponseAlert = (error) => {
 
 }
 
+
+
+
 export const ClassroomCreate = () => {
+/* Declaring a state variable `elementsAdded` and a function `setElementsAdded` to update it using the
+`useState` hook. The initial value of `elementsAdded` is an empty array `[]`. This state variable is
+used to keep track of the elements added to a classroom. */
+  const [elementsAdded, setElementsAdded] = useState([]);
+
+  /* This code is using the `useState` hook to declare a state variable `classroomLocationValue` and a
+  function `classroomLocationValueChangeHandler` to update it. The initial value of
+  `classroomLocationValue` is set to `"PRINCIPAL"`. This is used to keep track of the selected
+  location value in a dropdown menu. */
+  const [
+    classroomLocationValue,
+    classroomLocationValueChangeHandler
+  ] = useState("PRINCIPAL");
+
+ /* This code is using the `useState` hook to declare a state variable `classroomTipologyValue` and a
+ function `classroomTipologyValueChangeHandler` to update it. The initial value of
+ `classroomTipologyValue` is set to `"NORMAL"`. This is used to keep track of the selected tipology
+ value in a dropdown menu. */
+  const [
+    classroomTipologyValue,
+    classroomTipologyValueChangeHandler
+  ] = useState("NORMAL");
+
+  /* This line of code is using the `useState` hook to declare a state variable `elementsModal` and a
+  function `setElementsModal` to update it. The initial value of `elementsModal` is set to
+  `undefined`. This state variable is used to keep track of whether the modal for adding elements to
+  a classroom is currently displayed or not. */
+  const [elementsModal, setElementsModal] = useState(undefined);
 
 
-/* Este código define un componente de función llamado `ClassroomCreate` que crea un nuevo salón de clases
-cuando se envía un formulario. */
+
+  /* `const navigate = useNavigate();` is using the `useNavigate` hook from the `react-router-dom`
+  library to declare a `navigate` constant that can be used to navigate to different pages within
+  the application. It allows the user to navigate to a different page when a certain event occurs,
+  such as clicking a button or submitting a form. */
   const navigate = useNavigate();
 
+/**
+ * The function creates a classroom object with specified values and saves it, displaying success or
+ * error alerts accordingly.
+ */
   const createClassroomHandler = (values) => {
     const classroom = {
       name: values.name,
-      location: values.location,
+      location: classroomLocationValue,
       capability: values.capability,
-      elements: values.elements,
-      tipology: values.tipology
-    };
-    saveClassroom(classroom)
+      elements: elementsAdded.map((element)=>element.value),
+      tipology: classroomTipologyValue
+    }
 
+    saveClassroom(classroom)
       .then(response => succesResponseAlert(response))
       .then(() => navigate("/salones"))
-      .catch(error => errorResponseAlert(error));
-  };
+      .catch(error => errorResponseAlert(error))
+
+  }
+
+  /**
+   * This function calls another function to handle a change in the value of a classroom location
+   * selection.
+   */
+  const selectLocationHandler = ({ value }) => {
+    classroomLocationValueChangeHandler(value);
+  }
+  /**
+   * This function handles the selection of a classroom tipology value and passes it to another
+   * function.
+   */
+  const selectTipologyHandler = ({ value }) => {
+    classroomTipologyValueChangeHandler(value)
+  }
+  /**
+   * This function sets the state of an elements modal to undefined, effectively hiding it.
+   */
+  const hideElementsModalHandler = () => {
+    setElementsModal(undefined);
+
+  }
+  /**
+   * This function sets the state of a modal to true, indicating that it should be shown.
+   */
+  const showElementsModalHandler = () => {
+    setElementsModal(true)
+  }
+/**
+ * This function sets the state of "elementsAdded" to the value of the "elements" parameter.
+ */
+  const confirmElementsAddedHandler = (elements) => {
+    setElementsAdded(elements);
+  }
+
+ /**
+  * This function removes a specified element from an array of elements.
+  */
+  const removeElement=(elementToRemove)=>{
+    setElementsAdded((prevElements) =>
+    prevElements.filter((element) => element !== elementToRemove)
+  );
+  }
   return (
     <Flex
       height={"100%"}
@@ -66,7 +178,7 @@ cuando se envía un formulario. */
       alignItems={"center"}
       justifyContent={"none"}
     >
-   
+      {elementsModal && <ClassroomElementsModal elements={elementsAdded} onConfirm={confirmElementsAddedHandler} onClick={hideElementsModalHandler} />}
       <Header>
         <h2 style={{ fontSize: "60px" }}>CREAR SALONES</h2>
       </Header>
@@ -78,8 +190,119 @@ cuando se envía un formulario. */
         justifyContent={"none"}
         alignItems={"center"}
       >
-        <ClassroomForm onSubmit={createClassroomHandler}/>
-        
+        <Flex
+          justifyContent={"none"}
+          alignItems={"center"}
+          direction={"column"}
+          gap="20px"
+          width={"90%"}
+          className={style["create-classroom-container"]}
+        >
+          <Formik
+            initialValues={{
+              name: "",
+              capability: "",
+            }}
+            onSubmit={createClassroomHandler}
+            validate={validateForm}
+          >
+            {({ errors, touched }) => (
+              <Form className={style.form}>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={errors.name && touched.name ? style["form__item-error"] : style["form__item"]}
+                >
+                  <label style={{ fontSize: "20px", color: errors.name && touched.name ? "red" : "black" }}>Nombre</label>
+                  <Field name="name" />
+                  <ErrorMessage name="name" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                </Flex>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={style["form__item"]}
+                >
+
+                  <label style={{ fontSize: "20px" }}></label>
+                  <Select
+                    onChange={selectLocationHandler}
+                    defaultValue={{ label: location[0].name, value: location[0].value }}
+                    noOptionsMessage={() => "No se encontraron carreras "}
+                    className={style.select}
+                    options={location.map((location) => ({
+                      label: location.name,
+                      value: location.value,
+                    }))}
+                  />
+
+                </Flex>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                  className={errors.capability && touched.capability ? style["form__item-error"] : style["form__item"]}
+                >
+                  <label style={{ fontSize: "20px", color: errors.capability && touched.capability ? "red" : "black" }}>Capacidad</label>
+                  <Field name="capability" type="number" />
+                  <ErrorMessage name="capability" style={{ fontSize: "17px", color: "red" }} component={"small"} />
+                </Flex>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                >
+                  <Flex justifyContent={"none"} gap={"10px"} >
+                    <label style={{ fontSize: "20px" }}>Elementos</label>
+                    <IoIosAddCircle className={style["button__add-element"]} onClick={showElementsModalHandler} />
+                  </Flex>
+                  {elementsAdded.length === 0 ? <p>Aún no se han agregado elementos</p>
+                    :
+                    elementsAdded.map((element) => (
+                      <Flex justifyContent={"none"} height={"50px"} >
+                        <p className={style["element-list"]}>{element.name}</p>
+                        <AiOutlineClose className={style["element-list__remove"]} onClick={removeElement.bind(null,element)} />
+                      </Flex>
+                    ))}
+
+                </Flex>
+                <Flex
+                  direction={"column"}
+                  height={"auto"}
+                  alignItems={"none"}
+                  justifyContent={"none"}
+                >
+                  <label style={{ fontSize: "20px" }}>Tipologia</label>
+                  <Select
+                    onChange={selectTipologyHandler}
+                    defaultValue={{ label: tipologies[0].name, value: tipologies[0].value }}
+                    noOptionsMessage={() => "No se encontraron tipologias. "}
+                    className={style.select}
+                    options={tipologies.map((tipology) => ({
+                      label: tipology.name,
+                      value: tipology.value,
+                    }))}
+                  />
+                </Flex>
+
+                <Flex width>
+                  <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px", backgroundColor: "blue" }}>
+                    Guardar
+                  </Button>
+                  <Button inLineStyle={{ width: "120px", height: "40px", margin: "10px" }} onClick={() => navigate("/salones")}>
+                    Cancelar
+                  </Button>
+                </Flex>
+              </Form>
+            )}
+          </Formik>
+
+        </Flex>
       </Flex>
     </Flex>
 
