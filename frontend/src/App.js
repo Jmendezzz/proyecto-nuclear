@@ -34,13 +34,10 @@ function App() {
             <Route path="/estudiantes" element={<Student/>}></Route>
             <Route path="/profesores" element={<Professor/>}></Route>
 
-
-
             <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
             <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
             <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
             <Route path="/profesores/crear" element={<ProfessorCreate/>} ></Route>
-
 
             <Route path="asignaturas/editar/:subjectId" element={<SubjectEdit/>}></Route>
             <Route path="salones/editar/:classroomId" element={<ClassroomEdit/>}></Route>
@@ -49,6 +46,11 @@ function App() {
             <Route path="/estudiantes/editar/:studentId" element={<StudentEdit/>}></Route>
 
             <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule/>}></Route>
+
+            <Route path="/cursos" element={<Course/>}></Route>
+            <Route path="/cursos/generar" element={<GenerateCourse/>}></Route>
+
+
 
           </Routes>
         </Sidebar>
