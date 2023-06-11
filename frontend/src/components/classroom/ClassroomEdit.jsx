@@ -58,6 +58,7 @@ export const ClassroomEdit = () => {
   }, [])
   
   if(error){
+    console.log(error)
     return <ErrorResponse errStatus={error.response.status} errMessage={error.response.data.message} />;
 }
 

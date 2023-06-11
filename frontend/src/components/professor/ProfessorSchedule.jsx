@@ -1,67 +1,97 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {ErrorResponse} from "../../UI/error/ErrorResponse";
-import Swal from "sweetalert2";
+import { ErrorResponse } from "../../UI/error/ErrorResponse";
 import { getProfessorById } from "../../api/ProfessorApiService";
+import { Loading } from "../../UI/loading/Loading";
+import { Header } from "../../UI/headers/Header";
+import { Flex } from "../../UI/flex/Flex";
+import { Button } from "../../UI/button/Button";
+import { ScheduleDays } from "./professorSchedule/ScheduleDays";
+import { ScheduleModal } from "./professorSchedule/ScheduleModal";
+import style from "./Professor.module.css";
 
-//Alerts
-const succesResponseAlert = (response) => {
-	Swal.fire({
-		title: "Profesor creado",
-		text: "Se ha creado el profesor " + response.data.name,
-		icon: "success",
-		confirmButtonColor: "green",
-		confirmButtonText: "Aceptar",
-	});
-};
-const errorResponseAlert = (error) => {
-	Swal.fire({
-		icon: "error",
-		title: "Oops...",
-		text: error.response.data.message,
-		confirmButtonColor: "red",
-		confirmButtonText: "Aceptar",
-	});
-};
 
 export const ProfessorSchedule = () => {
 
-    const {professorId} = useParams();
-    const [isLoading, setIsLoading] = useState(true);
-    const [professor, setProfessor] = useState();
+	const { professorId } = useParams();
+	const [isLoading, setIsLoading] = useState(true);
+	const [professor, setProfessor] = useState();
 	const [error, setError] = useState(undefined);
+	const [scheduleModal, setScheduleModal] = useState(undefined);
+	const [subjectThreeHours, setSubjectsThreeHours] = useState([])
+
+	const showScheduleModalHandler = () => {
+        setScheduleModal(true);
+    }
+    const hideScheduleModalHandler = () => {
+            setScheduleModal(undefined);
+    }
 
 	const errorResponseAction = (error) => {
 		setIsLoading(false);
 		setError(error);
 	};
+
+	const filterSubjects = (subjects) => {
+    	return subjects.filter(subject => subject && subject.period === 'TRIMESTRAL' && subject.academicHours === 96);
+	};
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		getProfessorById(professorId)
-		.then((response) => {
-			setProfessor(response.data);
-			setIsLoading(false);
-		})
-		.catch((error) => console.log(error));
+			.then((response) => {
+				setProfessor(response.data);
+				setSubjectsThreeHours( filterSubjects( response.data.subjects ) );
+				setIsLoading(false);
+			})
+			.catch((error) => console.log(error));
 	}, []);
 
 	if (error) {
 		return (
 			<ErrorResponse errStatus={error.response.status}
-			errMessage={error.response.data.message} />
+				errMessage={error.response.data.message} />
 		);
 	}
 
-	const setScheduleHandler = (values) => {
-		const professorSchedule = {
-			day: values.DayOfWeek,
-			timeSlots: values.timeSlots.map((ts) => {
-				return {startTime: ts.startTime, endTime: ts.endTime};
-			}),
-		};
-	}
-
-	/*return(
-
-	);*/
+	return isLoading ? (
+		<Loading />
+	) : (
+		<Flex height={"100%"}
+			width={"100%"}
+			direction={"column"}
+			alignItems={"center"}
+			justifyContent={"none"}>
+				{scheduleModal && (
+					<ScheduleModal onClick={hideScheduleModalHandler} professor={professor} />
+				)}
+				<Header>
+					<h2>AGREGUE SU DISPONIBILIDAD</h2>
+				</Header>
+				<Flex height={"auto"}
+						width={"80%"}
+						direction={"column"}
+						className={style["main-container"]}
+						justifyContent={"none"}
+						alignItems={"center"}>
+				{console.log(subjectThreeHours)}
+				{
+					subjectThreeHours.length !== 0 ?
+					<h3>Recuerde ingresar al menos tres intervalos de tres horas para las materias {subjectThreeHours.map(s=> s.name)} </h3>
+					: 
+					<h3>Recuerde ingresar intervalos de dos horas para las materias: {professor.subjects.map(s=> s.name)} </h3>
+				}
+			{
+				professor.schedule ? <>
+					<div>
+						<ScheduleDays professor={professor} />
+					</div>
+				<Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
+				</> : <>
+				<Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
+				</>
+			}
+			</Flex>
+		</Flex>
+	);
 }
