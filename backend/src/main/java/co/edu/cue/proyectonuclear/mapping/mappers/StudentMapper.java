@@ -14,6 +14,8 @@ public interface StudentMapper {
     Student mapFromDTO(StudentDTO studentDTO);
 
     List<StudentDTO> mapFrom(List<Student> students);
+    List<Student> mapFromListDTO(List<StudentDTO> students);
+
     @Mapping(target = "password", source = "studentRequestDTO.id") //La password va ser la identificacion.
     @Mapping(target = "role",expression = "java(co.edu.cue.proyectonuclear.domain.enums.Role.STUDENT)") // Indico que el campo role va a ser una expression importando el role manualmente.
     @Mapping(target = "username", source = "studentRequestDTO.nid")

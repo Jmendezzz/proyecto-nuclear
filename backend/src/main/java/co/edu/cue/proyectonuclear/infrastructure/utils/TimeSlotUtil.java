@@ -14,11 +14,11 @@ public class TimeSlotUtil {
         return (int) ChronoUnit.HOURS.between(timeSlot.getStartTime(),timeSlot.getEndTime());
     }
     public static List<TimeSlot> splitTimeSlot(TimeSlot timeSlot, int duration ) {
+
         List<LocalTime> hours = getHoursOfTimeSlot(timeSlot);
 
-
         List<TimeSlot> timeSlotsSplited = hours.stream()
-                .filter(h -> h.plusHours(duration).isBefore(timeSlot.getEndTime()))
+                .filter(h -> h.plusHours(duration).isBefore(timeSlot.getEndTime().plusHours(1)))
                 .map(h -> new TimeSlot(h, h.plusHours(duration)))
                 .toList();
 
@@ -37,15 +37,10 @@ public class TimeSlotUtil {
             return false;
         }
 
-
         List<LocalTime> hoursA = getHoursOfTimeSlot(timeSlotA);
         List<LocalTime> hoursB = getHoursOfTimeSlot(timeSlotB);
 
-
         return hoursA.stream().anyMatch(h-> hoursB.contains(h));
-
-
-
     }
 
      private static List<LocalTime> getHoursOfTimeSlot (TimeSlot timeSlot){
@@ -57,7 +52,7 @@ public class TimeSlotUtil {
 
         LocalTime currentHour = startTime;
 
-        while (currentHour.isBefore(endTime)) {
+        while (currentHour.isBefore(endTime.plusHours(1))) {
             hours.add(currentHour);
             currentHour = currentHour.plusHours(1);
         }

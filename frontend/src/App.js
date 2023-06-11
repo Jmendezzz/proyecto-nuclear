@@ -15,6 +15,8 @@ import { Professor } from "./components/professor/Professor";
 import { ProfessorCreate } from "./components/professor/ProfessorCreate";
 import { ProfessorEdit } from "./components/professor/ProfessorEdit";
 import { PageNotFoundError } from "./UI/error/PageNotFoundError";
+import { Course } from "./components/course/Course";
+import { GenerateCourse } from "./components/course/GenerateCourse";
 import { ProfessorSchedule } from "./components/professor/ProfessorSchedule";
 
 
@@ -45,9 +47,6 @@ function App() {
             <Route path="profesores/editar/:professorId" element={<ProfessorEdit/>}></Route>
 
             <Route path="/estudiantes/editar/:studentId" element={<StudentEdit/>}></Route>
-
-            <Route path="/profesores/disponibilidad/:professorId" element={<ProfessorSchedule/>}></Route>
-
 
           </Routes>
         </Sidebar>

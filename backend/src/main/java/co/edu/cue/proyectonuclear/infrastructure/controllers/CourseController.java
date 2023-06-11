@@ -42,7 +42,7 @@ public class CourseController {
     }
 
     @GetMapping("/courses/student/{id}")
-    public List<CourseStudentRequestDTO> getCoursesByStudentId(@PathVariable Long id){
+    public List<CourseDTO> getCoursesByStudentId(@PathVariable Long id){
         return courseService.getCoursesByStudentId(id);
 
     }
