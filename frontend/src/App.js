@@ -48,6 +48,8 @@ function App() {
 
             <Route path="/estudiantes/editar/:studentId" element={<StudentEdit/>}></Route>
 
+            <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule/>}></Route>
+
           </Routes>
         </Sidebar>
       </BrowserRouter>
