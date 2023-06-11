@@ -8,8 +8,8 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ClassroomMapper {
-    ClassroomDTO mapFromEntity(Classroom classroom);
+    ClassroomDTO mapFromEntity(Classroom classroom);//mapea los atributos de la entidad classroom a los atributos DTO
 
-    Classroom mapFromDTO(ClassroomDTO classroomDTO);
+    Classroom mapFromDTO(ClassroomDTO classroomDTO);//mapea los atributos DTO a los atributos de la entidad classroom
 
 }
