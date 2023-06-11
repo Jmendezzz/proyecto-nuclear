@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,13 @@ import java.util.Optional;
 public class StudentController {
     StudentService studentService;
     @GetMapping("/students")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public List<StudentDTO> getAllStudent(){ return studentService.getAllStudent();}
 
 
 
     @GetMapping("/students/nid/{nid}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ResponseEntity<StudentDTO> getStudentByNid(@PathVariable String nid){
 
         Optional<StudentDTO> studentDTO = studentService.getStudentByNid(nid);
@@ -34,18 +37,21 @@ public class StudentController {
     }
 
     @GetMapping("/students/semester/{semesterNumber}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public List<StudentDTO> getStudentsBySemester(@PathVariable Integer semesterNumber){
 
         return studentService.getBySemester(semesterNumber);
     }
 
     @PostMapping("/students/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO student){
         StudentDTO studentDTOcreated = studentService.saveStudent(student);
         return new ResponseEntity<>(studentDTOcreated, HttpStatus.CREATED);
     }
 
     @PutMapping("/students/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentDTO> updateStudent(@Valid @RequestBody StudentDTO studentDTO){
 
         StudentDTO student = studentService.updateStudent(studentDTO);
@@ -53,6 +59,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/students/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentDTO> deleteStudentById(@PathVariable Long id) {
 
         StudentDTO studentDTO = studentService.deleteStudent(id);
@@ -61,6 +68,7 @@ public class StudentController {
     }
 
     @GetMapping("/students/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
 
         Optional<StudentDTO> studentDTO =  studentService.getStudentById(id);
@@ -70,6 +78,7 @@ public class StudentController {
     }
 
     @GetMapping("/students/subjects/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public List<StudentDTO> getStudentsBySubjectId(@PathVariable Long id){
         return studentService.getStudentsBySubjectId(id);
     }

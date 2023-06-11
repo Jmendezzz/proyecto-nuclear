@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +22,13 @@ public class ProfessorController {
     ProfessorService professorService;
 
     @GetMapping("/professors")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ProfessorDTO> getAllProfessor(){
         return professorService.getAllProfessors();
     }
 
     @GetMapping("/professors/nid/{nid}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProfessorDTO> getProfessorByNid(@PathVariable String nid){
         Optional<ProfessorDTO> professorDTO = professorService.getProfessorByNid(nid);
         if (professorDTO.isEmpty())
@@ -34,6 +37,7 @@ public class ProfessorController {
     }
 
     @GetMapping("/professors/subject/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProfessorDTO> getProfessorsBySubjectId(@PathVariable Long id){
         Optional<ProfessorDTO> professorDTO = professorService.getProfessorBySubjectId(id);
         if(professorDTO.isEmpty())
@@ -42,6 +46,7 @@ public class ProfessorController {
     }
 
     @GetMapping("/professors/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id){
         Optional<ProfessorDTO> professorDTO = professorService.getProfessorById(id);
         if (professorDTO.isEmpty())
@@ -50,23 +55,28 @@ public class ProfessorController {
     }
 
     @PostMapping("/professors/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ProfessorDTO saveProfessor(@Valid @RequestBody CreateProfessorRequestDTO professor){
         return professorService.saveProfessor(professor);
     }
 
     @DeleteMapping("/professors/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ProfessorDTO deleteProfessorById( @PathVariable Long id){
         return professorService.deleteProfessorById(id);
     }
     @PutMapping("/professors/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public ProfessorDTO updateProfessor(@Valid @RequestBody ProfessorDTO professor){
         return professorService.updateProfessor(professor);
     }
     @PutMapping("/professors/{id}/schedule")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ProfessorScheduleDTO setScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
         return professorService.setScheduleProfessor(id, professorSchedule);
     }
     @DeleteMapping("/professors/{id}/schedule/delete")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ProfessorDTO deleteScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
         return professorService.deleteScheduleProfessor(id, professorSchedule);
     }
