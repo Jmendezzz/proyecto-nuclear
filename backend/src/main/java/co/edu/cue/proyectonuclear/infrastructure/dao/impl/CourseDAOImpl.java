@@ -4,12 +4,10 @@ import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.domain.entities.CourseSchedule;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseScheduleDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
-import co.edu.cue.proyectonuclear.mapping.mappers.CourseMapper;
-import co.edu.cue.proyectonuclear.mapping.mappers.CourseScheduleMapper;
-import co.edu.cue.proyectonuclear.mapping.mappers.ProfessorMapper;
-import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
+import co.edu.cue.proyectonuclear.mapping.mappers.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
@@ -33,6 +31,8 @@ public class CourseDAOImpl  implements CourseDAO {
 
     ProfessorMapper professorMapper;
 
+    SubjectMapper subjectMapper;
+
     CourseScheduleMapper courseScheduleMapper;
     @Override
     public CourseDTO saveCourse(GenerateCourseDTO courseDTO) {
@@ -41,18 +41,28 @@ public class CourseDAOImpl  implements CourseDAO {
         Query nativeQuery =   entityManager.createNativeQuery(query,Course.class);
         nativeQuery.setParameter("subjectId", courseDTO.subject().id());
 
-        try{
+        try {
             Course existingCourse = (Course) nativeQuery.getSingleResult();
 
+            existingCourse.setSubject(subjectMapper.mapFrom(courseDTO.subject()));
             existingCourse.setStudents(studentMapper.mapFromListDTO(courseDTO.students()));
-            existingCourse.setCourseSchedule(courseScheduleMapper.mapFromDTOList(courseDTO.courseSchedule()));
-            existingCourse.setProfessor( professorMapper.mapFrom(courseDTO.professor()));
-            Course courseSaved =  entityManager.merge(existingCourse);
-            return courseMapper.mapFromEntity(courseSaved);
+            existingCourse.setProfessor(professorMapper.mapFrom(courseDTO.professor()));
 
-        } catch (NoResultException ex){
+            //Eliminar CourseSchedule del curso en caso de que el curso este creado.
+            String queryCourseSchedule = "DELETE FROM course_schedule WHERE course_id = :courseId";
+            Query nativeQueryCourseSchedule = entityManager.createNativeQuery(queryCourseSchedule,CourseSchedule.class);
+            nativeQueryCourseSchedule.setParameter("courseId", existingCourse.getId());
+            nativeQueryCourseSchedule.executeUpdate();
+
+            // Actualizar CourseSchedule
+            List<CourseSchedule> updatedCourseSchedule = courseScheduleMapper.mapFromDTOList(courseDTO.courseSchedule());
+            existingCourse.setCourseSchedule(updatedCourseSchedule);
+
+            Course courseSaved = entityManager.merge(existingCourse);
+            return courseMapper.mapFromEntity(courseSaved);
+        } catch (NoResultException ex) {
             Course course = courseMapper.mapFromGenerateDTO(courseDTO);
-            Course courseSaved =  entityManager.merge(course);
+            Course courseSaved = entityManager.merge(course);
             return courseMapper.mapFromEntity(courseSaved);
         }
 

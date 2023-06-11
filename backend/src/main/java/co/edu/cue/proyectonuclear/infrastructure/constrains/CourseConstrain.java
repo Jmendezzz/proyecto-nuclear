@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.constrains;
 
 import co.edu.cue.proyectonuclear.domain.entities.CourseSchedule;
+import co.edu.cue.proyectonuclear.domain.entities.Subject;
 import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
 import co.edu.cue.proyectonuclear.domain.enums.DayOfWeek;
 import co.edu.cue.proyectonuclear.exceptions.CourseException;
@@ -70,22 +71,24 @@ public class CourseConstrain {
         );
     }
 
-    public boolean validateCrossingScheduleTimeSlotForStudents(DayOfWeek day, TimeSlot timeSlot, List<StudentDTO> students) {
+    public boolean validateCrossingScheduleTimeSlotForStudents(DayOfWeek day, TimeSlot timeSlot, List<StudentDTO> students, SubjectDTO subject) {
 
         return students
                 .stream()
                 .map(student -> courseDAO.getCoursesByStudentId(student.id()))
                 .flatMap(c -> c.stream())
+                .filter(c-> c.subject().id() != subject.id())
                 .flatMap(c -> c.courseSchedule().stream())
                 .filter(c -> c.day().equals(day))
                 .anyMatch(courseSchedule -> TimeSlotUtil.validateTimeCrossing(courseSchedule.timeSlot(), timeSlot));
     }
 
-    public boolean validateScheduleTimeSlotForProfessor(DayOfWeek day, TimeSlot timeSlot, ProfessorDTO professor) {
+    public boolean validateScheduleTimeSlotForProfessor(DayOfWeek day, TimeSlot timeSlot, ProfessorDTO professor, SubjectDTO subject) {
 
         return courseDAO
                 .getCoursesByProfessorId(professor.id())
                 .stream()
+                .filter(c-> c.subject().id() != subject.id())
                 .flatMap(c -> c.courseSchedule().stream())
                 .filter(cs -> cs.day().equals(day))
                 .anyMatch(courseSchedule -> TimeSlotUtil.validateTimeCrossing(courseSchedule.timeSlot(), timeSlot));

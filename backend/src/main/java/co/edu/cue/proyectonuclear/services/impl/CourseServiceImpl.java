@@ -61,7 +61,7 @@ public class CourseServiceImpl implements CourseService {
 
         List<GenerateCourseDTO> coursesDTO = new ArrayList<>();
 
-            subjects.stream().map(subject -> {
+            subjects.stream().forEach(subject -> {
             ProfessorDTO professorDTO = courseConstrain.validateSubjectIsAssignedToProfessor(subject); //Throws CourseException
 
             List<StudentDTO> students = courseConstrain.validateStudentsAssignedToSubject(subject); //Throws CourseException
@@ -70,8 +70,7 @@ public class CourseServiceImpl implements CourseService {
 
             LocalDate startDate =  generateCourseStartDate();
 
-
-                return new GenerateCourseDTO(
+                GenerateCourseDTO generateCourseDTO = new GenerateCourseDTO(
                     professorDTO,
                     subject,
                     students,
@@ -80,16 +79,13 @@ public class CourseServiceImpl implements CourseService {
                     generateCourseEndDate(startDate)
 
             );
-
-        }).forEach(c -> saveCourse(c));
-        return coursesDTO;
+                courseDAO.saveCourse(generateCourseDTO);
+        });
+            return coursesDTO;
     }
 
     private List<GenerateCourseScheduleDTO> generateCourseSchedule(List<StudentDTO> students, ProfessorDTO professor, SubjectDTO subject) {
-
-
         Integer weeklyHours = SubjectUtil.getWeeklyHours(subject);
-
 
         courseConstrain.validateProfessorHasSufficientAvailableSchedule(professor, subject, weeklyHours);
 
@@ -98,23 +94,33 @@ public class CourseServiceImpl implements CourseService {
         List<GenerateCourseScheduleDTO> courseSchedules = new ArrayList<>();
 
         professorSchedule.stream().map(ps -> { //Iterating over each ProfessorSchedule
-                    List<TimeSlot> possibleTimeSlots = ps.timeSlots().stream()
-                            .filter(timeSlot -> weeklyHours <= 6 || TimeSlotUtil.between(timeSlot) > 2)
+
+                    List<TimeSlot> possibleTimeSlots =
+                            ps.timeSlots().stream()
+                            .filter(timeSlot -> weeklyHours >= 9 ? TimeSlotUtil.between(timeSlot)>=3 : true )
                             .map(timeSlot -> TimeSlotUtil.splitTimeSlot(timeSlot, weeklyHours > 6 && subject.period().equals(Period.TRIMESTRAL) ? 3 : 2))//Splits the timeSlots
                             .flatMap(timeSlots -> timeSlots.stream())
                             .toList();
 
-                    Optional<TimeSlot> timeSlot = possibleTimeSlots.stream()
+                    possibleTimeSlots.forEach(t-> {
+                        System.out.println(t.getStartTime() + "-" + t.getEndTime());
+                    });
+
+                    Optional<TimeSlot> timeSlot =
+                            possibleTimeSlots.stream()
                             .filter(ts ->
                                     !courseConstrain.validateCrossingScheduleTimeSlotForStudents(
                                             ps.day(),
                                             ts,
-                                            students)
+                                            students,
+                                            subject
+                                            )
                                             &&
                                             !courseConstrain.validateScheduleTimeSlotForProfessor(
                                                     ps.day(),
                                                     ts,
-                                                    professor
+                                                    professor,
+                                                    subject
                                             )
                             ).findFirst();
 
@@ -126,6 +132,8 @@ public class CourseServiceImpl implements CourseService {
                 })
                 .filter(cs -> cs != null && !courseConstrain.validateWeeklyHoursLimit(courseSchedules,weeklyHours)  )
                 .forEach(courseSchedules::add);
+
+        //TODO HERE: If the schedule missing to complete weeklyHours generate another until  everything its fine.
 
         return courseSchedules;
     }
@@ -183,4 +191,6 @@ public class CourseServiceImpl implements CourseService {
     private LocalDate generateCourseEndDate(LocalDate startDate){
         return LocalDate.of(startDate.getYear(), startDate.getMonth().getValue() + 5, startDate.getDayOfMonth()+15 );
     }
+
+
 }
