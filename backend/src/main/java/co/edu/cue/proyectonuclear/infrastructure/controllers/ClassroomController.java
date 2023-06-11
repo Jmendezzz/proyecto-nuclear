@@ -50,11 +50,11 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
 
-    @GetMapping("classrooms/capability/{capability}")
+    @GetMapping("/classrooms/capability/{capability}")
     public List<ClassroomDTO>searchByCapacity(@PathVariable Integer capability){
        return classroomService.searchByCapacity(capability);
     }
-    @GetMapping("classrooms/location/{location}")
+    @GetMapping("/classrooms/location/{location}")
     public List<ClassroomDTO>searchByLocation(@PathVariable Location location){
         return classroomService.searchByLocation(location);
     }
