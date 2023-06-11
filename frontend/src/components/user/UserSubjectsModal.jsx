@@ -3,7 +3,6 @@ import style from "./User.module.css";
 import {AiFillCloseCircle} from "react-icons/ai";
 import { Button } from "../../UI/button/Button";
 import { careers } from "../../enums/Career"
-import { useNavigate } from "react-router-dom";
 import { Pagination } from "../pagination/Pagination";
 
 const reformatSubjectCareer = (subject) => {
@@ -46,9 +45,7 @@ export const UserSubjectsModal = (props) => {
                 </header>
                 <p>Puede seleccionar una o mas asignaturas</p>
                 <div className={style["subjects-container"]}>
-                    <input input={{placeholder: "Filtrar por nombre"}} style={{ height: "20px" }}>
-                    </input>
-                    <Button inLineStyle={{ width: "120px", height: "60px", margin: "10px" }}>Buscar</Button>
+                    <input input={{placeholder: "Filtrar por nombre"}} style={{ height: "20px" }} />
                     <table>
                         <thead>
                             <tr>
