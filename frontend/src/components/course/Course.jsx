@@ -175,7 +175,6 @@ export const Course = () => {
                                         <td><AiOutlineSchedule className={style["schedule__icon"]} onClick={showCourseScheduleModalHandler.bind(null,course.courseSchedule)}/></td>
                                         <td className={style["actions__container"]}>
                                                 <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/asignaturas/editar/${course.id}`)} />
-                
                                                 <MdDeleteForever className={style["icon__delete"]} onClick={deleteCourseHandler.bind(null, course.id)} />
                                         </td>
                                     </tr>
