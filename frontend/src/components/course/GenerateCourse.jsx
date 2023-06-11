@@ -4,7 +4,6 @@ import { generateCourses } from "../../api/CourseApiService";
 import { Header } from "../../UI/headers/Header";
 import style from "./Course.module.css";
 import { Button } from "../../UI/button/Button";
-import { Input } from "../../UI/inputs/Input";
 import { getSubjects } from "../../api/SubjectApiService";
 import { Pagination } from "../pagination/Pagination";
 import Swal from "sweetalert2";
