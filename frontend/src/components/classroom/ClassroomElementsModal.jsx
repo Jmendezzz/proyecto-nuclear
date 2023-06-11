@@ -1,4 +1,3 @@
-
 import React from "react";
 import style from "./Classroom.module.css";
 import { Button } from "../../UI/button/Button";
