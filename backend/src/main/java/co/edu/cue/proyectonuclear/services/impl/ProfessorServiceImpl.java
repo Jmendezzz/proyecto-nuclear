@@ -121,7 +121,7 @@ public class ProfessorServiceImpl implements ProfessorService {
      */
     @Override
     public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        professorConstrain.validateTimeSlotsPerWeek(id, professorScheduleDTO);
+        professorConstrain.validateTimeSlotsByProfessorSubject(id, professorScheduleDTO);
         return professorDAO.setScheduleProfessor(id, professorScheduleDTO);
     }
 

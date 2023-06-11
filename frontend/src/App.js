@@ -46,7 +46,7 @@ function App() {
 
             <Route path="/estudiantes/editar/:studentId" element={<StudentEdit/>}></Route>
 
-            <Route path="/profesores/schedule/:professorId" element={<ProfessorSchedule/>}></Route>
+            <Route path="/profesores/disponibilidad/:professorId" element={<ProfessorSchedule/>}></Route>
 
 
           </Routes>

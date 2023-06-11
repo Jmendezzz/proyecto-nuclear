@@ -7,12 +7,15 @@ import { days } from "../../../enums/Days"
 import { IoIosAddCircle } from 'react-icons/io';
 import { setScheduleProfessor } from "../../../api/ProfessorApiService";
 import Swal from "sweetalert2";
+import style from "./Schedule.module.css";
+import { Button } from "../../../UI/button/Button";
+import { useNavigate } from "react-router-dom";
+
 
 //Alerts
 const succesResponseAlert = (response) => {
 	Swal.fire({
-		title: "Profesor creado",
-		text: "Se ha creado el profesor " + response.data.name,
+		title: "Horario guardado",
 		icon: "success",
 		confirmButtonColor: "green",
 		confirmButtonText: "Aceptar",
@@ -29,6 +32,8 @@ const errorResponseAlert = (error) => {
 };
 
 export const ScheduleModal = (props) => {
+
+    const navigate = useNavigate();
 
     const [day, setDay] = useState();
     const [slots, setSlots] = useState([]);
@@ -61,7 +66,9 @@ export const ScheduleModal = (props) => {
         setScheduleProfessor(props.professor.id, professorSchedule)
             .then((response) => {
                 succesResponseAlert(response);
+                window.location.reload();
             })
+            .then(() => navigate(`/profesores/disponibilidad/${props.professor.id}`))
             .catch((error) => {
                 errorResponseAlert(error);
             });
@@ -72,13 +79,13 @@ export const ScheduleModal = (props) => {
     }
 
     return (
-        <div>
-            <div>
-                <Header>
+        <div className={style.backdrop}>
+            <div className={style.modal}>
+                <Header className={style.header}>
                     <h2>Disponibilidad</h2>
-                    <AiFillCloseCircle onClick={props.onClick} />
+                    <AiFillCloseCircle onClick={props.onClick} className={style["close__modal"]} style={{ fontSize: '24px', cursor: 'pointer' }} />
                 </Header>
-
+                <div className={style["schedule-container"]}>
                 <Select
                     onChange={setDayHandler}
                     defaultValue={{ label: days[0].name, value: days[0].value }}
@@ -88,7 +95,12 @@ export const ScheduleModal = (props) => {
                         value: day.value
                     }))}
                 />
-
+                {console.log(day)}
+                <div className={style.timeSlots}>
+                <p className={style.startTime}>Hora inicio</p>
+                <p className={style.endTime}>Hora fin</p>
+                <IoIosAddCircle onClick={handleAddSlot} className={style.btnAdd} style={{ fontSize: '24px', cursor: 'pointer' }} />
+                </div>
                 {
                     slots.map((slot, index) => (
                         <div key={index}>
@@ -97,9 +109,8 @@ export const ScheduleModal = (props) => {
                         </div>
                     ))
                 }
-                <div>
-                    <IoIosAddCircle onClick={handleAddSlot} style={{ fontSize: '24px', cursor: 'pointer' }} />                </div>
-                <button onClick={handleSubmit}>Enviar</button>
+                <Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={handleSubmit}>Enviar</Button>
+            </div>
             </div>
         </div>
     );

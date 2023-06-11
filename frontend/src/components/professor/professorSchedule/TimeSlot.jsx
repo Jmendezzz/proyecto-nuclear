@@ -1,3 +1,5 @@
+import style from "./Schedule.module.css";
+
 export const TimeSlots = ( {onStartTimeChange, onEndTimeChange } ) => {
 
     const handleStartTimeChange = (event) => {
@@ -11,11 +13,9 @@ export const TimeSlots = ( {onStartTimeChange, onEndTimeChange } ) => {
     }
 
     return (
-        <div>
-            <p>Hora inicio</p>
-            <input type="time" onChange={handleStartTimeChange}/>
-            <p>Hora fin</p>
-            <input type="time" onChange={handleEndTimeChange} />
+        <div className={style.TimeSlots}>
+            <input className={style.slotsInp} type="time" step="3600000" onChange={handleStartTimeChange}/>
+            <input className={style.slotsInp} type="time" step="3600000" onChange={handleEndTimeChange} />
         </div>
     );
 }

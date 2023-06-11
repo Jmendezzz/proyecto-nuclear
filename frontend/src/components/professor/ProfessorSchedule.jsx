@@ -17,6 +17,7 @@ export const ProfessorSchedule = () => {
 	const [professor, setProfessor] = useState();
 	const [error, setError] = useState(undefined);
 	const [scheduleModal, setScheduleModal] = useState(undefined);
+	const [subjectThreeHours, setSubjectsThreeHours] = useState([])
 
 	const showScheduleModalHandler = () => {
         setScheduleModal(true);
@@ -30,11 +31,16 @@ export const ProfessorSchedule = () => {
 		setError(error);
 	};
 
+	const filterSubjects = (subjects) => {
+    	return subjects.filter(subject => subject && subject.period === 'TRIMESTRAL' && subject.academicHours === 96);
+	};
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		getProfessorById(professorId)
 			.then((response) => {
 				setProfessor(response.data);
+				setSubjectsThreeHours( filterSubjects( response.data.subjects ) );
 				setIsLoading(false);
 			})
 			.catch((error) => console.log(error));
@@ -61,17 +67,21 @@ export const ProfessorSchedule = () => {
 				<Header>
 					<h2>AGREGUE SU DISPONIBILIDAD</h2>
 				</Header>
+				{console.log(subjectThreeHours)}
+				{
+					subjectThreeHours.length !== 0 ?
+					<h3>Recuerde ingresar al menos tres intervalos de tres horas para las materias {subjectThreeHours.map(s=> s.name)} </h3>
+					: 
+					<h3>Recuerde ingresar intervalos de dos horas para las materias: {professor.subjects.map(s=> s.name)} </h3>
+				}
 			{
 				professor.schedule ? <>
-				<Button onClick={showScheduleModalHandler}>Ingrese su horario</Button>
-				</> : <>
-				{
-				professor.schedule.map((sch) => (
 					<div>
 						<ScheduleDays professor={professor} />
 					</div>
-				))
-				}
+				<Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
+				</> : <>
+				<Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				</>
 			}
 		</Flex>

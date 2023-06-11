@@ -45,9 +45,7 @@ export const UserSubjectsModal = (props) => {
                 </header>
                 <p>Puede seleccionar una o mas asignaturas</p>
                 <div className={style["subjects-container"]}>
-                    <input input={{placeholder: "Filtrar por nombre"}} style={{ height: "20px" }}>
-                    </input>
-                    <Button inLineStyle={{ width: "120px", height: "60px", margin: "10px" }}>Buscar</Button>
+                    <input input={{placeholder: "Filtrar por nombre"}} style={{ height: "20px" }} />
                     <table>
                         <thead>
                             <tr>
