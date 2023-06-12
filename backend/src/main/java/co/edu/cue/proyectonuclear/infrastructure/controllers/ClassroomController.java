@@ -3,8 +3,6 @@ package co.edu.cue.proyectonuclear.infrastructure.controllers;
 import co.edu.cue.proyectonuclear.domain.enums.Location;
 import co.edu.cue.proyectonuclear.exceptions.ClassroomException;
 import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
