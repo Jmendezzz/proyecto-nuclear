@@ -24,11 +24,11 @@ import { ErrorResponse } from "../../UI/error/ErrorResponse";
 
 
 /**
- * This function validates a form by checking if the name and capability fields are not empty and if
- * the capability value is within a valid range.
- * @returns The function `validateForm` returns an object `errors` that contains error messages for any
- * validation errors found in the `values` object passed as an argument. The error messages are
- * specific to the validation rules defined in the function.
+ * Esta función valida un formulario comprobando si los campos de nombre y capacidad no están vacíos y si
+ * el valor de capacidad está dentro de un rango válido.
+ * @returns La función `validateForm` devuelve un objeto `errors` que contiene mensajes de error para cualquier
+ * errores de validación encontrados en el objeto `values` pasado como argumento. Los mensajes de error son
+ * específico de las reglas de validación definidas en la función.
  */
 const validateForm = (values) => {
   const errors = {};
@@ -43,8 +43,9 @@ const validateForm = (values) => {
 
 }
 
+
 /**
- * The function displays a success alert message with the name of the edited salon.
+ * La función muestra un mensaje de alerta de éxito con el nombre del salón editado.
  */
 const succesResponseAlert = (response) => {
   Swal.fire({
@@ -58,8 +59,9 @@ const succesResponseAlert = (response) => {
 
 }
 
+
 /**
- * The function displays an error message using the Swal library.
+ * La función muestra un mensaje de error utilizando la biblioteca Swal.
  */
 const errorResponseAlert = (error) => {
   console.log(error);
@@ -74,13 +76,14 @@ const errorResponseAlert = (error) => {
 }
 
 
+
 /**
- * The function reformatElements maps an array of elements to a new array of elements with matching
- * values from a predefined array.
- * @returns The function `reformatElements` takes an array `classroomElements` as input and returns a
- * new array of objects where each object has a `value` property that matches an element in the
- * `elements` array. The `find` method is used to search for the matching element in the `elements`
- * array. The returned array contains the objects with the matching `value` property.
+ * La función reformatElements asigna una matriz de elementos a una nueva matriz de elementos con correspondencia
+ * valores de una matriz predefinida.
+ * @returns La función `reformatElements` toma una matriz `classroomElements` como entrada y devuelve un
+ * nueva matriz de objetos donde cada objeto tiene una propiedad `valor` que coincide con un elemento en el
+ * Matriz `elementos`. El método `find` se usa para buscar el elemento coincidente en `elements`
+ * matriz. La matriz devuelta contiene los objetos con la propiedad 'valor' coincidente.
  */
 const reformatElements=(classroomElements)=>{
   return classroomElements.map((element)=>{
@@ -90,8 +93,8 @@ const reformatElements=(classroomElements)=>{
 
   }
 export const ClassroomEdit = () => {
-/* These lines of code are defining and initializing state variables and hooks used in the
-`ClassroomEdit` component. */
+/* Estas líneas de código definen e inicializan variables de estado y ganchos utilizados en el
+Componente `ClassroomEdit`. */
   const navigate = useNavigate();
   const { classroomId } = useParams();
   const [classroom, setClassroom] = useState();
@@ -99,8 +102,8 @@ export const ClassroomEdit = () => {
   const [elementsModal, setElementsModal] = useState(undefined);
   const [elementsAdded, setElementsAdded] = useState([]);
   const [error, setError] = useState(undefined);
-/* These lines of code are defining and initializing state variables and hooks used in the
-`ClassroomEdit` component. */
+/* Estas líneas de código definen e inicializan variables de estado y ganchos utilizados en el
+Componente `ClassroomEdit`. */
   const [
     classroomLocationValue,
     classroomLocationValueChangeHandler
@@ -112,11 +115,11 @@ export const ClassroomEdit = () => {
   ] = useState("NORMAL");
 
 
-/* The above code is using the `useEffect` hook in a React component to fetch data for a classroom by
-its ID and set the state of the component with the retrieved data. It also sets the `isLoading`
-state to `false` once the data has been retrieved. Additionally, it scrolls the window to the top of
-the page. The `reformatElements` function is likely used to transform the data into a format that is
-easier to work with in the component. */
+/* El código anterior usa el gancho `useEffect` en un componente de React para obtener datos para un salón de clases
+su ID y establecer el estado del componente con los datos recuperados. También establece el `isLoading`
+estado a `falso` una vez que se han recuperado los datos. Además, desplaza la ventana hasta la parte superior de
+la página. La función `reformatElements` probablemente se usa para transformar los datos en un formato que es
+más fácil de trabajar en el componente. */
   useEffect(() => {
     window.scrollTo(0, 0);
     getClassroomById(classroomId)
@@ -129,36 +132,50 @@ easier to work with in the component. */
       .catch((error) => console.log(error))
 
   }, [])
+
 /**
- * The function hides a modal by setting its state to undefined.
+ * La función oculta un modal al establecer su estado en indefinido.
  */
   const hideElementsModalHandler = () => {
     setElementsModal(undefined);
 
   }
- /**
-  * This function sets the state of a modal to true, indicating that it should be shown.
+
+/**
+  * Esta función establece el estado de un modal en verdadero, lo que indica que debe mostrarse.
   */
   const showElementsModalHandler = () => {
     setElementsModal(true)
   }
- /**
-  * This function sets the state of "elementsAdded" to the provided "elements" parameter.
+
+/**
+  * Esta función establece el estado de "elementsAdded" al parámetro "elements" proporcionado.
   */
   const confirmElementsAddedHandler = (elements) => {
     setElementsAdded(elements);
   }
 
+/**
+   * This function removes a specified element from an array of elements.
+   */
   const removeElement=(elementToRemove)=>{
     setElementsAdded((prevElements) =>
     prevElements.filter((element) => element !== elementToRemove)
   );
   }
+
+/* El código está comprobando si hay un error y, de ser así, registra el error y devuelve un React
+ componente llamado `ErrorResponse` con el estado de error y el mensaje como accesorios. */
   if(error){
     console.log(error)
     return <ErrorResponse errStatus={error.response.status} errMessage={error.response.data.message} />;
 }
 
+
+/**
+ * La función maneja la edición de un aula mediante la creación de un nuevo objeto de aula con valores actualizados y
+ * llamando a la función updateClassroom con él.
+ */
   const editClassroomHandler = (values) => {
     const classroom = {
       id:classroomId,
@@ -176,9 +193,19 @@ easier to work with in the component. */
 
   }
 
+
+/**
+  * La función `selectLocationHandler` llama a `classroomLocationValueChangeHandler` con el `valor`
+  * parámetro.
+  */
   const selectLocationHandler = ({ value }) => {
     classroomLocationValueChangeHandler(value);
   }
+
+/**
+  * Esta función maneja la selección de un valor de tipología de aula y lo pasa a otra
+  * función.
+  */
   const selectTipologyHandler = ({ value }) => {
     classroomTipologyValueChangeHandler(value)
   }

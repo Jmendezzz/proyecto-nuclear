@@ -6,8 +6,17 @@ import { useState} from "react";
 import {AiFillCloseCircle} from "react-icons/ai";
 export const ClassroomElementsModal = (props) => {
 
+    
+/* Usando el gancho `useState` para inicializar una variable de estado llamada `elementsAdded` con el valor
+    de `props.elements`. También crea una función llamada `setElementsAdded` que se puede usar para
+    actualizar el valor de `elementsAdded`. */
     const [elementsAdded, setElementsAdded] = useState(props.elements);
 
+ 
+/**
+   * La función agrega o elimina un elemento de una matriz en función de si ya existe en el
+   * matriz.
+   */
     const addElement = (newElement)=>{
         if (elementsAdded.includes(newElement)) {
             removeElement(newElement);
@@ -15,12 +24,21 @@ export const ClassroomElementsModal = (props) => {
             setElementsAdded((prevElements) => [...prevElements, newElement]);
           }
     }
+  
+/**
+    * Esta función elimina un elemento específico de una matriz de elementos.
+    */
     const removeElement = (elementToRemove) => {
         setElementsAdded((prevElements) =>
           prevElements.filter((element) => element !== elementToRemove)
         );
       };
 
+   
+/**
+      * La función `confirmHandler` llama a la función `onConfirm` con el parámetro `elementsAdded`
+      * y luego llama a la función `onClick`.
+      */
       const confirmHandler=()=>{
         props.onConfirm(elementsAdded)
         props.onClick();

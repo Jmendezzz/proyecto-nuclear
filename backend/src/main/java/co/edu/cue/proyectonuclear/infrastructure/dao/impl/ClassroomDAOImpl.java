@@ -75,8 +75,6 @@ public class ClassroomDAOImpl implements ClassroomDAO {
         }catch (NullPointerException ex){
             return Optional.empty();
         }
-        //Classroom classroom=entityManager.find(Classroom.class,id);
-        //return Optional.of(classroomMapper.mapFromEntity(classroom));
 
     }
 
