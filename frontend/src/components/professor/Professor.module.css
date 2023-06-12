@@ -30,6 +30,17 @@
     table > tbody >tr:not(:last-child) {
     border-bottom: 1px solid rgb(169, 168, 168);
 }
+.schedule__icon {
+    color: rgba(52, 91, 175, 1);
+    font-size: 50px;
+    cursor: pointer; 
+    transition: all .2s ease-in-out; 
+}
+
+.schedule__icon:hover {
+    color: darkblue; 
+    transform: scale(1.1); 
+}
 .actions__container{
     display: flex;
     flex-direction: row;

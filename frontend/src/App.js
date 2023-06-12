@@ -50,8 +50,6 @@ function App() {
             <Route path="/cursos" element={<Course/>}></Route>
             <Route path="/cursos/generar" element={<GenerateCourse/>}></Route>
 
-
-
           </Routes>
         </Sidebar>
       </BrowserRouter>
