@@ -13,6 +13,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -97,10 +98,19 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
-        validateProfessorExisting(professor.id());
-        Professor professorEntity = mapper.mapFrom(professor);
-        Professor professorSaved =  entityManager.merge(professorEntity);
-        return mapper.mapFrom(professorSaved);
+        try {
+            Professor professorEntity = entityManager.find(Professor.class, professor.id());
+            Professor professorUpdated = mapper.mapFrom(professor);
+            professorEntity.setSubjects(professorUpdated.getSubjects());
+            professorEntity.setName(professorUpdated.getName());
+            professorEntity.setEmail(professorUpdated.getEmail());
+            professorEntity.setLastName(professor.lastName());
+
+            Professor professorSaved = entityManager.merge(professorEntity);
+            return mapper.mapFrom(professorSaved);
+        }catch (NullPointerException e){
+            throw new ProfessorException("No se pudo actualizar el profesor id invalido", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
