@@ -2,8 +2,10 @@ import React from "react";
 import { Flex } from "../../UI/flex/Flex";
 import style from "./Login.module.css";
 import logo from '../../assets/images/logo-cue-avh.png';
-import { Field, Form, Formik, ErrorMessage } from "formik";
+import { Field, Form, Formik } from "formik";
 import { isEmpty } from "../../validations/InputValidations";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const formValidation = (values) => {
     const errors = {};
@@ -15,14 +17,15 @@ const formValidation = (values) => {
     return errors;
 
 }
-
-
 export const Login = () => {
+    const navigate = useNavigate();
+    const {loginHandler} = useAuth();
 
     const loginButtonHandler = (values) => {
 
-        console.log(values); // TODO
-
+        if( loginHandler(values.username, values.password)){
+            navigate("/asignaturas");
+        }
     }
 
     return (

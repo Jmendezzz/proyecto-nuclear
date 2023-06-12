@@ -11,6 +11,7 @@ import {BsFillGearFill} from "react-icons/bs";
 import logo from "../assets/images/logo-cue-avh.png";
 import { useState } from "react";
 
+import { useAuth } from "../context/AuthContext";
 const routes = [
   {
     path: "/",
@@ -52,6 +53,11 @@ const routes = [
 export const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
 
+
+  const { isAuthenticated } = useAuth();
+  if(!isAuthenticated){
+    return children;
+  }
   const showAnimation = {
     hidden: {
       display: "none",

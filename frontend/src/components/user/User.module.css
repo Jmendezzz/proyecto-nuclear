@@ -44,7 +44,8 @@
 .actions {
 	padding: 1rem;
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+    margin: 30px;
 }
 
 @media (min-width: 1000px) {
@@ -87,6 +88,7 @@
 	transform: translateY(-50%);
 	cursor: pointer;
 }
+
 .main-container{
     background-color: #ebebeb;
     border-radius: 3em;
@@ -169,6 +171,18 @@
     
     outline: 1px solid rgba(52, 91, 175, 1);
 }
+.form__item{
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	height: 50px;
+}
+.fom__item-error{
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	height: 50px;
+}
 .form__item-error > input {
     width: 320px;
     padding: 20px;
@@ -196,3 +210,92 @@
 	color: red;
 	cursor: pointer;
 }
+
+.user-detail__item{
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	gap: 10px;
+	font-size: 25px;
+}
+.user-detail__item > label{
+	font-weight: bolder;
+}
+
+.information-container{
+	margin: 20px;
+
+}
+
+.edit__password{
+
+	cursor: pointer;
+	font-size: 30px;
+	color:red;
+}
+
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    background:rgb(0, 0,0,0.90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 100;
+    overflow: hidden;
+
+}
+.modal p{
+    font-size: 20px
+
+}
+.header {
+    text-align: center;
+    width: 100%;
+    background: rgba(52, 91, 175, 1);
+    padding: 1rem;
+    position: relative;
+  }
+  
+.header h2 {
+    margin: 0;
+    color: white;
+  }
+
+  .modal-form__item{
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	height: 50px;
+  }
+  .modal-form__item >label{
+	font-weight: bold;
+	margin-bottom: 2px;
+  }
+  .modal-form__item  > input{
+	width: 320px;
+    padding: 20px;
+    border-radius: 20px;
+    border:1px solid lightgray;
+    font-size: 20px;
+    height: 10px;
+
+
+  }
+  .modal-form__item > input:focus{
+	outline: 1px solid rgba(52, 91, 175, 1);
+
+  }
