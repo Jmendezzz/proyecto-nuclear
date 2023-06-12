@@ -84,7 +84,7 @@ export const UserConfiguration = () => {
 
                         <div className={style["user-detail__item"]}>
                             <label>Usuario: </label>
-                            <p>{user.nid}</p>
+                            <p>{user.username}</p>
                         </div>
                         <div className={style["user-detail__item"]}>
                             <label>Contraseña:</label>

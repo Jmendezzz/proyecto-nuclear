@@ -54,7 +54,7 @@ export const UserSubjectsModal = (props) => {
                 </header>
                 <p>Puede seleccionar una o mas asignaturas</p>
                 <div className={style["subjects-container"]}>
-                    <Input input={{placeholder: "Filtrar por nombre", onChange:searchHandler}} style={{ height: "20px" }} />
+                    <Input input={{placeholder: "Filtrar por nombre", onChange:searchHandler}} style={{ height: "10px", width:"300px" }} />
                     {
                         currentSubject.length === 0 ? <p style={{ fontSize: "30px" }}>No hay materias por mostrar</p>
                         :

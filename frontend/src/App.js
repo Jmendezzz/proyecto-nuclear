@@ -46,7 +46,7 @@ function App() {
               <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.ADMIN]}/>} >
 
                 <Route path="/asignaturas" element={<Subject />}/>
-                <Route path="/asignaturas/crear"crearelement={<SubjectCreate/>}/>
+                <Route path="/asignaturas/crear" element={<SubjectCreate/>}/>
                 <Route path="asignaturas/editar/:subjectId" element={<SubjectEdit />} />
 
 
@@ -75,7 +75,9 @@ function App() {
 
               </Route>
               <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.PROFESSOR]}/>} >
+
                 <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule />} />
+                
                 </Route>
 
 
