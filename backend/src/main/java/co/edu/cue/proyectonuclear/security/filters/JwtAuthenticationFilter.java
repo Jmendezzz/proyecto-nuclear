@@ -1,7 +1,10 @@
 package co.edu.cue.proyectonuclear.security.filters;
 
 import co.edu.cue.proyectonuclear.domain.entities.UserModel;
+import co.edu.cue.proyectonuclear.mapping.dtos.UserDTO;
+import co.edu.cue.proyectonuclear.security.UserDetailsServiceImpl;
 import co.edu.cue.proyectonuclear.security.jwt.JwtUtil;
+import co.edu.cue.proyectonuclear.services.UserService;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,13 +12,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,8 +30,11 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private  JwtUtil jwtUtil;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+    private UserService userService;
+
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserService userService) {
         this.jwtUtil = jwtUtil;
+        this.userService= userService;
     }
 
     @Override
@@ -58,10 +67,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.addHeader("Authorization", token);
 
+        UserDTO userDTO = userService.getUserByUsername(user.getUsername()).orElseThrow(()-> new UsernameNotFoundException("No se encontró el usuario"));
+
         Map<String, Object> httpResponse = new HashMap<>();
         httpResponse.put("token", token);
         httpResponse.put("Message", "Autenticacion Correcta");
-        httpResponse.put("Username", user.getUsername());
+        httpResponse.put("username", user.getUsername());
+        httpResponse.put("role", userDTO.role());
+        httpResponse.put("user_id",userDTO.id());
+
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
         response.setStatus(HttpStatus.OK.value());
