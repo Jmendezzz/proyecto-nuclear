@@ -1,6 +1,7 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 
+import co.edu.cue.proyectonuclear.domain.entities.ProfessorSchedule;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
@@ -125,19 +126,10 @@ public class ProfessorServiceImpl implements ProfessorService {
         return professorDAO.setScheduleProfessor(id, professorScheduleDTO);
     }
 
-    /**
-     * This function deletes a schedule for a professor and returns a ProfessorDTO object.
-     * 
-     * @param id The ID of the professor whose schedule is being deleted.
-     * @param professorScheduleDTO The parameter `professorScheduleDTO` is an object of type
-     * `ProfessorScheduleDTO` which contains information about a schedule for a professor. This object
-     * likely includes details such as the date, time, and location of the professor's class or
-     * appointment. The method `deleteScheduleProfessor` takes this object
-     * @return The method `deleteScheduleProfessor` is returning a `ProfessorDTO` object.
-     */
+
     @Override
-    public ProfessorDTO deleteScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        return professorDAO.deleteScheduleProfessor(id, professorScheduleDTO);
+    public ProfessorScheduleDTO deleteScheduleProfessor(Long idSchedule) {
+        return professorDAO.deleteScheduleProfessor(idSchedule);
     }
 
     /**

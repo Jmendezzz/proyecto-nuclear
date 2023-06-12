@@ -10,6 +10,8 @@ import { MdDeleteForever } from "react-icons/md";
 import style from "./Professor.module.css";
 import Swal from "sweetalert2";
 import { deleteProfessorById, getProfessors } from "../../api/ProfessorApiService";
+import { IoIosListBox } from "react-icons/io";
+import { ViewScheduleModal } from "./ViewScheduleModal";
 
 const succesResponseAlert = (response) => {
     Swal.fire(
@@ -38,6 +40,17 @@ export const Professor = () => {
         setProfessors(res.data);
     };
     const [search, setSearch] = useState("");
+
+    //modal view schedule
+    const [viewScheduleModal, setViewScheduleModal] = useState(undefined);
+    const [professor, setProfessor] = useState();
+    const showScheduleModalHandler = (professor) => {
+        setProfessor(professor);
+        setViewScheduleModal(true);
+    }
+    const hideScheduleModalHandler = () => {
+        setViewScheduleModal(undefined)
+    }
 
     useEffect(()=>{
         getProfessors()
@@ -84,6 +97,11 @@ export const Professor = () => {
     
     return(
         <Flex height={"100%"} width={"100%"} direction={"column"} alignItems={"center"} justifyContent={"none"}>
+            {viewScheduleModal && (
+                <ViewScheduleModal
+                professor = {professor}
+                onClick={hideScheduleModalHandler} />
+            )}
             <Header>
                 <h2 style={ {fontSize:"60px"} }>Profesores</h2>
             </Header>
@@ -107,7 +125,8 @@ export const Professor = () => {
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Correo</th>
-                            <th>Asignaturas</th>                            
+                            <th>Asignaturas</th>   
+                            <th>Disponibilidad</th>                         
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -125,6 +144,9 @@ export const Professor = () => {
                                             <li key={subject.id}>{subject.name}</li>
                                         ))}
                                     </ul>
+                                    </td>
+                                    <td>
+                                        <IoIosListBox className={style["schedule__icon"]} onClick={showScheduleModalHandler.bind(null, professor)} />
                                     </td>
                                     <td className={style["actions__container"]}>
                                             <BiEdit className={style["icon__edit"]} onClick={()=>navigate(`/profesores/editar/${professor.id}`)}/>

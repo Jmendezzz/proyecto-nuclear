@@ -12,13 +12,15 @@ import style from "./Professor.module.css";
 
 
 export const ProfessorSchedule = () => {
-
+	
 	const { professorId } = useParams();
 	const [isLoading, setIsLoading] = useState(true);
 	const [professor, setProfessor] = useState();
+	const [schedule, setSchedule] = useState([]);
 	const [error, setError] = useState(undefined);
 	const [scheduleModal, setScheduleModal] = useState(undefined);
 	const [subjectThreeHours, setSubjectsThreeHours] = useState([])
+	const [reload, setReload] = useState(false);
 
 	const showScheduleModalHandler = () => {
         setScheduleModal(true);
@@ -40,12 +42,15 @@ export const ProfessorSchedule = () => {
 		window.scrollTo(0, 0);
 		getProfessorById(professorId)
 			.then((response) => {
+				setReload(false);
 				setProfessor(response.data);
+				setSchedule(response.data.schedule);
 				setSubjectsThreeHours( filterSubjects( response.data.subjects ) );
-				setIsLoading(false);
+				
 			})
+			.then(()=>setIsLoading(false))
 			.catch((error) => console.log(error));
-	}, []);
+	}, [reload]);
 
 	if (error) {
 		return (
@@ -63,7 +68,7 @@ export const ProfessorSchedule = () => {
 			alignItems={"center"}
 			justifyContent={"none"}>
 				{scheduleModal && (
-					<ScheduleModal onClick={hideScheduleModalHandler} professor={professor} />
+					<ScheduleModal onClick={hideScheduleModalHandler} professor={professor} reload={value => setReload(value)} />
 				)}
 				<Header>
 					<h2>AGREGUE SU DISPONIBILIDAD</h2>
@@ -74,21 +79,20 @@ export const ProfessorSchedule = () => {
 						className={style["main-container"]}
 						justifyContent={"none"}
 						alignItems={"center"}>
-				{console.log(subjectThreeHours)}
 				{
 					subjectThreeHours.length !== 0 ?
-					<h3>Recuerde ingresar al menos tres intervalos de tres horas para las materias {subjectThreeHours.map(s=> s.name)} </h3>
+					<h3>Recuerde ingresar al menos tres intervalos de 3 horas para las materias {subjectThreeHours.map(s=> s.name)} </h3>
 					: 
-					<h3>Recuerde ingresar intervalos de dos horas para las materias: {professor.subjects.map(s=> s.name)} </h3>
+					<h3>Recuerde ingresar intervalos de 2 horas para las materias: {professor.subjects.map(s=> s.name)} </h3>
 				}
 			{
-				professor.schedule ? <>
+				schedule ? <>
 					<div>
-						<ScheduleDays professor={professor} />
+						<ScheduleDays schedule={schedule} isProfessor={true} reload={value => setReload(value)} />
 					</div>
-				<Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
+				<Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				</> : <>
-				<Button inLineStyle={ {width: "140px", height: "80px", margin: "10px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
+				<Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				</>
 			}
 			</Flex>

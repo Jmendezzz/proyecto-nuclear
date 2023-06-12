@@ -36,7 +36,7 @@ public class ProfessorConstrain {
 
     public void validateTimeSlotsByProfessorSubject(ProfessorScheduleDTO professorScheduleDTO) {
         professorScheduleDTO.timeSlots().forEach(timeSlot -> {
-            if (ChronoUnit.HOURS.between(timeSlot.getEndTime(), timeSlot.getStartTime()) <= 1 ){
+            if (ChronoUnit.HOURS.between( timeSlot.getStartTime(), timeSlot.getEndTime()) <= 1){
                 throw new ProfessorException("La disponibilidad debe ser de al menos 2 horas", HttpStatus.BAD_REQUEST);
             }
         });

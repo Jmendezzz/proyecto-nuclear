@@ -1,5 +1,6 @@
 package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
+import co.edu.cue.proyectonuclear.domain.entities.ProfessorSchedule;
 import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
@@ -66,8 +67,8 @@ public class ProfessorController {
     public ProfessorScheduleDTO setScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
         return professorService.setScheduleProfessor(id, professorSchedule);
     }
-    @DeleteMapping("/professors/{id}/schedule/delete")
-    public ProfessorDTO deleteScheduleProfessor(@PathVariable Long id, @Valid @RequestBody ProfessorScheduleDTO professorSchedule){
-        return professorService.deleteScheduleProfessor(id, professorSchedule);
+    @DeleteMapping("professors/delete/shedule/{idSchedule}")
+    public ProfessorScheduleDTO deleteScheduleProfessor(@PathVariable Long idSchedule){
+        return professorService.deleteScheduleProfessor(idSchedule);
     }
 }
