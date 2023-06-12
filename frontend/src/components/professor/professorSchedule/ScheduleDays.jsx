@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Flex } from "../../../UI/flex/Flex";
 import { days } from "../../../enums/Days";
 import style from "./Schedule.module.css";

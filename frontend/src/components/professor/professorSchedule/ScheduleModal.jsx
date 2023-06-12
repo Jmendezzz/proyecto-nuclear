@@ -66,10 +66,22 @@ export const ScheduleModal = (props) => {
             return true;
         }
         const hasEmptySlots = slots.some((slot) => slot.startTime === '' || slot.endTime === '');
+        const hasDuplicates = slots.some((slot, index) => 
+            slots.some(
+                (otherSlot, otherIndex) => 
+                    index !== otherIndex &&
+                    (slot.startTime === otherSlot.startTime || slot.endTime === otherSlot.endTime)
+            )
+        );
         if (hasEmptySlots) {
             setError('Debe llenar todos los campos, o eliminar los vacios');
             return true;
         }
+        if (hasDuplicates){
+            setError('No pueden haber campos iguales');
+            return true;
+        }
+        setError("");
     }
 
     const handleSubmit = () => {
