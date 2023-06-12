@@ -13,16 +13,16 @@ export const ViewScheduleModal = (props) => {
                     <h2>Disponibilidad del profesor {props.professor.name} </h2>
                     <AiFillCloseCircle onClick={props.onClick} className={style["close__modal"]} style={{ fontSize: '24px', cursor: 'pointer' }} />
                 </header>
-                <Flex height={"auto"}
+                <Flex height={"400px"}
 						width={"80%"}
 						direction={"column"}
 						className={style["main-container"]}
 						justifyContent={"center"}
 						alignItems={"center"}>
                         {props.professor.schedule.length === 0 ? 
-                        <p>El profesor {props.professor.name} no ha asignado disponibilidad</p>
+                        <b style={{ alignItems: "center",fontSize: "20px",color: "red"}}>El profesor {props.professor.name} no ha asignado disponibilidad</b>
                         :
-                        <div>
+                        <div style={{ alignItems: "center"}}>
                             <ScheduleDays schedule={props.professor.schedule} isProfessor={false} />
                         </div>
                         }
