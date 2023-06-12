@@ -24,11 +24,11 @@ import { ProtectedAuthorizationRoutes } from "./components/routes/ProtectedAutho
 import { roles } from "./enums/Roles";
 import { ErrorResponse } from "./UI/error/ErrorResponse";
 import { UserConfiguration } from "./components/user/UserConfiguration";
+import {Scheduler} from "./components/user/UserSchedule";
+
 
 
 function App() {
-
-
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -36,6 +36,11 @@ function App() {
           <Routes>
             <Route path="*" element={<PageNotFoundError />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/asignaturas" element={<Subject/>}></Route>
+            <Route path="/salones" element={<Classroom/>}></Route>
+            <Route path="/estudiantes" element={<Student/>}></Route>
+            <Route path="/profesores" element={<Professor/>}></Route>
+
 
             <Route element={<ProtectedRoutes/>}>
 
@@ -70,7 +75,7 @@ function App() {
               <Route element={<ProtectedAuthorizationRoutes roleProvided={roles.PROFESSOR}/>} >
 
                 <Route path="/configuracion" element={<UserConfiguration/>}></Route>
-                
+
               </Route>
 
               <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule />} />

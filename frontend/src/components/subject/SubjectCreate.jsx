@@ -94,9 +94,9 @@ export const SubjectCreate = () => {
         <SubjectForm
 
           onSubmit={createSubjectHandler}
-        
+
         />
-     
+
       </Flex>
     </Flex>
   );

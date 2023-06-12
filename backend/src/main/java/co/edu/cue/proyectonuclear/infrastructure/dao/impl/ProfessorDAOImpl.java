@@ -126,15 +126,10 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public ProfessorDTO deleteScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        Professor professor = entityManager.find(Professor.class, id);
-        professor.getSchedule().forEach(s -> {
-            if (s.getDay().equals(professorScheduleDTO.day())){
-                s.getTimeSlots().clear();
-            }
-        });
-        entityManager.merge(professor);
-        return mapper.mapFrom(professor);
+    public ProfessorScheduleDTO deleteScheduleProfessor(Long idSchedule) {
+        ProfessorSchedule professorSchedule = entityManager.find(ProfessorSchedule.class, idSchedule);
+        entityManager.remove(professorSchedule);
+        return mapper.mapFrom(professorSchedule);
     }
 
     private ProfessorDTO validateProfessorExisting(Long id){

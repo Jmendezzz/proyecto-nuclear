@@ -20,4 +20,5 @@ public interface ProfessorMapper {
     @Mapping(target = "username", source = "professorRequestDTO.nid")
     Professor mapFromDTO(CreateProfessorRequestDTO professorRequestDTO);
     ProfessorSchedule mapFrom(ProfessorScheduleDTO professorScheduleDTO);
+    ProfessorScheduleDTO mapFrom(ProfessorSchedule professorSchedule);
 }
