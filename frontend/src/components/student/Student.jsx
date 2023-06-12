@@ -120,11 +120,6 @@ export const Student = () => {
               input={{ placeholder: "Nombre del estudiante" , onChange:searchHandler}}
               style={{ height: "20px" }}
             ></Input>
-            <Button
-              inLineStyle={{ width: "120px", height: "60px", margin: "10px" }}
-            >
-              Buscar
-            </Button>
           </Flex>
           {currentStudents.length > 0 ?
             <>
