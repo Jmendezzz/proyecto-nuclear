@@ -52,7 +52,7 @@ export const professorRoutes = [
     icon: <AiOutlineSchedule />,
   },
   {
-    path: "/configuracion",
+    path: "/disponibilidad",
     name: "Mi disponibilidad",
     icon: <MdEventAvailable />,
   },

@@ -100,7 +100,6 @@ export const ScheduleModal = (props) => {
                     props.reload(true);
                     props.onClick();
                 })
-                .then(() => navigate(`/profesores/${props.professor.id}/disponibilidad`))
                 .catch((error) => {
                     errorResponseAlert(error);
                 });

@@ -75,7 +75,7 @@ function App() {
 
               </Route>
               <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.PROFESSOR]}/>} >
-                <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule />} />
+                <Route path="/disponibilidad" element={<ProfessorSchedule />} />
                 </Route>
 
 
