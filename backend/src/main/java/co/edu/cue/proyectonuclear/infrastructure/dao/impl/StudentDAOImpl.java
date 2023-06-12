@@ -14,6 +14,7 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class StudentDAOImpl implements StudentDAO {
     @PersistenceContext
     EntityManager entityManager;
     StudentMapper studentMapper;
+    PasswordEncoder passwordEncoder;
+
 
     @Override
     public Optional<StudentDTO> getStudentByNid(String nid) {
@@ -45,6 +48,7 @@ public class StudentDAOImpl implements StudentDAO {
     @Override // El DAO recibe el DTO para crear el student y lo mapea y lo guarda en la base de datos para luego hacer otro mappeo de otro DTO como respuesta.
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {
         Student student = studentMapper.mapFromDTO(createStudentRequestDTO);
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
         Student studentSave = entityManager.merge(student);
         return studentMapper.mapFromEntity(studentSave);
     }

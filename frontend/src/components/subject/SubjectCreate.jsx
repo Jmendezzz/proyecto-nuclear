@@ -1,15 +1,10 @@
-import { Button } from "../../UI/button/Button";
 import { Flex } from "../../UI/flex/Flex";
 import { Header } from "../../UI/headers/Header";
 import style from "./Subject.module.css";
-import { careers } from "../../enums/Career";
-import Select from "react-select";
 import { saveSubject } from "../../api/SubjectApiService";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { isEmpty } from "../../validations/InputValidations";
-import { Field, Form, Formik, ErrorMessage } from "formik";
 import { SubjectForm } from "./SubjectForm";
 
 const validateForm = (values) => {

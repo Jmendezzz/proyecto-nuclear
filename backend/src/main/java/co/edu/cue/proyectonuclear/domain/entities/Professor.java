@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "professor")
-public class Professor extends User {
+public class Professor extends UserModel {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "professor_id")
