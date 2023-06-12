@@ -66,9 +66,9 @@ export const ScheduleModal = (props) => {
             return true;
         }
         const hasEmptySlots = slots.some((slot) => slot.startTime === '' || slot.endTime === '');
-        const hasDuplicates = slots.some((slot, index) => 
+        const hasDuplicates = slots.some((slot, index) =>
             slots.some(
-                (otherSlot, otherIndex) => 
+                (otherSlot, otherIndex) =>
                     index !== otherIndex &&
                     (slot.startTime === otherSlot.startTime || slot.endTime === otherSlot.endTime)
             )
@@ -77,7 +77,7 @@ export const ScheduleModal = (props) => {
             setError('Debe llenar todos los campos, o eliminar los vacios');
             return true;
         }
-        if (hasDuplicates){
+        if (hasDuplicates) {
             setError('No pueden haber campos iguales');
             return true;
         }
@@ -86,7 +86,7 @@ export const ScheduleModal = (props) => {
 
     const handleSubmit = () => {
 
-        if (!handleError(slots)){
+        if (!handleError(slots)) {
             const professorSchedule = {
                 day: day,
                 timeSlots: slots.map((slot) => ({
@@ -129,8 +129,11 @@ export const ScheduleModal = (props) => {
                         }))}
                     />
                     <div className={style.timeSlots}>
-                        <p className={style.startTime}>Hora inicio</p>
-                        <p className={style.endTime}>Hora fin</p>
+                        <div style={{width:"80%"}}>
+                            <p className={style.startTime}>Hora inicio</p>
+                            <p className={style.endTime}>Hora fin</p>
+                        </div>
+
                         <IoIosAddCircle onClick={handleAddSlot}
                             className={style.btnAdd}
                             style={{
@@ -155,10 +158,10 @@ export const ScheduleModal = (props) => {
                         ))
                     }
                     {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
-                    <Button 
-                    inLineStyle={{ width: "140px", height: "40px", margin: "10px" }} 
-                    onClick={handleSubmit}
-                    disabled={slots.length === 0 || slots.some((slot) => !slot.startTime || !slot.endTime)}
+                    <Button
+                        inLineStyle={{ width: "140px", height: "40px", margin: "10px" }}
+                        onClick={handleSubmit}
+                        disabled={slots.length === 0 || slots.some((slot) => !slot.startTime || !slot.endTime)}
                     >
                         Enviar
                     </Button>

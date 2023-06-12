@@ -11,6 +11,7 @@ import { getSubjects, deleteSubjectById } from "../../api/SubjectApiService";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { careers } from "../../enums/Career";
+import {AiOutlineSearch} from "react-icons/ai";
 
 
 const succesResponseAlert = (response) => {
@@ -125,11 +126,8 @@ export const Subject = () => {
             input={{ placeholder: "Nombre de la asignatura", onChange:searchHandler }}
             style={{ height: "20px" }}
           ></Input>
-          <Button
-            inLineStyle={{ width: "120px", height: "60px", margin: "10px" }}
-          >
-            Buscar
-          </Button>
+          <AiOutlineSearch style={{fontSize:"40px", color:"red"}}/>
+
         </Flex>
         {currentSubjects.length > 0 ?
           <>
