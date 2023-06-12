@@ -1,16 +1,8 @@
-a{
-    text-decoration: none;
-    height: 80px;
-    transition: all 0.5s ease 0s;
-    opacity: 1;
-}
+
 .main-container{
     display: flex;
-    height: 120vh;
+    height: 100vh;
     min-height: 1000px;
-}
-a:hover{
-    background-color: rgba(37, 61, 111, 0.7);
 }
 
 .sidebar{
@@ -21,9 +13,10 @@ a:hover{
 }
 .bar{
     color: white;
-    font-size: 30px;
+    font-size: 40px;
     display: flex;
     justify-content: center;
+    cursor: pointer;
 }
 .top-section{
     display: flex;
@@ -45,6 +38,22 @@ a:hover{
     font-size: 30px;
     padding: 4px 10px;
     transition: all 1s;
+    text-decoration: none;
+    height: 80px;
+    transition: all 0.5s ease 0s;
+    opacity: 1;
+    justify-content: c;
+}
+.icon{
+    position: relative;
+    top: 5px;
+}
+.link:hover{
+        background-color: rgba(37, 61, 111, 0.7);
+    
+}
+.routes{
+    margin-top: 50px;
 }
 
 .link-closed{
@@ -56,9 +65,27 @@ a:hover{
     font-size: 30px;
     padding: 4px 10px;
     transition: all 1s;
+     
+    text-decoration: none;
+    height: 80px;
+    transition: all 0.5s ease 0s;
+    opacity: 1;
 
 }
 main{
     height: 100%;
     width: 100%;
+}
+.footer{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+    height: 200px;
+
+}
+.icon__logout{
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
 }

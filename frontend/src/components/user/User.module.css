@@ -10,23 +10,20 @@
 	justify-content: center;
 	align-items: center;
 }
-
 .modal {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	min-height: 550px;
+	height: 650px;
 	background-color: white;
 	border-radius: 10px;
 	z-index: 100;
 	overflow: hidden;
 }
-
 .modal p {
 	font-size: 20px;
 }
-
 .header {
 	text-align: center;
 	width: 100%;
@@ -34,10 +31,20 @@
 	padding: 1rem;
 	position: relative;
 }
-
 .header h2 {
 	margin: 0;
 	color: white;
+}
+
+.content {
+	padding: 1rem;
+}
+
+.actions {
+	padding: 1rem;
+	display: flex;
+	justify-content: center;
+    margin: 30px;
 }
 
 @media (min-width: 1000px) {
@@ -46,7 +53,6 @@
 		width: 45rem;
 	}
 }
-
 .subject-item {
 	font-size: 30px;
 	padding: 10px;
@@ -55,22 +61,18 @@
 	transition: all 0.5s;
 	cursor: pointer;
 }
-
 .subject-item:hover {
 	color: white;
 	background: rgba(52, 91, 175, 1);
 }
-
 .selected {
 	color: white;
 	background: rgba(52, 91, 175, 1);
 }
-
 .selected:hover {
 	color: white;
 	background: rgb(189, 16, 25);
 }
-
 .close__modal {
 	color: white;
 	position: absolute;
@@ -81,86 +83,188 @@
 	cursor: pointer;
 }
 
+.main-container{
+    background-color: #ebebeb;
+    border-radius: 3em;
 
 
+/*AFECTA*/
 .actions {
 	padding: 1rem;
 	display: flex;
 	justify-content: flex-end;
 }
+.table{
+    width: 95%;
+    margin: 20px;
+    background-color: white !important;
+    border-collapse:collapse !important;
+    flex: 1;
+    overflow: auto;
+}
+.table thead >tr > th{
+    font-size: 30px;
+    padding: 20px;
 
-.table {
-	width: 95%;
-	margin: 20px;
-	background-color: white !important;
-	border-collapse: collapse !important;
-	flex: 1;
-	overflow: auto;
+
+}
+.table tbody>  tr > td{
+    font-size: 25px;
+    text-align: center;
+    padding: 3px;
 }
 
-.table thead>tr>th {
-	font-size: 30px;
-	padding: 20px;
+/*Form*/
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:30px
 }
-
-.table tbody>tr>td {
-	font-size: 25px;
-	text-align: center;
-	padding: 3px;
+.form__item > input{
+    width: 320px;
+    padding: 20px;
+    border-radius: 20px;
+    border:1px solid lightgray;
+    font-size: 20px;
+    height: 10px;
 }
-
-.form {
+.form__item > input:focus{
+    outline: 1px solid rgba(52, 91, 175, 1);
+}
+.form__item{
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	gap: 30px
+	padding: 30px;
+	height: 50px;
 }
-
-.form__item>input {
-	width: 320px;
-	padding: 20px;
-	border-radius: 20px;
-	border: 1px solid lightgray;
-	font-size: 20px;
-	height: 10px;
+.fom__item-error{
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	height: 50px;
 }
-
-.form__item>input:focus {
-	outline: 1px solid rgba(52, 91, 175, 1);
+.form__item-error > input {
+    width: 320px;
+    padding: 20px;
+    border-radius: 20px;
+    border:1px solid red;
+    font-size: 20px;
+    height: 10px;
 }
-
-.form__item-error>input {
-	width: 320px;
-	padding: 20px;
-	border-radius: 20px;
-	border: 1px solid red;
-	font-size: 20px;
-	height: 10px;
+.form__item-error > input:focus{
+    outline: 1px solid red;
 }
-
-.form__item-error>input:focus {
-	outline: 1px solid red;
+.fom__item-error > label{
+    color: red;
 }
-
-.fom__item-error>label {
-	color: red;
+.button__add-subject{
+    font-size: 25px;
+    color:rgba(52, 91, 175, 1);
+    cursor: pointer;
 }
-
-.button__add-subject {
-	font-size: 25px;
-	color: rgba(52, 91, 175, 1);
-	cursor: pointer;
-}
-
 .subject-list {
 	font-size: 20px;
 	width: 150px;
 }
-
 .subject-list__remove {
 	color: red;
 	cursor: pointer;
 }
+
+.user-detail__item{
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	gap: 10px;
+	font-size: 25px;
+}
+.user-detail__item > label{
+	font-weight: bolder;
+}
+
+.information-container{
+	margin: 20px;
+
+}
+
+.edit__password{
+
+	cursor: pointer;
+	font-size: 30px;
+	color:red;
+}
+
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    background:rgb(0, 0,0,0.90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 100;
+    overflow: hidden;
+
+}
+.modal p{
+    font-size: 20px
+
+}
+.header {
+    text-align: center;
+    width: 100%;
+    background: rgba(52, 91, 175, 1);
+    padding: 1rem;
+    position: relative;
+  }
+
+.header h2 {
+    margin: 0;
+    color: white;
+  }
+
+  .modal-form__item{
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	height: 50px;
+  }
+  .modal-form__item >label{
+	font-weight: bold;
+	margin-bottom: 2px;
+  }
+  .modal-form__item  > input{
+	width: 320px;
+    padding: 20px;
+    border-radius: 20px;
+    border:1px solid lightgray;
+    font-size: 20px;
+    height: 10px;
+
+
+  }
+  .modal-form__item > input:focus{
+	outline: 1px solid rgba(52, 91, 175, 1);
+
+  }
+/*Estudiante*/
+.select{
+    width: 360px;
+    font-size: 20px;
+    border-radius: 3em;
 
 .select {
 	width: 360px;

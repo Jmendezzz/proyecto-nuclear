@@ -100,7 +100,6 @@ export const ScheduleModal = (props) => {
                     props.reload(true);
                     props.onClick();
                 })
-                .then(() => navigate(`/profesores/${props.professor.id}/disponibilidad`))
                 .catch((error) => {
                     errorResponseAlert(error);
                 });
@@ -120,6 +119,7 @@ export const ScheduleModal = (props) => {
                 </header>
                 <div className={style["schedule-container"]}>
                     <Select
+                        className={style.select_modal}
                         onChange={setDayHandler}
                         defaultValue={{ label: days[0].name, value: days[0].value }}
                         noOptionsMessage={() => "No se encontraron días"}
@@ -137,7 +137,7 @@ export const ScheduleModal = (props) => {
                                 fontSize: '24px',
                                 cursor: slots.length >= 7 ? 'not-allowed' : 'pointer',
                                 opacity: slots.length >= 7 ? '0.5' : '1',
-                                pointerEvents: slots.length >= 7 ? 'none' : 'auto',
+                                pointerEvents: slots.length >= 7 ? 'none' : 'auto'
                             }} />
                     </div>
                     {
@@ -156,7 +156,7 @@ export const ScheduleModal = (props) => {
                     }
                     {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
                     <Button 
-                    inLineStyle={{ width: "140px", height: "80px", margin: "10px" }} 
+                    inLineStyle={{ width: "140px", height: "40px", margin: "10px" }} 
                     onClick={handleSubmit}
                     disabled={slots.length === 0 || slots.some((slot) => !slot.startTime || !slot.endTime)}
                     >
