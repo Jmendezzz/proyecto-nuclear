@@ -1,7 +1,6 @@
 package co.edu.cue.proyectonuclear.services.impl;
 
 
-import co.edu.cue.proyectonuclear.domain.entities.ProfessorSchedule;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.ProfessorConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.constrains.UserConstrain;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;

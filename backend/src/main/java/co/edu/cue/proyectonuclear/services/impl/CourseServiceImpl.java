@@ -162,12 +162,13 @@ public class CourseServiceImpl implements CourseService {
         int maxAcceptableDifference = 0;
 
         //Set the max acceptable difference to choose the best classroom option.
-
-        if (studentsNumber <= 10) maxAcceptableDifference = 15;
+        if (studentsNumber <= 20) maxAcceptableDifference = 8;
 
         if (studentsNumber <= 15) maxAcceptableDifference = 10;
 
-        if (studentsNumber <= 20) maxAcceptableDifference = 8;
+        if ( studentsNumber <= 10) maxAcceptableDifference = 15;
+
+
 
         int finalMaxAcceptableDifference = maxAcceptableDifference;
 

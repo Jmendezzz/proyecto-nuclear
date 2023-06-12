@@ -52,7 +52,7 @@ export const Subject = () => {
     setSubjectsChange(false);
   }, [subjectsChange]);
 
-  const subjectsPerPage = 7;
+  const subjectsPerPage = 5;
   const lastSubjectIndex = currentPage * subjectsPerPage;
   const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
   let currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
@@ -166,7 +166,7 @@ export const Subject = () => {
                 ))}
               </tbody>
             </table>
-            {subjects.length > 8 && (
+            {subjects.length >= 5 && (
               <Pagination
                 totalItems={subjects.length}
                 itemsPerPage={subjectsPerPage}
