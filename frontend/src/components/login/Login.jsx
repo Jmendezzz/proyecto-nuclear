@@ -5,7 +5,6 @@ import logo from '../../assets/images/logo-cue-avh.png';
 import { Field, Form, Formik } from "formik";
 import { isEmpty } from "../../validations/InputValidations";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const formValidation = (values) => {
     const errors = {};
@@ -18,14 +17,12 @@ const formValidation = (values) => {
 
 }
 export const Login = () => {
-    const navigate = useNavigate();
     const {loginHandler} = useAuth();
 
     const loginButtonHandler = (values) => {
 
-        if( loginHandler(values.username, values.password)){
-            navigate("/asignaturas");
-        }
+        loginHandler(values.username, values.password)
+        
     }
 
     return (

@@ -24,9 +24,6 @@ import { ProtectedAuthorizationRoutes } from "./components/routes/ProtectedAutho
 import { roles } from "./enums/Roles";
 import { ErrorResponse } from "./UI/error/ErrorResponse";
 import { UserConfiguration } from "./components/user/UserConfiguration";
-import {Scheduler} from "./components/user/UserSchedule";
-
-
 
 function App() {
   return (
@@ -34,17 +31,19 @@ function App() {
       <AuthProvider>
         <Sidebar>
           <Routes>
+            {/* public routes*/}
             <Route path="*" element={<PageNotFoundError />}></Route>
+
             <Route path="/login" element={<Login />}></Route>
-            <Route path="/asignaturas" element={<Subject/>}></Route>
-            <Route path="/salones" element={<Classroom/>}></Route>
-            <Route path="/estudiantes" element={<Student/>}></Route>
-            <Route path="/profesores" element={<Professor/>}></Route>
 
+            <Route path="/unauthorized" element={<ErrorResponse errStatus={"403"} errMessage={"No estas autorizado para ingresar a esta página"}/>} />
 
+            {/* authenticated routes */}
             <Route element={<ProtectedRoutes/>}>
 
-              <Route element={<ProtectedAuthorizationRoutes roleProvided={roles.ADMIN}/>} >
+              {/* admin routes */}
+
+              <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.ADMIN]}/>} >
 
                 <Route path="/asignaturas" element={<Subject />}/>
                 <Route path="/asignaturas/crear"crearelement={<SubjectCreate/>}/>
@@ -68,23 +67,24 @@ function App() {
                 <Route path="/cursos" element={<Course />}/>
                 <Route path="/cursos/generar" element={<GenerateCourse />}/>
 
-
-
-
               </Route>
-              <Route element={<ProtectedAuthorizationRoutes roleProvided={roles.PROFESSOR}/>} >
+
+              <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.PROFESSOR, roles.STUDENT, roles.ADMIN]}/>} >
 
                 <Route path="/configuracion" element={<UserConfiguration/>}></Route>
 
               </Route>
+              <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.PROFESSOR]}/>} >
+                <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule />} />
+                </Route>
 
-              <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule />} />
+
 
             </Route>
-            <Route path="/unauthorized" element={<ErrorResponse errStatus={"403"} errMessage={"No estas autorizado para ingresar a esta página"}/>} />
 
 
           </Routes>
+          
         </Sidebar>
       </AuthProvider>
     </BrowserRouter>

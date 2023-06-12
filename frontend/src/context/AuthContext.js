@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from "react";
 import { login } from "../api/AuthenticationApiService";
 import { api } from "../api/ApiClient";
+import { useNavigate } from "react-router-dom";
+import { roles } from "../enums/Roles";
 
 export const AuthContext = createContext({
   isAuthenticated: false,
@@ -14,6 +16,8 @@ export const AuthContext = createContext({
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [userId, setUserId] = useState(null);
@@ -33,6 +37,8 @@ export const AuthProvider = ({ children }) => {
           config.headers.Authorization = `Bearer ${res.data.token}`; // Add the token to all the requests.
           return config;
         });
+        navigate(  res.data.role == roles.ADMIN ?  "/dashboard" : "/horario");
+
         return true;
       })
       .catch(() => {
@@ -45,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     setUserId(false);
     setIsAuthenticated(false);
     setToken(null);
+    setRole(null);
   };
   return (
     <AuthContext.Provider

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Flex } from "../../UI/flex/Flex";
 import style from "./User.module.css";
-import { careers } from "../../enums/Career";
 import { useAuth } from "../../context/AuthContext";
 import { getUserDetails } from "../../api/UserApiService";
 import { Loading } from "../../UI/loading/Loading";
