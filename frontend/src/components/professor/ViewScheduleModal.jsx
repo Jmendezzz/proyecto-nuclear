@@ -17,7 +17,7 @@ export const ViewScheduleModal = (props) => {
 						width={"80%"}
 						direction={"column"}
 						className={style["main-container"]}
-						justifyContent={"none"}
+						justifyContent={"center"}
 						alignItems={"center"}>
                         {props.professor.schedule.length === 0 ? 
                         <p>El profesor {props.professor.name} no ha asignado disponibilidad</p>
