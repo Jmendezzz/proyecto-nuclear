@@ -7,11 +7,12 @@ import style from "./Classroom.module.css";
 import { Pagination } from "../pagination/Pagination";
 import { MdDeleteForever } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { elements } from "../../enums/Element";
 import { getClassrooms, deleteClassroomById } from "../../api/ClassroomApiService";
 import Swal from "sweetalert2";
+import { AiOutlineSearch } from "react-icons/ai";
 
 
 
@@ -23,11 +24,11 @@ import Swal from "sweetalert2";
  * la matriz `elementos` que tiene una propiedad `valor` igual a `elemento`. Si se encuentra tal objeto, el
  * la función devuelve el valor de su propiedad `name`. Si no, se devuelve una cadena vacía.
  */
-const reformatElement=(element)=>{
+const reformatElement = (element) => {
 
   const foundElement = elements.find((e) => e.value === element);
   return foundElement ? foundElement.name : "";
-  }
+}
 
 
 
@@ -35,41 +36,41 @@ const reformatElement=(element)=>{
 /**
  * La función muestra un mensaje de alerta de éxito con el nombre de un salón eliminado.
  */
-  const succesResponseAlert= (response)=>{
-    Swal.fire(
-      'Eliminado!',
-      `El salón ${response.data.name} ha sido eliminada`,
-      'success',
-    )
-  }
+const succesResponseAlert = (response) => {
+  Swal.fire(
+    'Eliminado!',
+    `El salón ${response.data.name} ha sido eliminada`,
+    'success',
+  )
+}
 
 
 /**
   * La función muestra una alerta de error con un mensaje de la respuesta de error.
   */
-  const errorResponseAlert = (error)=>{
-    Swal.fire({
-      title: "Error",
-      text: error.response.data.message,
-      icon: "error",
-      confirmButtonColor: "red",
-      confirmButtonText: "Aceptar",
-    })
-  
-  }
+const errorResponseAlert = (error) => {
+  Swal.fire({
+    title: "Error",
+    text: error.response.data.message,
+    icon: "error",
+    confirmButtonColor: "red",
+    confirmButtonText: "Aceptar",
+  })
+
+}
 
 export const Classroom = () => {
-  
-/* Estas líneas de código definen e inicializan variables de estado utilizando el gancho `useState`. */
+
+  /* Estas líneas de código definen e inicializan variables de estado utilizando el gancho `useState`. */
   const [classroom, setClassroom] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [classroomsChange, setClassroomsChange] = useState(false);
   const classroomsPerPage = 5;
 
   const [search, setSearch] = useState("");
-/**
-   * La función establece los datos del aula a partir de una respuesta exitosa.
-   */
+  /**
+     * La función establece los datos del aula a partir de una respuesta exitosa.
+     */
   const succesResponses = (res) => {
     setClassroom(res.data);
   };
@@ -86,7 +87,7 @@ export const Classroom = () => {
     getClassrooms()
       .then((response) => succesResponses(response))
       .catch((error) => console.error(error));
-      setClassroomsChange(false);
+    setClassroomsChange(false);
   }, [classroomsChange]);
   const lastClassroomIndex = currentPage * classroomsPerPage;
   const firstClassroomIndex = lastClassroomIndex - classroomsPerPage;
@@ -113,33 +114,33 @@ export const Classroom = () => {
             }
             )
             .catch((error) => {
-              errorResponseAlert(error);              
+              errorResponseAlert(error);
             })
         }
       })
 
-    }
-   
-  
-  
-/**
- * The function updates the state of a search query based on user input.
- */
-    const searchHandler = (event)=>{
-      setSearch(event.target.value);
-    }
- /* Este bloque de código comprueba si la variable de estado `buscar` no es una cadena vacía. Si no está vacío,
-  filtra la matriz `aula` usando el método `filter()` para crear una nueva matriz llamada
-  `aula actual`. El método `filter()` verifica si la propiedad `name` de cada objeto en el
-  La matriz `aula` incluye la cadena `buscar` (ignorando la distinción entre mayúsculas y minúsculas) usando `includes()`
-  método. La matriz `currentClassroom` resultante contiene solo los objetos cuya propiedad `name`
-  incluye la cadena `buscar`. */
-  
-    if(search.trim() !== ""){
-      currentClassroom = classroom.filter(classroom=> classroom.name.toLowerCase().includes(search))
-    }
+  }
 
-  
+
+
+  /**
+   * The function updates the state of a search query based on user input.
+   */
+  const searchHandler = (event) => {
+    setSearch(event.target.value);
+  }
+  /* Este bloque de código comprueba si la variable de estado `buscar` no es una cadena vacía. Si no está vacío,
+   filtra la matriz `aula` usando el método `filter()` para crear una nueva matriz llamada
+   `aula actual`. El método `filter()` verifica si la propiedad `name` de cada objeto en el
+   La matriz `aula` incluye la cadena `buscar` (ignorando la distinción entre mayúsculas y minúsculas) usando `includes()`
+   método. La matriz `currentClassroom` resultante contiene solo los objetos cuya propiedad `name`
+   incluye la cadena `buscar`. */
+
+  if (search.trim() !== "") {
+    currentClassroom = classroom.filter(classroom => classroom.name.toLowerCase().includes(search))
+  }
+
+
 
   return (
     <Flex
@@ -169,69 +170,64 @@ export const Classroom = () => {
             </Button>
           </div>
           {<Input
-            input={{ placeholder: "Nombre del salon" ,onChange:searchHandler }}
+            input={{ placeholder: "Nombre del salon", onChange: searchHandler }}
             style={{ height: "20px" }}
-          ></Input> }
-          
-          { <Button
-            inLineStyle={{ width: "120px", height: "60px", margin: "10px" }}
-          >
+          ></Input>}
+          <AiOutlineSearch style={{ fontSize: "40px", color: "red" }} />
 
-            Buscar
-          </Button> }
-       
+
         </Flex>
         {classroom.length > 0 ?
           <>
-        <table className={style.table}>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Nombre</th>
-              <th>Ubicacion</th>
-              <th>Capacidad</th>
-              <th>Elementos</th>
-              <th>Tipologia</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentClassroom.map((classroom) => (
-              <tr key={classroom.id}>
-                <td className={style.id}>{classroom.id}</td>
-                <td>{classroom.name}</td>
-                <td>{classroom.location}</td>
-                <td>{classroom.capability}</td>
-                <td style={{textAlign:"left"}}>
-                  <ul>
-                    {classroom.elements.map((element,index) => (
-                      <li style={{fontSize:"20px"}} key={index}>{reformatElement(element)}</li>
-                    ))}
+            <table className={style.table}>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Nombre</th>
+                  <th>Ubicacion</th>
+                  <th>Capacidad</th>
+                  <th>Elementos</th>
+                  <th>Tipologia</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentClassroom.map((classroom) => (
+                  <tr key={classroom.id}>
+                    <td className={style.id}>{classroom.id}</td>
+                    <td>{classroom.name}</td>
+                    <td>{classroom.location}</td>
+                    <td>{classroom.capability}</td>
+                    <td style={{ textAlign: "left" }}>
+                      <ul>
+                        {classroom.elements.map((element, index) => (
+                          <li style={{ fontSize: "20px" }} key={index}>{reformatElement(element)}</li>
+                        ))}
 
-                  </ul>
-                </td>
-                <td>{classroom.tipology}</td>
+                      </ul>
+                    </td>
+                    <td>{classroom.tipology}</td>
 
-                <td className={style["actions__container"]}>
-                    <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/salones/editar/${classroom.id}`)} />
-                    <MdDeleteForever className={style["icon__delete"]}  onClick={deleteSubjectHandler.bind(null, classroom.id)}/>
-                </td>
-              </tr>
-            ))}
+                    <td className={style["actions__container"]}>
+                      <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/salones/editar/${classroom.id}`)} />
+                      <MdDeleteForever className={style["icon__delete"]} onClick={deleteSubjectHandler.bind(null, classroom.id)} />
+                    </td>
+                  </tr>
+                ))}
 
-          </tbody>
-        </table>
-        {classroom.length > 8 && (
-          <Pagination
-            totalItems={classroom.length}
-            itemsPerPage={classroomsPerPage}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-          ></Pagination>
-        )}
+              </tbody>
+            </table>
+            {classroom.length > 8 && (
+              <Pagination
+                totalItems={classroom.length}
+                itemsPerPage={classroomsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              ></Pagination>
+            )}
           </>
           :
-        <p style={{ fontSize: "30px" }}>No hay salones por mostrar</p>
+          <p style={{ fontSize: "30px" }}>No hay salones por mostrar</p>
         }
       </Flex>
     </Flex>

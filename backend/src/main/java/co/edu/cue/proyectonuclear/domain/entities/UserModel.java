@@ -34,5 +34,4 @@ public class UserModel {
     @Column(length = 50)
     private String email;
     private String password;
-    private Boolean active;
 }

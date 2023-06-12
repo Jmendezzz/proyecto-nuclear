@@ -18,8 +18,8 @@ public class UserController {
     @GetMapping("/users/{id}/details")
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')  or hasRole('STUDENT')")
     public ResponseEntity<UserDTO> getUserDetails(@PathVariable Long id){
-
-        UserDTO user = userService.getUserById(id).orElseThrow(()->new UserException("No se encontró un usuario con el id" + id, HttpStatus.NOT_FOUND));
+        System.out.println(id);
+        UserDTO user = userService.getUserById(id).orElseThrow(()->new UserException("No se encontró un usuario con el id: " + id, HttpStatus.NOT_FOUND));
 
         return new ResponseEntity<>(user,HttpStatus.OK);
     }

@@ -11,6 +11,7 @@ import co.edu.cue.proyectonuclear.security.filters.PasswordEncoderProvider;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -24,12 +25,12 @@ public class UserDAOImpl implements UserDAO {
     EntityManager entityManager;
     private UserMapper mapper;
 
-    private BCryptPasswordEncoder passwordEncoder; //TODO
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Optional<UserDTO> getUserById(Long id){
         try{
-            UserModel user = entityManager.find(Professor.class, id);
+            UserModel user = entityManager.find(UserModel.class, id);
             return Optional.of(mapper.mapFrom(user));
         }catch (NullPointerException ex){
             return Optional.empty();
@@ -90,7 +91,6 @@ public class UserDAOImpl implements UserDAO {
             throw new UserException("No se encontró un usuario con el ID: "+ id, HttpStatus.BAD_REQUEST);
         }
 
-
-
     }
+
 }

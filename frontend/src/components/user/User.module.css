@@ -86,6 +86,8 @@
 .main-container{
     background-color: #ebebeb;
     border-radius: 3em;
+	}
+	
 
 
 /*AFECTA*/
@@ -104,14 +106,15 @@
 }
 .table thead >tr > th{
     font-size: 30px;
-    padding: 20px;
+    padding: 10px;
 
 
 }
 .table tbody>  tr > td{
     font-size: 25px;
     text-align: center;
-    padding: 3px;
+    width: 300px;
+	height: 40px;
 }
 
 /*Form*/
@@ -135,7 +138,6 @@
 .form__item{
 	display: flex;
 	flex-direction: column;
-	padding: 30px;
 	height: 50px;
 }
 .fom__item-error{
@@ -266,4 +268,13 @@
     font-size: 20px;
     border-radius: 3em;
 }
+.create-subject-container{
+	margin: 20px;
+
+}
+
+.subjects-container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }

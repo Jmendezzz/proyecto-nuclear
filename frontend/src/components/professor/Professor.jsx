@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { deleteProfessorById, getProfessors } from "../../api/ProfessorApiService";
 import { IoIosListBox } from "react-icons/io";
 import { ViewScheduleModal } from "./ViewScheduleModal";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const succesResponseAlert = (response) => {
     Swal.fire(
@@ -106,13 +107,15 @@ export const Professor = () => {
                 <h2 style={ {fontSize:"60px"} }>Profesores</h2>
             </Header>
             <Flex height={"auto"} width={"80%"} direction={"column"} alignItems={"center"} justifyContent={"none"} className={style["main-container"]}>
-                <Flex height={"200px"} width={"100%%"} direction={"row"} gap={"30px"}>
+                <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>
                     <div style={ {width: "60%", margin: "10px"} }>
                         <Button inLineStyle={ {width: "180px", height: "60px"} } onClick={ ()=>navigate("/profesores/crear") }>
                             Crear profesor
                         </Button>
                     </div>
                     <Input input={ {placeholder: "Nombre del Profesor", onChange:searchHandler} } style={ {height: "20px"} }></Input>
+                    <AiOutlineSearch style={{ fontSize: "40px", color: "red" }} />
+
                 </Flex>
                 {
                     currentProfessors.length === 0 ? <>
@@ -138,10 +141,10 @@ export const Professor = () => {
                                     <td>{professor.name}</td>
                                     <td>{professor.lastName}</td>
                                     <td>{professor.email}</td>
-                                    <td>
+                                    <td >
                                     <ul>
                                         {professor.subjects.map((subject)=>(
-                                            <li key={subject.id}>{subject.name}</li>
+                                            <li key={subject.id} >{subject.name}</li>
                                         ))}
                                     </ul>
                                     </td>
