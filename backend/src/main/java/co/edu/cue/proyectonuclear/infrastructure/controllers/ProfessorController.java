@@ -47,7 +47,7 @@ public class ProfessorController {
     }
 
     @GetMapping("/professors/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id) {
         Optional<ProfessorDTO> professorDTO = professorService.getProfessorById(id);
         if (professorDTO.isEmpty())

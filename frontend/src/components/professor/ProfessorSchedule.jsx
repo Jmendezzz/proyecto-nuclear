@@ -9,11 +9,12 @@ import { Button } from "../../UI/button/Button";
 import { ScheduleDays } from "./professorSchedule/ScheduleDays";
 import { ScheduleModal } from "./professorSchedule/ScheduleModal";
 import style from "./Professor.module.css";
+import { useAuth } from "../../context/AuthContext";
 
 
 export const ProfessorSchedule = () => {
 	
-	const { professorId } = useParams();
+	const { userId } = useAuth();
 	const [isLoading, setIsLoading] = useState(true);
 	const [professor, setProfessor] = useState();
 	const [schedule, setSchedule] = useState([]);
@@ -40,7 +41,7 @@ export const ProfessorSchedule = () => {
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		getProfessorById(professorId)
+		getProfessorById(userId)
 			.then((response) => {
 				setReload(false);
 				setProfessor(response.data);
