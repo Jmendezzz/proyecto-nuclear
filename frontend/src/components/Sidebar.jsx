@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const routes = [
   {
-    path: "/",
+    path: "/estadisticas",
     name: "Dashboard",
     icon: <AiOutlineDashboard />
   },

@@ -19,6 +19,7 @@ import { Course } from "./components/course/Course";
 import { GenerateCourse } from "./components/course/GenerateCourse";
 import { ProfessorSchedule } from "./components/professor/ProfessorSchedule";
 import { UserCalendar } from "./components/user/UserCalendar";
+import { Dashboard } from "./components/dashboard/Dashboard";
 
 
 
@@ -46,12 +47,14 @@ function App() {
 
             <Route path="/estudiantes/editar/:studentId" element={<StudentEdit/>}></Route>
 
-            <Route path="/profesores/:professorId/disponibilidad" element={<ProfessorSchedule/>}></Route>
+            <Route path="/profesores/disponibilidad" element={<ProfessorSchedule />}></Route>
 
             <Route path="/cursos" element={<Course/>}></Route>
             <Route path="/cursos/generar" element={<GenerateCourse/>}></Route>
 
             <Route path="/horario" element={<UserCalendar/>}></Route>
+
+            <Route path="/estadisticas" element={<Dashboard/>}></Route>
 
           </Routes>
         </Sidebar>
