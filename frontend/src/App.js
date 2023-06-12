@@ -18,6 +18,7 @@ import { PageNotFoundError } from "./UI/error/PageNotFoundError";
 import { Course } from "./components/course/Course";
 import { GenerateCourse } from "./components/course/GenerateCourse";
 import { ProfessorSchedule } from "./components/professor/ProfessorSchedule";
+import {Scheduler} from "./components/user/UserSchedule";
 
 
 
@@ -33,6 +34,9 @@ function App() {
             <Route path="/salones" element={<Classroom/>}></Route>
             <Route path="/estudiantes" element={<Student/>}></Route>
             <Route path="/profesores" element={<Professor/>}></Route>
+            <Route path="/configuracion" element={<Scheduler/>}></Route>
+
+            
 
             <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
             <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
