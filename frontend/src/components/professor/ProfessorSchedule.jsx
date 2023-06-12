@@ -80,6 +80,7 @@ export const ProfessorSchedule = () => {
 						justifyContent={"none"}
 						alignItems={"center"}>
 				{
+					professor.schedule.length === 0 ? <h3>No se le han asignado materias</h3> :
 					subjectThreeHours.length !== 0 ?
 					<h3>Recuerde ingresar al menos tres intervalos de 3 horas para las materias {subjectThreeHours.map(s=> s.name)} </h3>
 					: 

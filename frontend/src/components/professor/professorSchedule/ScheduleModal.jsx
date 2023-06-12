@@ -62,12 +62,12 @@ export const ScheduleModal = (props) => {
     };
     const handleError = (slots) => {
         if (slots.length === 0) {
-            setError('Debes agregar al menos un timeSlot');
+            setError('Debe agregar al menos un campo');
             return true;
         }
         const hasEmptySlots = slots.some((slot) => slot.startTime === '' || slot.endTime === '');
         if (hasEmptySlots) {
-            setError('Debes llenar todos los campos de los timeSlots');
+            setError('Debe llenar todos los campos, o eliminar los vacios');
             return true;
         }
     }

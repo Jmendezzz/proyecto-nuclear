@@ -22,6 +22,10 @@ const succesResponseAlert = (response) => {
 export const ScheduleDays = (props) => {
 
     const schedule = props.schedule;
+    const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
+    const sortedSchedule = schedule.sort((a, b) => {
+        return daysOfWeek.indexOf(a.day) - daysOfWeek.indexOf(b.day);
+      });
 
     const deleteScheduleHandler = (id) => {
         deleteScheduleProfessor(id)
@@ -37,7 +41,7 @@ export const ScheduleDays = (props) => {
     return (
         <Flex>
             <div className={style["card-container"]}>
-                {schedule.map((schedule, index) => (
+                {sortedSchedule.map((schedule, index) => (
                     <div key={index} className={style.card}>
                         <h2>{reformatDay(schedule)}</h2>
                         {schedule.timeSlots.map((ts, index) => (
