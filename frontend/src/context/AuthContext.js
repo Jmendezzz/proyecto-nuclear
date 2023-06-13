@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setRole(null);
     navigate("/login");
+    window.location.reload();
   };
   return (
     <AuthContext.Provider

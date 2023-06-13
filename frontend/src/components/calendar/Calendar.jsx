@@ -25,7 +25,7 @@ export const Calendar = ({ data }) => {
       const end = new Date(start);
       end.setHours(endTime[0], endTime[1], 0, 0);
       return {
-        title: `${item.subject.name} - ${scheduleItem.classroom ? scheduleItem.classroom : "Salón: Sin asignar"}`,
+        title: `${item.subject.name} - ${scheduleItem.classroom ? scheduleItem.classroom.name : "Salón: Sin asignar"}`,
         start,
         end
       };
