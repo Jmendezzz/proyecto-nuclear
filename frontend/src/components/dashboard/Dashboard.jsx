@@ -40,19 +40,6 @@ export const Dashboard = () =>{
 
   <div className={style["main-container"]}>
     <div className={style["content"]}>
-      <div className={style["item"]}>
-        <h3>Cursos por ubicación</h3>
-        {courses !== [] ? (
-          <>
-            <div className={style["chart-table-container"]}>
-              <CoursesByLocationChart courses={courses} />
-              <CoursesByLocationTable courses={courses} />
-            </div>
-          </>
-        ) : (
-          <p>No hay cursos</p>
-        )}
-      </div>
 
       <div className={style["item"]}>
         <h3>Cursos por profesores </h3>

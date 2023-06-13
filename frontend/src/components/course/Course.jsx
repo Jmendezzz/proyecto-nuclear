@@ -157,7 +157,6 @@ export const Course = () => {
                                     <th>Profesor</th>
                                     <th>Estudiantes</th>
                                     <th>Horario</th>
-                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,10 +167,6 @@ export const Course = () => {
                                         <td style={{ width: "10px" }}>{course.professor.name}</td>
                                         <td><HiUserGroup className={style["students__icon"]} onClick={showStudentsModalHandler.bind(null, course.students)} /></td>
                                         <td><AiOutlineSchedule className={style["schedule__icon"]} onClick={showCourseScheduleModalHandler.bind(null, course.courseSchedule)} /></td>
-                                        <td className={style["actions__container"]}>
-                                            <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/asignaturas/editar/${course.id}`)} />
-                                            <MdDeleteForever className={style["icon__delete"]} onClick={deleteCourseHandler.bind(null, course.id)} />
-                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
