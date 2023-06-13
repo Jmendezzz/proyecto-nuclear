@@ -26,3 +26,16 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 spring.jpa.show-sql=true
 spring.jpa.hibernate.ddl-auto=update
+```
+## Initializing  React
+
+To initialize the React frontend for the CUE Schedule Management System, follow these steps:
+
+1. Clone this repository.
+2. Open a terminal and navigate to the project's root directory.
+3. Navigate to the frontend directory: `cd frontend`.
+4. Install the required dependencies by running: `npm install`.
+
+Make sure you have npm installed on your system before running the `npm install` command. If you don't have npm installed, please refer to the official npm documentation for instructions on how to install it.
+
+After completing these steps, you can proceed with the "Getting Started" section to run the CUE Schedule Management System.
