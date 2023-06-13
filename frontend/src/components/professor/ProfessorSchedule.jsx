@@ -68,7 +68,10 @@ export const ProfessorSchedule = () => {
 	}, [reload]);
 
 	const updateSchedulesProfessor = (professorSchedules) => {
-		setSchedule([...schedule, professorSchedules]);
+		const updatedSchedule = schedule.filter(sc => sc.day !== professorSchedules.day);
+  		setSchedule([...updatedSchedule, professorSchedules]);
+		console.log(updatedSchedule)
+		console.log(schedule)
 	}
 
 	if (error) {
