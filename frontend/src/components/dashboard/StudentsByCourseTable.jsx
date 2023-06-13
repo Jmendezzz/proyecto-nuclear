@@ -8,8 +8,8 @@ export const StudentsByCourseTable = ({courses}) => {
         <table>
           <thead>
             <tr>
-              <th>Course</th>
-              <th>Students</th>
+              <th>Curso</th>
+              <th>Estudiantes</th>
             </tr>
           </thead>
           <tbody>

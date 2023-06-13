@@ -7,7 +7,7 @@ export const ProfessorCourseChart = ({ courses }) => {
     labels: professors,
     datasets: [
       {
-        label: 'Number of Courses',
+        label: 'Número de cursos por profesor',
         data: professors.map(professor =>
           courses.filter(course => course.professor.name === professor).length
         ),

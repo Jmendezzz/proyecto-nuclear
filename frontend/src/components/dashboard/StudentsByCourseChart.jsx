@@ -6,7 +6,7 @@ export const StudentsByCourseChart = ({ courses }) => {
         labels: courses.map(course => course.subject.name),
         datasets: [
           {
-            label: 'Number of Students',
+            label: 'Numero de estudiantes por curso',
             data: courses.map(course => course.students.length),
             backgroundColor: 'rgba(255,99,132,0.2)',
             borderColor: 'rgba(255,99,132,1)',

@@ -28,13 +28,13 @@ export const StudentDistributionTable = ({ students }) => {
   return (
     <>
       <button onClick={() => setGrouping(grouping === 'career' ? 'semester' : 'career')}>
-        Group by {grouping === 'career' ? 'Semester' : 'Career'}
+        Group by {grouping === 'career' ? 'Semestre' : 'Carrera'}
       </button>
       <table>
         <thead>
           <tr>
-            <th>{grouping === 'career' ? 'Career' : 'Semester'}</th>
-            <th>Number of Students</th>
+            <th>{grouping === 'career' ? 'Carrera' : 'Semestre'}</th>
+            <th>Número de estudiantes</th>
           </tr>
         </thead>
         <tbody>

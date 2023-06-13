@@ -41,14 +41,10 @@ export const Dashboard = () =>{
             <div className={style["main-container"]}>
 
                 <div className = {style["content"]}>
-                    {console.log(courses)}
-                    {console.log(students)}
-
                 <div className = {style["item"]}>
                     <h3>Cursos por ubicación</h3>
-                    {console.log(!courses !== [])}
                     {
-                        courses === [] ? <>
+                        courses !== [] ? <>
                         <CoursesByLocationChart courses={courses} />
                         <CoursesByLocationTable courses = {courses} />
                         </> :
@@ -59,7 +55,7 @@ export const Dashboard = () =>{
                 <div className = {style["item"]}>
                     <h3>Cursos por profesores </h3>
                     {
-                        courses === [] ? <>
+                        courses !== [] ? <>
                         <ProfessorCourseChart courses={courses} />
                         <ProfessorCourseTable courses={courses} />
                         </> :
@@ -70,7 +66,7 @@ export const Dashboard = () =>{
                 <div className = {style["item"]}>
                     <h3>Estudiantes por curso </h3>
                     {
-                        courses === [] ? <>
+                        courses !== [] ? <>
                          <StudentsByCourseChart courses={courses} />
                          <StudentsByCourseTable courses={courses} />
                          </> :
