@@ -16,3 +16,15 @@
 	border-radius: 3em;
 	justify-content: none;
 }
+.content {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: start;
+	align-items: auto;
+	align-content: start
+  }
+  .item {
+	flex: 0 0 auto;
+	margin: 10px;
+  }

@@ -110,22 +110,13 @@ public class ProfessorServiceImpl implements ProfessorService {
         return professorDAO.updateProfessor(professor);
     }
 
-    /**
-     * This function sets the schedule of a professor and returns a ProfessorScheduleDTO object.
-     * 
-     * @param id The ID of the professor whose schedule is being updated.
-     * @param professorScheduleDTO ProfessorScheduleDTO is an object that contains the schedule
-     * information for a professor. It may include details such as the professor's availability, class
-     * timings, office hours, etc. The method setScheduleProfessor takes this object as input and
-     * updates the schedule information for the professor with the given id. The method returns
-     * @return The method is returning an object of type ProfessorScheduleDTO.
-     */
-    @Override
-    public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        professorConstrain.validateTimeSlotsByProfessorSubject(professorScheduleDTO);
-        return professorDAO.setScheduleProfessor(id, professorScheduleDTO);
-    }
 
+    @Override
+    public List<ProfessorScheduleDTO> setSchedulesProfessor(Long id, List<ProfessorScheduleDTO> professorSchedulesDTO) {
+        professorConstrain.validateTimeSlotsByProfessorSubject(professorSchedulesDTO);
+        professorConstrain.validateWeeklyHours(id, professorSchedulesDTO);
+        return professorDAO.setSchedulesProfessor(id, professorSchedulesDTO);
+    }
 
     @Override
     public ProfessorScheduleDTO deleteScheduleProfessor(Long idSchedule) {

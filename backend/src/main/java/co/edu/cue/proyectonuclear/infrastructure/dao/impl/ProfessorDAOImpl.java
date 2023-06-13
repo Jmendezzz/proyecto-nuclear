@@ -104,25 +104,28 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     }
 
     @Override
-    public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
+    public List<ProfessorScheduleDTO> setSchedulesProfessor(Long id, List<ProfessorScheduleDTO> professorSchedulesDTO) {
         Professor professorExisting = validateProfessorExistingEntity(id);
 
-        validateTime(professorScheduleDTO);
-        ProfessorSchedule professorSchedule = mapper.mapFrom(professorScheduleDTO);
-        Boolean dayExists = false;
-        for (ProfessorSchedule s : professorExisting.getSchedule()) {
-            if (s.getDay().equals(professorScheduleDTO.day())) {
-                s.getTimeSlots().clear();
-                s.getTimeSlots().addAll(professorSchedule.getTimeSlots());
-                dayExists = true;
-                break;
+        validateTime(professorSchedulesDTO);
+
+        professorSchedulesDTO.forEach( schedule -> {
+            ProfessorSchedule professorSchedule = mapper.mapFrom(schedule);
+            Boolean dayExists = false;
+            for (ProfessorSchedule s : professorExisting.getSchedule()) {
+                if (s.getDay().equals(schedule.day())) {
+                    s.getTimeSlots().clear();
+                    s.getTimeSlots().addAll(schedule.timeSlots());
+                    dayExists = true;
+                    break;
+                }
             }
-        }
-        if (!dayExists) {
-            professorExisting.getSchedule().add(professorSchedule);
-        }
+            if (!dayExists) {
+                professorExisting.getSchedule().add(professorSchedule);
+            }
+        });
         entityManager.merge(professorExisting);
-        return professorScheduleDTO;
+        return professorSchedulesDTO;
     }
 
     @Override
@@ -142,11 +145,13 @@ public class ProfessorDAOImpl implements ProfessorDAO {
         if (professorExisting.isEmpty()) throw new ProfessorException("ID incorrecto, no se encontró ningún profesor con id: "+id, HttpStatus.BAD_REQUEST);
         return professorExisting.get();
     }
-    private void validateTime(ProfessorScheduleDTO professorScheduleDTO){
-        professorScheduleDTO.timeSlots().forEach(ts->{
-            if (ts.getStartTime().isAfter(ts.getEndTime())){
-                throw new ProfessorException("El horario ingresado no es válido, la fecha de fin no puede ser antes de la de inicio.", HttpStatus.BAD_REQUEST);
-            }
+    private void validateTime(List<ProfessorScheduleDTO> professorScheduleDTO){
+        professorScheduleDTO.forEach(schedule -> {
+            schedule.timeSlots().forEach(ts->{
+                if (ts.getStartTime().isAfter(ts.getEndTime())){
+                    throw new ProfessorException("El horario ingresado no es válido, la fecha de fin no puede ser antes de la de inicio.", HttpStatus.BAD_REQUEST);
+                }
+            });
         });
     }
 }

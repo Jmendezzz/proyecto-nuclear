@@ -5,34 +5,13 @@ import Select from "react-select";
 import { days } from "../../../enums/Days"
 import { IoIosAddCircle, IoMdRemoveCircle } from 'react-icons/io';
 import { setScheduleProfessor } from "../../../api/ProfessorApiService";
-import Swal from "sweetalert2";
 import style from "./Schedule.module.css";
 import { Button } from "../../../UI/button/Button";
-import { useNavigate } from "react-router-dom";
 
 
-//Alerts
-const succesResponseAlert = (response) => {
-    Swal.fire({
-        title: "Horario guardado",
-        icon: "success",
-        confirmButtonColor: "green",
-        confirmButtonText: "Aceptar",
-    });
-};
-const errorResponseAlert = (error) => {
-    Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error.response.data.message,
-        confirmButtonColor: "red",
-        confirmButtonText: "Aceptar",
-    });
-};
+
 
 export const ScheduleModal = (props) => {
-
-    const navigate = useNavigate();
 
     const [day, setDay] = useState(days[0].value);
     const [slots, setSlots] = useState([]);
@@ -85,24 +64,16 @@ export const ScheduleModal = (props) => {
     }
 
     const handleSubmit = () => {
-
         if (!handleError(slots)) {
-            const professorSchedule = {
+            const professorSchedule = slots.map((slot) => ({
                 day: day,
-                timeSlots: slots.map((slot) => ({
+                timeSlots: [{
                     startTime: slot.startTime,
                     endTime: slot.endTime
-                })),
-            };
-            setScheduleProfessor(props.professor.id, professorSchedule)
-                .then((response) => {
-                    succesResponseAlert(response);
-                    props.reload(true);
-                    props.onClick();
-                })
-                .catch((error) => {
-                    errorResponseAlert(error);
-                });
+                }]
+            }));
+            props.updateSchedulesProfessor(professorSchedule);
+            props.onClick();
         }
     };
 

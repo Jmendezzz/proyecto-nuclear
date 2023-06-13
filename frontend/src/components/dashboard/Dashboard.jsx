@@ -7,15 +7,17 @@ import { CoursesByLocationChart } from "./CoursesByLocationChart";
 import { useEffect, useState } from "react";
 import { getStudents } from "../../api/StudentApiService";
 import { Flex } from "../../UI/flex/Flex";
+import { Loading } from "../../UI/loading/Loading";
 
 export const Dashboard = () =>{
     const [students, setStudents] = useState([]);
-    const succesResponses = (res) => {
-        setStudents(res.data);
-      };
+    const [isLoading, setIsLoading] = useState(true);
       useEffect(() => {
         getStudents()
-        .then((response) => succesResponses(response))
+        .then((response) => {
+            setStudents(response);
+            setIsLoading(false);
+        })
         .catch((error) => console.log(error));
       }, []);
     const courses = [{
@@ -168,8 +170,8 @@ export const Dashboard = () =>{
             }
         ]
     }]
-    return (
-
+    return isLoading ? ( <Loading/> )
+    :(
         <div className={style["container"]}>
             <Header>
                 <h2 style={{ fontSize: "60px" }}>Dashboard</h2>
@@ -177,26 +179,28 @@ export const Dashboard = () =>{
 
             <div className={style["main-container"]}>
 
-                <Flex>
+                <div className = {style["content"]}>
+
+                <div className = {style["item"]}>
                     <h3>Cursos por ubicación</h3>
                     <CoursesByLocationChart courses={courses} />
-                </Flex>
+                </div>
 
-                <Flex>
+                <div className = {style["item"]}>
                     <h3>Profesores por curso </h3>
                     <ProfessorCourseChart courses={courses} />
-                </Flex>
+                </div>
 
-                <Flex>
+                <div className = {style["item"]}>
                     <h3>Estudiantes por curso </h3>
                     <StudentsByCourseChart courses={courses} />
-                </Flex>
+                </div>
                 
-                <Flex>
+                <div className = {style["item"]}>
                     <h3>Estudiantes </h3>
                     <StudentDistributionChart students={students} />
-                </Flex>
-                
+                </div>
+                </div>
                 
             </div>
         </div>

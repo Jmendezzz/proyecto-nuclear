@@ -40,6 +40,8 @@ export const ScheduleDays = (props) => {
     return (
         <Flex>
             <div className={style["card-container"]}>
+                {console.log(schedule)}
+                {console.log(sortedSchedule)}
                 {sortedSchedule.map((schedule, index) => (
                     <div key={index} className={style.card}>
                         <h2>{reformatDay(schedule)}</h2>
