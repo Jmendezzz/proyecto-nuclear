@@ -2,10 +2,7 @@ package co.edu.cue.proyectonuclear.infrastructure.controllers;
 
 
 import co.edu.cue.proyectonuclear.exceptions.CourseException;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.*;
 import co.edu.cue.proyectonuclear.services.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,15 +37,15 @@ public class CourseController {
 
         return course.get();
     }
-    @GetMapping("/courses/professor/{id}")
+    @GetMapping("/courses/professors/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public List<CourseDTO> getCoursesByProfessorId(@PathVariable Long id){
+    public List<CourseUserRequestDTO> getCoursesByProfessorId(@PathVariable Long id){
         return  courseService.getCoursesByProfessorId(id);
     }
 
-    @GetMapping("/courses/student/{id}")
+    @GetMapping("/courses/students/{id}")
     @PreAuthorize("hasRole('ADMIN')  or hasRole('STUDENT')")
-    public List<CourseDTO> getCoursesByStudentId(@PathVariable Long id){
+    public List<CourseUserRequestDTO> getCoursesByStudentId(@PathVariable Long id){
         return courseService.getCoursesByStudentId(id);
 
     }
@@ -57,6 +54,8 @@ public class CourseController {
     public ResponseEntity<List<GenerateCourseDTO>> generateCourses(@RequestBody List<SubjectDTO> subjects){
         return new ResponseEntity<>(courseService.generateCourses(subjects),HttpStatus.OK);
     }
+
+
 
 
 

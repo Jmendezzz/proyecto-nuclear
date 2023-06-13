@@ -3,10 +3,7 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.domain.entities.CourseSchedule;
 import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseScheduleDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.*;
 import co.edu.cue.proyectonuclear.mapping.mappers.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -85,22 +82,20 @@ public class CourseDAOImpl  implements CourseDAO {
     }
 
     @Override
-    public List<CourseDTO> getCoursesByProfessorId(Long id) {
+    public List<CourseUserRequestDTO> getCoursesByProfessorId(Long id) {
         String query = "SELECT * FROM course WHERE professor_id = :professorId";
         Query nativeQuery = entityManager.createNativeQuery(query, Course.class);
         nativeQuery.setParameter("professorId",id);
         List<Course> courses = nativeQuery.getResultList();
-        return courses.stream()
-                .map(c->courseMapper.mapFromEntity(c))
-                .toList();
+        return courseMapper.mapFromEntityUserRequest(courses);
     }
 
     @Override
-    public List<CourseDTO> getCoursesByStudentId(Long id) {//TODO Test
+    public List<CourseUserRequestDTO> getCoursesByStudentId(Long id) {
         String query = "SELECT c.* FROM course c INNER JOIN course_students cs on c.id = cs.course_id WHERE students_id = :studentId";
         Query nativeQuery = entityManager.createNativeQuery(query,Course.class);
         nativeQuery.setParameter("studentId",id);
-        return courseMapper.mapFromEntity(nativeQuery.getResultList());
+        return courseMapper.mapFromEntityUserRequest(nativeQuery.getResultList());
 
     }
 
@@ -111,4 +106,5 @@ public class CourseDAOImpl  implements CourseDAO {
         nativeQuery.setParameter("classroomId", id);
         return courseMapper.mapFromEntity(nativeQuery.getResultList());
     }
+
 }
