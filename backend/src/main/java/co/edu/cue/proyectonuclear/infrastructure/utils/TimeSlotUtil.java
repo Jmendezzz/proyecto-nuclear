@@ -43,7 +43,7 @@ public class TimeSlotUtil {
         return hoursA.stream().anyMatch(h-> hoursB.contains(h));
     }
 
-     private static List<LocalTime> getHoursOfTimeSlot (TimeSlot timeSlot){
+     public static List<LocalTime> getHoursOfTimeSlot (TimeSlot timeSlot){
 
         List<LocalTime> hours = new ArrayList<>();
 

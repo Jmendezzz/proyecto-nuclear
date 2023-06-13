@@ -13,7 +13,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,22 +59,21 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
-
     @Override
     public List<GenerateCourseDTO> generateCourses(List<SubjectDTO> subjects) {
 
         List<GenerateCourseDTO> coursesDTO = new ArrayList<>();
 
-            subjects.stream().forEach(subject -> {
+        subjects.stream().forEach(subject -> {
             ProfessorDTO professorDTO = courseConstrain.validateSubjectIsAssignedToProfessor(subject); //Throws CourseException
 
             List<StudentDTO> students = courseConstrain.validateStudentsAssignedToSubject(subject); //Throws CourseException
 
-            List<GenerateCourseScheduleDTO> courseSchedule = generateCourseSchedule(students,professorDTO,subject);
+            List<GenerateCourseScheduleDTO> courseSchedule = generateCourseSchedule(students, professorDTO, subject);
 
-            LocalDate startDate =  generateCourseStartDate();
+            LocalDate startDate = generateCourseStartDate();
 
-                GenerateCourseDTO generateCourseDTO = new GenerateCourseDTO(
+            GenerateCourseDTO generateCourseDTO = new GenerateCourseDTO(
                     professorDTO,
                     subject,
                     students,
@@ -81,9 +82,9 @@ public class CourseServiceImpl implements CourseService {
                     generateCourseEndDate(startDate)
 
             );
-                courseDAO.saveCourse(generateCourseDTO);
+            courseDAO.saveCourse(generateCourseDTO);
         });
-            return coursesDTO;
+        return coursesDTO;
     }
 
     private List<GenerateCourseScheduleDTO> generateCourseSchedule(List<StudentDTO> students, ProfessorDTO professor, SubjectDTO subject) {
@@ -95,54 +96,94 @@ public class CourseServiceImpl implements CourseService {
 
         List<GenerateCourseScheduleDTO> courseSchedules = new ArrayList<>();
 
+        int classDuration = weeklyHours > 6 && subject.period().equals(Period.TRIMESTRAL) ? 3 : 2;
+
         professorSchedule.stream().map(ps -> { //Iterating over each ProfessorSchedule
 
                     List<TimeSlot> possibleTimeSlots =
                             ps.timeSlots().stream()
-                            .filter(timeSlot -> weeklyHours >= 9 ? TimeSlotUtil.between(timeSlot)>=3 : true )
-                            .map(timeSlot -> TimeSlotUtil.splitTimeSlot(timeSlot, weeklyHours > 6 && subject.period().equals(Period.TRIMESTRAL) ? 3 : 2))//Splits the timeSlots
-                            .flatMap(timeSlots -> timeSlots.stream())
-                            .toList();
+                                    .filter(timeSlot -> weeklyHours >= 9 ? TimeSlotUtil.between(timeSlot) >= 3 : true)
+                                    .map(timeSlot -> TimeSlotUtil.splitTimeSlot(timeSlot, classDuration))//Splits the timeSlots
+                                    .flatMap(timeSlots -> timeSlots.stream())
+                                    .toList();
 
-                    possibleTimeSlots.forEach(t-> {
+                    possibleTimeSlots.forEach(t -> {
                         System.out.println(t.getStartTime() + "-" + t.getEndTime());
                     });
 
                     Optional<TimeSlot> timeSlot =
                             possibleTimeSlots.stream()
-                            .filter(ts ->
-                                    !courseConstrain.validateCrossingScheduleTimeSlotForStudents(
-                                            ps.day(),
-                                            ts,
-                                            students,
-                                            subject
-                                            )
-                                            &&
-                                            !courseConstrain.validateScheduleTimeSlotForProfessor(
+                                    .filter(ts ->
+                                            !courseConstrain.validateCrossingScheduleTimeSlotForStudents(
                                                     ps.day(),
                                                     ts,
-                                                    professor,
+                                                    students,
                                                     subject
                                             )
-                            ).findFirst();
+                                                    &&
+                                                    !courseConstrain.validateScheduleTimeSlotForProfessor(
+                                                            ps.day(),
+                                                            ts,
+                                                            professor,
+                                                            subject
+                                                    )
+                                    ).findFirst();
 
                     return timeSlot.map(slot -> new GenerateCourseScheduleDTO(
                             ps.day(),
-                            findAvailableClassroom(ps.day(),slot,students),
+                            findAvailableClassroom(ps.day(), slot, students),
                             slot
                     )).orElse(null);
                 })
-                .filter(cs -> cs != null && !courseConstrain.validateWeeklyHoursLimit(courseSchedules,weeklyHours)  )
+                .filter(cs -> cs != null && !courseConstrain.validateWeeklyHoursLimit(courseSchedules, weeklyHours))
+                .filter(cs-> !courseConstrain.validateLunchTime(cs))
                 .forEach(courseSchedules::add);
 
-        //TODO HERE: If the schedule missing to complete weeklyHours generate another until  everything its fine.
+
+        while(!courseConstrain.validateWeeklyHoursLimit(courseSchedules,weeklyHours)){
+            GenerateCourseScheduleDTO alternativeCourseSchedule = generateAlternativeCourseSchedule(students,professor,subject,classDuration,courseSchedules);
+            courseSchedules.add(alternativeCourseSchedule);
+        }
 
         return courseSchedules;
     }
 
     //This function will be called if the course schedule generated does not fill the hours of a subject
-    private GenerateCourseScheduleDTO generateAlternativeCourseSchedule(List<StudentDTO> students, ProfessorDTO professor, SubjectDTO subject){
-        return  null;
+    private GenerateCourseScheduleDTO generateAlternativeCourseSchedule(List<StudentDTO> students, ProfessorDTO professor, SubjectDTO subject, int duration,List<GenerateCourseScheduleDTO> courseSchedulesGenerated ) {
+        LocalTime startTime = LocalTime.of(7, 0); // 7 am
+        LocalTime endTime = LocalTime.of(21, 0); // 9 pm
+
+        TimeSlot timeSlot = new TimeSlot(startTime, endTime);
+
+
+        return Arrays.stream(DayOfWeek.values()).map(day -> {
+            List<TimeSlot> possibleTimeSlots = TimeSlotUtil.splitTimeSlot(timeSlot, duration);
+            Optional<TimeSlot> timeSlotSelected = possibleTimeSlots.stream()
+                        .filter(ts ->
+                                        !courseConstrain.validateCrossingScheduleTimeSlotForStudents(
+                                                day,
+                                                ts,
+                                                students,
+                                                subject
+                                        )
+                                        &&
+                                        !courseConstrain.validateScheduleTimeSlotForProfessor(
+                                                day,
+                                                ts,
+                                                professor,
+                                                subject
+                                        )
+                        ).findFirst();
+
+            return timeSlotSelected.map(slot -> new GenerateCourseScheduleDTO(
+                    day,
+                    findAvailableClassroom(day, slot, students),
+                    slot
+            )).orElse(null);
+        }).filter(cs-> cs!=null && !courseConstrain.validateCrossingDayAlternativeCourseSchedule(cs,courseSchedulesGenerated))
+                .filter(cs-> !courseConstrain.validateLunchTime(cs))
+                .findFirst()
+                .orElse(null);
     }
 
     private ClassroomDTO findAvailableClassroom(DayOfWeek day, TimeSlot timeSlot, List<StudentDTO> students) {
@@ -154,9 +195,9 @@ public class CourseServiceImpl implements CourseService {
                         .stream()
                         .filter(
                                 c ->
-                                        !courseConstrain.validateClassroomAvailability(day, c, timeSlot)
-                                                &&
-                                                courseConstrain.validateClassroomLocation(day,c,timeSlot,students)
+                                    !courseConstrain.validateClassroomAvailability(day, c, timeSlot)
+                                            &&
+                                     courseConstrain.validateClassroomLocation(day, c, timeSlot, students)
                         )
                         .findFirst();
 
@@ -173,8 +214,7 @@ public class CourseServiceImpl implements CourseService {
 
         if (studentsNumber <= 15) maxAcceptableDifference = 10;
 
-        if ( studentsNumber <= 10) maxAcceptableDifference = 15;
-
+        if (studentsNumber <= 10) maxAcceptableDifference = 15;
 
 
         int finalMaxAcceptableDifference = maxAcceptableDifference;
@@ -189,17 +229,16 @@ public class CourseServiceImpl implements CourseService {
 
     }
 
-    private LocalDate generateCourseStartDate(){
+    private LocalDate generateCourseStartDate() {
         LocalDate localDate = LocalDate.now();
-        if(localDate.getMonth().getValue() >= 6 ){
-            return LocalDate.of(localDate.getYear(), 7,5);
-        }else return LocalDate.of(localDate.getYear(),1,16);
+        if (localDate.getMonth().getValue() >= 6) {
+            return LocalDate.of(localDate.getYear(), 7, 5);
+        } else return LocalDate.of(localDate.getYear(), 1, 16);
     }
 
-    private LocalDate generateCourseEndDate(LocalDate startDate){
-        return LocalDate.of(startDate.getYear(), startDate.getMonth().getValue() + 5, startDate.getDayOfMonth()+15 );
+    private LocalDate generateCourseEndDate(LocalDate startDate) {
+        return LocalDate.of(startDate.getYear(), startDate.getMonth().getValue() + 5, startDate.getDayOfMonth() + 15);
     }
-
 
 
 }
