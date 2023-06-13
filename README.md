@@ -60,7 +60,7 @@ To run the CUE Schedule Management System, follow these steps:
 1. Clone this repository.
 2. Open a terminal and navigate to the project's root directory.
 3. Start the Spring backend application:
-    -Build and run the backend module using your preferred IDE.
+- Build and run the backend module using your preferred IDE.
 4. Once the backend application is running, open a terminal and navigate to the project's root directory and then navigate to the frontend directory: `cd frontend`, and type: `npm start`.
 5.  Once the backend and frontend application are running open your web browser and type http://localhost:3000/login to access the login page.
 Use the following credentials to log in as an admin user:
