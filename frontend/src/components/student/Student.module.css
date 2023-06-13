@@ -1,6 +1,7 @@
 .main-container{
     background-color: #ebebeb;
     border-radius: 3em;
+    min-width: 1200px;
 }
 .table{
     width: 95%;
@@ -9,6 +10,8 @@
     border-collapse:collapse !important;
     flex: 1;
     overflow: auto;
+    table-layout: fixed;
+
 }
 .table thead >tr > th{
     font-size: 30px;
@@ -110,4 +113,15 @@
 .subject-list__remove {
 	color: red;
 	cursor: pointer;
+}
+.schedule__icon {
+    color: rgba(52, 91, 175, 1);
+    font-size: 50px;
+    cursor: pointer; 
+    transition: all .2s ease-in-out; 
+}
+
+.schedule__icon:hover {
+    color: darkblue; 
+    transform: scale(1.1); 
 }

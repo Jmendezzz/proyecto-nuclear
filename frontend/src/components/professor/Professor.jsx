@@ -122,7 +122,7 @@ export const Professor = () => {
             )}
             {ScheduleModal &&(
                 <SubjectModal  
-                professor = {professor}
+                subjects = {professor.subjects}
                 onClick={hideScheduleModal}/>
             )}
 

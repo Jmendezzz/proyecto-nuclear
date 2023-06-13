@@ -12,8 +12,8 @@ import { careers } from "../../enums/Career";
 import { getStudents, deleteStudentById } from "../../api/StudentApiService";
 import Swal from "sweetalert2";
 import { AiOutlineFileSearch, AiOutlineSearch } from "react-icons/ai";
-import {SubjectModal} from "../user/SubjectModal"
-import {BiBookBookmark} from "react-icons/bi"
+import { SubjectModal } from "../user/SubjectModal"
+import { BiBookBookmark } from "react-icons/bi"
 
 const reformatSubjectCareer = (subject) => {
   const foundCareer = careers.find((career) => career.value == subject);
@@ -21,14 +21,14 @@ const reformatSubjectCareer = (subject) => {
 }
 
 
-const succesResponseAlert= (response)=>{
+const succesResponseAlert = (response) => {
   Swal.fire(
     'Eliminado!',
     `El estudiante ${response.data.name} ha sido eliminada`,
     'success',
   )
 }
-const errorResponseAlert = (error)=>{
+const errorResponseAlert = (error) => {
   Swal.fire({
     title: "Error",
     text: error.response.data.message,
@@ -40,161 +40,161 @@ const errorResponseAlert = (error)=>{
 
 export const Student = () => {
 
-    const [students, setStudents] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [studentsChange, setStudentsChange] = useState(false);
-    const [search, setSearch] = useState("");
+  const [students, setStudents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [studentsChange, setStudentsChange] = useState(false);
+  const [search, setSearch] = useState("");
+  const [student, setStudent] = useState();
 
-    const succesResponses = (res) => {
-      setStudents(res.data);
-    };
+  const succesResponses = (res) => {
+    setStudents(res.data);
+  };
 
-    const [ScheduleModal, setScheduleModal] = useState(undefined);
+  const [subjectModal, setSubjectModal] = useState(undefined);
 
-    const [student, setStudent] = useState();
-    const showScheduleModal = (student) => {
-        setStudent(student);
-        setScheduleModal(true);
-    }
-    
-    const hideScheduleModal = () => {
-        setScheduleModal(undefined)
-    }
+  const showSubjectModal = (student) => {
+    setStudent(student);
+    setSubjectModal(true);
+  }
 
-    useEffect(() => {
-      getStudents()
+  const hideScheduleModal = () => {
+    setSubjectModal(undefined)
+  }
+
+  useEffect(() => {
+    getStudents()
       .then((response) => succesResponses(response))
       .catch((error) => console.log(error));
-      setStudentsChange(false);
-    }, [studentsChange]);
+    setStudentsChange(false);
+  }, [studentsChange]);
 
-    const studentsPerPage = 7;
-    const lastStudentIndex = currentPage * studentsPerPage;
-    const firstStudentIndex = lastStudentIndex - studentsPerPage;
-    let currentStudents = students.slice(firstStudentIndex, lastStudentIndex);
+  const studentsPerPage = 7;
+  const lastStudentIndex = currentPage * studentsPerPage;
+  const firstStudentIndex = lastStudentIndex - studentsPerPage;
+  let currentStudents = students.slice(firstStudentIndex, lastStudentIndex);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const deleteStudentHandler = (id) => {
-      Swal.fire({
-        title: '¿Estas seguro de eliminar el estudiante?',
-        text: "Estos cambios son irreversibles",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, eliminar'
+  const deleteStudentHandler = (id) => {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar el estudiante?',
+      text: "Estos cambios son irreversibles",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar'
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deleteStudentById(id)
+            .then((response) => {
+              succesResponseAlert(response);
+              setStudentsChange(true)
+            }
+            )
+            .catch((error) => {
+              errorResponseAlert(error);
+            })
+        }
       })
-        .then((result) => {
-          if (result.isConfirmed) {
-            deleteStudentById(id)
-              .then((response) => {
-                succesResponseAlert(response);
-                setStudentsChange(true) 
-              }
-              )
-              .catch((error) => {
-                errorResponseAlert(error);              
-              })
-          }
-        })
-  
-    }
 
-    const searchHandler = (event)=>{
-      setSearch(event.target.value);
-    }
-  
-    if(search.trim() !== ""){
-      currentStudents = students.filter(student=> student.name.toLowerCase().includes(search.toLowerCase()) || student.lastName.toLowerCase().includes(search.toLowerCase()) )
-    }
-  
-    return (
+  }
+
+  const searchHandler = (event) => {
+    setSearch(event.target.value);
+  }
+
+  if (search.trim() !== "") {
+    currentStudents = students.filter(student => student.name.toLowerCase().includes(search.toLowerCase()) || student.lastName.toLowerCase().includes(search.toLowerCase()))
+  }
+
+  return (
+    <Flex
+      height={"100%"}
+      width={"100%"}
+      direction={"column"}
+      alignItems={"center"}
+      justifyContent={"none"}
+    >
+      {subjectModal && (
+        <SubjectModal
+          subjects={student.subjects}
+          onClick={hideScheduleModal} />
+      )}
+      <Header>
+        <h2 style={{ fontSize: "60px" }}>ESTUDIANTES</h2>
+      </Header>
       <Flex
-        height={"100%"}
-        width={"100%"}
+        height={"auto"}
+        width={"80%"}
         direction={"column"}
-        alignItems={"center"}
+        className={style["main-container"]}
         justifyContent={"none"}
+        alignItems={"center"}
       >
-        {ScheduleModal &&(
-            <SubjectModal  
-            student = {student}
-            onClick={hideScheduleModal}/>
-         )}
-        <Header>
-          <h2 style={{ fontSize: "60px" }}>ESTUDIANTES</h2>
-        </Header>
-        <Flex
-          height={"auto"}
-          width={"80%"}
-          direction={"column"}
-          className={style["main-container"]}
-          justifyContent={"none"}
-          alignItems={"center"}
-        >
-          <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>
-            <div style={{ width: "60%", margin: "10px" }}>
-              <Button 
+        <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>
+          <div style={{ width: "60%", margin: "10px" }}>
+            <Button
               inLineStyle={{ width: "180px", height: "60px" }}
               onClick={() => navigate("/estudiantes/crear")}>
-                Crear estudiante
-              </Button>
-            </div>
-            <Input
-              input={{ placeholder: "Nombre del estudiante" , onChange:searchHandler}}
-              style={{ height: "20px" }}
-            ></Input>
-            <AiOutlineSearch style={{ fontSize: "40px", color: "red" }} />
+              Crear estudiante
+            </Button>
+          </div>
+          <Input
+            input={{ placeholder: "Nombre del estudiante", onChange: searchHandler }}
+            style={{ height: "20px" }}
+          ></Input>
+          <AiOutlineSearch style={{ fontSize: "40px", color: "red" }} />
 
-          </Flex>
-          {currentStudents.length > 0 ?
-            <>
-              <table className={style.table}>
-                <thead>
-                  <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Carrera</th>
-                    <th>Semestre</th>
-                    <th>Asignaturas</th>
-                    <th>Email</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentStudents.map((student) => (
-                    <tr key={student.id}>
-                      <td className={style.id}>{student.id}</td>
-                      <td>{student.name}</td>
-                      <td>{reformatSubjectCareer(student.career)}</td>
-                      <td>{student.semester}</td>
-                      <td>
-                        <BiBookBookmark className={style["schedule__icon"]} onClick={showScheduleModal.bind(null,student)}/>
-                      </td>
-                      <td>{student.email}</td>
-                      <td className={style["actions__container"]}>
-                          <BiEdit  onClick={() => navigate(`/estudiantes/editar/${student.id}`) }  className={style["icon__edit"]} />
-                          <MdDeleteForever onClick={deleteStudentHandler.bind(null, student.id)}  className={style["icon__delete"]}/>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {students.length > 8 &&(
-                <Pagination 
-                  totalitems={students.length}
-                  itemsPerPage={studentsPerPage}
-                  setCurrentPage={setCurrentPage}
-                  currentPage={currentPage}
-                ></Pagination>
-              )}
-            </>
-            :
-            <p style={{ fontSize: "30px" }}>No hay estudiantes para mostrar</p>
-          }
         </Flex>
+        {currentStudents.length > 0 ?
+          <>
+            <table className={style.table}>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Nombre</th>
+                  <th>Carrera</th>
+                  <th>Semestre</th>
+                  <th>Asignaturas</th>
+                  <th>Email</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentStudents.map((student) => (
+                  <tr key={student.id}>
+                    <td className={style.id}>{student.id}</td>
+                    <td>{student.name}</td>
+                    <td>{reformatSubjectCareer(student.career)}</td>
+                    <td>{student.semester}</td>
+                    <td>
+                      <BiBookBookmark className={style["schedule__icon"]} onClick={showSubjectModal.bind(null, student)} />
+                    </td>
+                    <td>{student.email}</td>
+                    <td className={style["actions__container"]}>
+                      <BiEdit onClick={() => navigate(`/estudiantes/editar/${student.id}`)} className={style["icon__edit"]} />
+                      <MdDeleteForever onClick={deleteStudentHandler.bind(null, student.id)} className={style["icon__delete"]} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {students.length > 8 && (
+              <Pagination
+                totalitems={students.length}
+                itemsPerPage={studentsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              ></Pagination>
+            )}
+          </>
+          :
+          <p style={{ fontSize: "30px" }}>No hay estudiantes para mostrar</p>
+        }
       </Flex>
-    );
-  };
+    </Flex>
+  );
+};

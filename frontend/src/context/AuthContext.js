@@ -3,7 +3,18 @@ import { login } from "../api/AuthenticationApiService";
 import { api } from "../api/ApiClient";
 import { useNavigate } from "react-router-dom";
 import { roles } from "../enums/Roles";
+import Swal from "sweetalert2";
 
+
+const errorResponseAlert = (error) => {
+  Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error,
+      confirmButtonColor: 'red',
+      confirmButtonText: 'Aceptar',
+  })
+}
 export const AuthContext = createContext({
   isAuthenticated: false,
   userId: null,
@@ -42,6 +53,7 @@ export const AuthProvider = ({ children }) => {
         return true;
       })
       .catch(() => {
+        errorResponseAlert("Credenciales inválidas");
         setIsAuthenticated(false);
         return false;
       });
