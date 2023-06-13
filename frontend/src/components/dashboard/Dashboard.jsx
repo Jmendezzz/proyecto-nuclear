@@ -34,59 +34,70 @@ export const Dashboard = () =>{
     return isLoading ? ( <Loading/> )
     :(
         <div className={style["container"]}>
-            <Header>
-                <h2 style={{ fontSize: "60px" }}>Dashboard</h2>
-            </Header>
+  <Header>
+    <h2 style={{ fontSize: "60px" }}>Dashboard</h2>
+  </Header>
 
-            <div className={style["main-container"]}>
-
-                <div className = {style["content"]}>
-                <div className = {style["item"]}>
-                    <h3>Cursos por ubicación</h3>
-                    {
-                        courses !== [] ? <>
-                        <CoursesByLocationChart courses={courses} />
-                        <CoursesByLocationTable courses = {courses} />
-                        </> :
-                        <p>No hay cursos</p>
-                    }
-                </div>
-
-                <div className = {style["item"]}>
-                    <h3>Cursos por profesores </h3>
-                    {
-                        courses !== [] ? <>
-                        <ProfessorCourseChart courses={courses} />
-                        <ProfessorCourseTable courses={courses} />
-                        </> :
-                        <p>No hay cursos</p>
-                    }
-                </div>
-
-                <div className = {style["item"]}>
-                    <h3>Estudiantes por curso </h3>
-                    {
-                        courses !== [] ? <>
-                         <StudentsByCourseChart courses={courses} />
-                         <StudentsByCourseTable courses={courses} />
-                         </> :
-                         <p>No hay cursos</p>
-                    }
-                </div>
-                
-                <div className = {style["item"]}>
-                    <h3>Estudiantes </h3>
-                    {
-                        students !== null ? <>
-                        <StudentDistributionChart students={students} />
-                        <StudentDistributionTable students={students} />
-                        </>:
-                        <p>No hay Estudiantes</p>
-                    }
-                </div>
-                </div>
-                
+  <div className={style["main-container"]}>
+    <div className={style["content"]}>
+      <div className={style["item"]}>
+        <h3>Cursos por ubicación</h3>
+        {courses !== [] ? (
+          <>
+            <div className={style["chart-table-container"]}>
+              <CoursesByLocationChart courses={courses} />
+              <CoursesByLocationTable courses={courses} />
             </div>
-        </div>
+          </>
+        ) : (
+          <p>No hay cursos</p>
+        )}
+      </div>
+
+      <div className={style["item"]}>
+        <h3>Cursos por profesores </h3>
+        {courses !== [] ? (
+          <>
+            <div className={style["chart-table-container"]}>
+              <ProfessorCourseChart courses={courses} />
+              <ProfessorCourseTable courses={courses} />
+            </div>
+          </>
+        ) : (
+          <p>No hay cursos</p>
+        )}
+      </div>
+
+      <div className={style["item"]}>
+        <h3>Estudiantes por curso </h3>
+        {courses !== [] ? (
+          <>
+            <div className={style["chart-table-container"]}>
+              <StudentsByCourseChart courses={courses} />
+              <StudentsByCourseTable courses={courses} />
+            </div>
+          </>
+        ) : (
+          <p>No hay cursos</p>
+        )}
+      </div>
+
+      <div className={style["item"]}>
+        <h3>Estudiantes</h3>
+        {students !== null ? (
+          <>
+            <div className={style["chart-table-container"]}>
+              <StudentDistributionChart students={students} />
+              <StudentDistributionTable students={students} />
+            </div>
+          </>
+        ) : (
+          <p>No hay Estudiantes</p>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
     );
 }
