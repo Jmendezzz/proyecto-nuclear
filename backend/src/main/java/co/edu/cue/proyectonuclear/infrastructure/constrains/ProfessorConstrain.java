@@ -36,17 +36,55 @@ public class ProfessorConstrain {
         });
     }
 
-    public void validateTimeSlotsByProfessorSubject(ProfessorScheduleDTO professorScheduleDTO) {
-        List<TimeSlot> timeSlots = professorScheduleDTO.timeSlots();
-        //order the list by startTime
-        timeSlots.sort(Comparator.comparing(TimeSlot::getStartTime));
-        //Validate the gap between the startTime and the endTime
-        validateGapBetweenTimeSlots(timeSlots);
-        //Validate that there is not timeSlots with the same startTime or endTime
-        validateEqualTimeSlots(timeSlots);
-        //Validate that there are not overlapping timeSlots
-        validateOverlappingTimeSlots(timeSlots);
+    public void validateTimeSlotsByProfessorSubject(List<ProfessorScheduleDTO> professorSchedulesDTO) {
+        professorSchedulesDTO.forEach(professorScheduleDTO -> {
+            List<TimeSlot> timeSlots = professorScheduleDTO.timeSlots();
+            // Ordena la lista por startTime
+            timeSlots.sort(Comparator.comparing(TimeSlot::getStartTime));
+            // Valida la brecha entre startTime y endTime
+            validateGapBetweenTimeSlots(timeSlots);
+            // Valida que no haya timeSlots con el mismo startTime o endTime
+            validateEqualTimeSlots(timeSlots);
+            // Valida que no haya overlapping timeSlots
+            validateOverlappingTimeSlots(timeSlots);
+        });
     }
+
+    public void validateWeeklyHours(Long id, List<ProfessorScheduleDTO> professorSchedulesDTOS) {
+        ProfessorDTO professorDTO = professorDAO.getProfessorById(id).get();
+
+        // Obtener la lista de materias asignadas al profesor
+        List<SubjectDTO> subjects = professorDTO.subjects();
+
+        // Calcular la suma total de las horas semanales de las materias asignadas al profesor
+        int totalWeeklyHours = subjects.stream()
+                .mapToInt(SubjectDTO::academicHours)
+                .sum();
+
+        // Calcular el número mínimo de días requeridos según el período y las horas académicas
+        int minimumRequiredDays;
+        if (subjects.stream().anyMatch(subject -> subject.period() == Period.TRIMESTRAL && subject.academicHours() == 96)) {
+            minimumRequiredDays = 3;
+        } else if (subjects.stream().anyMatch(subject -> subject.period() == Period.SEMESTRAL && subject.academicHours() == 96)
+                || subjects.stream().anyMatch(subject -> subject.period() == Period.TRIMESTRAL && subject.academicHours() == 64)) {
+            minimumRequiredDays = 2;
+        } else {
+            minimumRequiredDays = 1;
+        }
+
+        // Calcular la suma de los time slots en días diferentes
+        int totalSlotsPerDay = professorSchedulesDTOS.stream()
+                .flatMap(schedule -> schedule.timeSlots().stream())
+                .mapToInt(timeSlot -> timeSlot.getEndTime().toSecondOfDay() - timeSlot.getStartTime().toSecondOfDay())
+                .sum() / (24 * 60 * 60); // Convertir a días
+
+        // Validar que la suma de los time slots en días diferentes sea mayor o igual a las horas semanales
+        if (totalSlotsPerDay < minimumRequiredDays) {
+            // La suma de los time slots en días diferentes es menor que los días requeridos
+            throw new ProfessorException("Los horarios ingresados no son suficientes para dictar las materias asignadas",HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public void validateEqualTimeSlots(List<TimeSlot> timeSlots){
         for (int i = 1; i < timeSlots.size(); i++) {
             TimeSlot currentTimeSlot = timeSlots.get(i);

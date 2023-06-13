@@ -9,7 +9,7 @@ import {AiOutlineSchedule} from "react-icons/ai";
 
 export const adminRoutes = [
   {
-    path: "/",
+    path: "/estadisticas",
     name: "Dashboard",
     icon: <AiOutlineDashboard />,
   },

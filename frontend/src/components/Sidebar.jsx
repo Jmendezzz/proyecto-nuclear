@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import style from "./Sidebar.module.css";
+import { AiOutlineDashboard } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import logo from "../assets/images/logo-cue-avh.png";

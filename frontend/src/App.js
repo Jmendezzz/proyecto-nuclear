@@ -24,6 +24,10 @@ import { ProtectedAuthorizationRoutes } from "./components/routes/ProtectedAutho
 import { roles } from "./enums/Roles";
 import { ErrorResponse } from "./UI/error/ErrorResponse";
 import { UserConfiguration } from "./components/user/UserConfiguration";
+import { UserCalendar } from "./components/user/UserCalendar";
+import { Dashboard } from "./components/dashboard/Dashboard";
+
+
 
 function App() {
   return (
@@ -54,6 +58,10 @@ function App() {
                 <Route path="/salones/crear" element={<ClassroomCreate />}/>
                 <Route path="salones/editar/:classroomId" element={<ClassroomEdit />} />
 
+            <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
+            <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
+            <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
+            <Route path="/profesores/crear" element={<ProfessorCreate/>} ></Route>
 
                 <Route path="/estudiantes" element={<Student />}/>
                 <Route path="/estudiantes/crear" element={<StudentCreate />}/>
@@ -63,6 +71,7 @@ function App() {
                 <Route path="/profesores" element={<Professor />}/>
                 <Route path="/profesores/crear" element={<ProfessorCreate />}/>
                 <Route path="profesores/editar/:professorId"element={<ProfessorEdit />}/>
+            <Route path="/profesores/disponibilidad" element={<ProfessorSchedule />}></Route>
 
                 <Route path="/cursos" element={<Course />}/>
                 <Route path="/cursos/generar" element={<GenerateCourse />}/>
@@ -82,8 +91,12 @@ function App() {
             </Route>
 
 
+            <Route path="/horario" element={<UserCalendar/>}></Route>
+
+            <Route path="/estadisticas" element={<Dashboard/>}></Route>
+
           </Routes>
-          
+
         </Sidebar>
       </AuthProvider>
     </BrowserRouter>
