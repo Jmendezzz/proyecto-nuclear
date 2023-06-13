@@ -14,11 +14,11 @@ export const UserCalendar = () => {
     useEffect (() =>{
         getCoursesByProfessorId(userId)
         .then((response)=>{
-            setCourses(response);
+            setCourses(response.data);
             setIsLoading(false);
         })
         .catch( (error) => console.log(error) );
-    })
+    },[])
 
     return  isLoading ? (
         <Loading />
