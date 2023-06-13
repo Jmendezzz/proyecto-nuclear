@@ -16,3 +16,39 @@ html,body{
   min-height: 100vh;
 
 }
+
+ /* calendarStyle.css */
+  
+ .fc-event {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 20px;
+}
+
+.fc-event:hover {
+  background-color: #0056b3;
+  cursor: pointer;
+}
+
+.fc-timegrid-slot-label {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.fc-timegrid-slot-label span {
+  display: block;
+  padding-top: 4px; /* Ajusta el espaciado superior */
+}
+.fc-timegrid-slot-label-frame, .fc-timegrid-slot-label-cushion{
+  line-height: 1;
+}
+
+
+#calendar {
+max-width: 1100px;
+margin: 40px;
+
+}
+.fc .fc-timegrid-slot:empty:after {
+  content: "\a0";
+}

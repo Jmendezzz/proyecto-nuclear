@@ -102,10 +102,10 @@
     background-color: #ebebeb;
     border-radius: 3em;
 	}
-	
 
 
-/*AFECTA*/
+
+
 .actions {
 	padding: 1rem;
 	display: flex;
@@ -280,5 +280,11 @@
 .subjects-container{
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+}
+.container{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }

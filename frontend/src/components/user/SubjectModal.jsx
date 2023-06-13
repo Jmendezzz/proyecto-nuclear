@@ -16,8 +16,7 @@ export const SubjectModal=(props)=>{
 				  justifyContent={"center"}
 				  alignItems={"center"}>
                <ul>
-                {props.professor.subjects.map((subject)=>{
-                 console.log(props.professor.subjects);
+                {props.subjects.map((subject)=>{
                   return <li style={{ alignItems: "center",fontSize: "20px", }} >{subject.name}</li>
                 })}
                </ul>
