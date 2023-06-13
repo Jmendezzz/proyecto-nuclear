@@ -167,7 +167,6 @@ export const Course = () => {
                                         <td style={{ width: "10px" }}>{course.professor.name}</td>
                                         <td><HiUserGroup className={style["students__icon"]} onClick={showStudentsModalHandler.bind(null, course.students)} /></td>
                                         <td><AiOutlineSchedule className={style["schedule__icon"]} onClick={showCourseScheduleModalHandler.bind(null, course.courseSchedule)} /></td>
-                                    
                                     </tr>
                                 ))}
                             </tbody>

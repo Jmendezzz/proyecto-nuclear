@@ -10,6 +10,7 @@ const reformatDay = (schedule) => {
     return foundDay ? foundDay.name : "";
 }
 const succesResponseAlert = (response) => {
+
     Swal.fire({
         title: "Horario Eliminado",
         icon: "success",
@@ -46,8 +47,9 @@ export const ScheduleDays = (props) => {
                         {sc.timeSlots.map((ts, index) => (
                             <h3 key={index}>{ts.startTime} - {ts.endTime}</h3>
                         ))}
-                        {props.isProfessor && (
-                            <IoIosTrash className={style["delete_btn"]} onClick={deleteScheduleHandler.bind(null, sc.id)} />
+                        {(props.isProfessor &&  sc.id) && (
+                            
+                             <IoIosTrash className={style["delete_btn"]} onClick={deleteScheduleHandler.bind(null, sc.id)} />
                         )}
                     </div>
                 ))}
