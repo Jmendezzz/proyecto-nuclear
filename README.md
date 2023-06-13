@@ -36,9 +36,10 @@ INSERT INTO user(email, last_name, name, nid, password, role, username)
 VALUES("admin@example.com", "", "Admin", "105454449", "$2a$10$EWHE8s6qdqQe/70bXmxb4OkQOCux.Cn.56ot/C63lQhlsfBuSAQf2", "ADMIN", "admin");
 ```
 This will create a admin user 
-*Username*: admin
 <br>
-*Password*: admin123 
+**Username*: admin
+<br>
+**Password*: admin123 
 
 ## Initializing  React
 
