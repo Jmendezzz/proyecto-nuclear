@@ -28,16 +28,18 @@
   }
   
   .item {
+	font-size: 20px;
 	flex: 0 0 12.5%; /* Establece un tamaño fijo para cada elemento, ajusta según tus necesidades */
 	margin: 10px;
   }
-  /*.chart-table-container {
+  .chart-table-container {
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 	flex-wrap: wrap;
 	margin-top: 10px;
   }
+  /*
   
   .chart-table-container > * {
 	flex: 0 0 calc(60% - 10px);  Establece el tamaño fijo para cada gráfico y tabla, ajusta según tus necesidades 

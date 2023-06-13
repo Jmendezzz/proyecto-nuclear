@@ -5,8 +5,8 @@ import { Header } from "../../UI/headers/Header";
 import style from "./Course.module.css";
 import { Button } from "../../UI/button/Button";
 import { getSubjects } from "../../api/SubjectApiService";
-import { Pagination } from "../pagination/Pagination";
 import Swal from "sweetalert2";
+import { Pagination } from "../pagination/Pagination";
 
 
 const succesResponseAlert = () => {
@@ -29,9 +29,19 @@ const errorResponseAlert = (error) => {
 export const GenerateCourse = () => {
 
     const [subjects, setSubjects] = useState([]);
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const [subjectsAdded, setSubjectsAdded] = useState([]);
+
+    useEffect(() => {
+        getSubjects()
+            .then((res) => {
+                console.log(res.data)
+                setSubjects(res.data)})
+            .catch((err) => console.log(err))
+        window.scrollTo(0, 0);
+    }, []);
 
     const createCourseHandler = () => { 
         if(subjectsAdded.length===0) {
@@ -43,7 +53,7 @@ export const GenerateCourse = () => {
         .then(()=> succesResponseAlert())
         .catch((error)=> errorResponseAlert(error.response.data.message))
     }
-    const subjectsPerPage = 7;
+    const subjectsPerPage = 5;
     const lastSubjectIndex = currentPage * subjectsPerPage;
     const firstSubjectIndex = lastSubjectIndex - subjectsPerPage;
     let currentSubjects = subjects.slice(firstSubjectIndex, lastSubjectIndex);
@@ -57,15 +67,6 @@ export const GenerateCourse = () => {
         }
 
     }
-
-
-    useEffect(() => {
-        getSubjects()
-            .then((res) => setSubjects(res.data))
-            .catch((err) => console.log(err))
-        window.scrollTo(0, 0);
-    }, []);
-
 
     return (
         <Flex
@@ -99,7 +100,7 @@ export const GenerateCourse = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {currentSubjects.map((subject) => {
+                                {subjects.map((subject) => {
                                     const isSelected = subjectsAdded.includes(subject);
                                     const classStyle = isSelected ? `${style["element-item"]} ${style.selected}` : style["element-item"];
                                     return (
@@ -114,14 +115,14 @@ export const GenerateCourse = () => {
                                 })}
                             </tbody>
                         </table>
-                        {subjects.length > 5 && (
+                        {subjects.length >= 5 && 
                             <Pagination
                                 totalitems={subjects.length}
                                 itemsPerPage={subjectsPerPage}
                                 setCurrentPage={setCurrentPage}
                                 currentPage={currentPage}
                             ></Pagination>
-                        )}
+                        }
                     </>
                     :
                     <p style={{ fontSize: "30px" }}>No hay asignaturas para mostrar</p>

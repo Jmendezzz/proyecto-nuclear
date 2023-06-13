@@ -79,7 +79,7 @@ public class ProfessorConstrain {
                 .sum() / (24 * 60 * 60); // Convertir a días
 
         // Validar que la suma de los time slots en días diferentes sea mayor o igual a las horas semanales
-        if (totalSlotsPerDay < minimumRequiredDays) {
+        if (totalSlotsPerDay < minimumRequiredDays ) {
             // La suma de los time slots en días diferentes es menor que los días requeridos
             throw new ProfessorException("Los horarios ingresados no son suficientes para dictar las materias asignadas",HttpStatus.BAD_REQUEST);
         }
