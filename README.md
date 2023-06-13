@@ -41,7 +41,7 @@ This will create a admin user
 <br>
 **Password**: admin123 
 
-## Initializing  React
+## Configuring  React
 
 To initialize the React frontend for the CUE Schedule Management System, follow these steps:
 
@@ -57,15 +57,16 @@ After completing these steps, you can proceed with the "Getting Started" section
 ## Getting Started
 To run the CUE Schedule Management System, follow these steps:
 
-Clone this repository.
-Open a terminal and navigate to the project's root directory.
-Start the Spring backend application:
-Build and run the backend module using your preferred IDE.
-Once the backend application is running, open your web browser and type http://localhost:3000/login to access the login page.
+1. Clone this repository.
+2. Open a terminal and navigate to the project's root directory.
+3. Start the Spring backend application:
+  - Build and run the backend module using your preferred IDE.
+4. Once the backend application is running, open a terminal and navigate to the project's root directory and then navigate to the frontend directory: `cd frontend`, and type: `npm start`.
+5.  Once the backend and frontend application are running open your web browser and type http://localhost:3000/login to access the login page.
 Use the following credentials to log in as an admin user:
 Username: admin
-Password: [password you set for the admin user during database initialization]
-After logging in, you will have access to the admin dashboard, where you can start creating students and professors, manage courses, and generate schedules.
-Note: Make sure to replace [password you set for the admin user during database initialization] with the actual password you set for the admin user when running the database initialization query.
+Password: admin123
+After logging in, you will have access to the admin dashboard, where you can start creating students and professors, manage subjects adn classrooms, and generate schedules(courses).
+Note: you can change the password in the profile settings.
 
 Feel free to explore the application and start managing schedules efficiently!
