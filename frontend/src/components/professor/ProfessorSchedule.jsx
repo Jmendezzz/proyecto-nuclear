@@ -68,7 +68,8 @@ export const ProfessorSchedule = () => {
 	}, [reload]);
 
 	const updateSchedulesProfessor = (professorSchedules) => {
-		setSchedule([...schedule, professorSchedules]);
+		const updatedSchedule = schedule.filter(sc => sc.day !== professorSchedules.day);
+  		setSchedule([...updatedSchedule, professorSchedules]);
 	}
 
 	if (error) {
@@ -81,6 +82,7 @@ export const ProfessorSchedule = () => {
             setScheduleProfessor(userId, schedule)
                 .then((response) => {
                     succesResponseAlert(response);
+					setReload(true);
                 })
                 .catch((error) => {
                     errorResponseAlert(error);
@@ -118,7 +120,7 @@ export const ProfessorSchedule = () => {
 			{
 				schedule ? <>
 					<div>
-						<ScheduleDays schedule={schedule} isProfessor={true} reload={value => setReload(value)} />
+						<ScheduleDays schedule={schedule} isProfessor={true} reload={value => setReload(value)} delete/>
 					</div>
 				<Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				{
