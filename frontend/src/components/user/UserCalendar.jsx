@@ -22,7 +22,7 @@ export const UserCalendar = () => {
             setCourses(response.data);
             setIsLoading(false);
         })
-        .catch( (error) => console.log(error) ) 
+        .catch( (error) => console.log(error) )
         } else {console.log(userId);
         getCoursesByStudentId(userId)
         .then((response) => {

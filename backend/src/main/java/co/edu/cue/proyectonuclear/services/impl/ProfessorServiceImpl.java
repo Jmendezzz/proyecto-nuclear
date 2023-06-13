@@ -109,23 +109,33 @@ public class ProfessorServiceImpl implements ProfessorService {
         return professorDAO.updateProfessor(professor);
     }
 
+
     /**
-     * This function sets the schedule of a professor and returns a ProfessorScheduleDTO object.
+     * This Java function sets schedules for a professor and validates time slots and weekly hours.
      * 
-     * @param id The ID of the professor whose schedule is being updated.
-     * @param professorScheduleDTO ProfessorScheduleDTO is an object that contains the schedule
-     * information for a professor. It may include details such as the professor's availability, class
-     * timings, office hours, etc. The method setScheduleProfessor takes this object as input and
-     * updates the schedule information for the professor with the given id. The method returns
-     * @return The method is returning an object of type ProfessorScheduleDTO.
+     * @param id The ID of the professor whose schedules are being set.
+     * @param professorSchedulesDTO A list of ProfessorScheduleDTO objects, which contains the schedule
+     * information for a professor. This includes the day of the week, start and end times, and the
+     * subject being taught.
+     * @return The method `setSchedulesProfessor` is returning a list of `ProfessorScheduleDTO`.
      */
     @Override
-    public ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO) {
-        professorConstrain.validateTimeSlotsByProfessorSubject(professorScheduleDTO);
-        return professorDAO.setScheduleProfessor(id, professorScheduleDTO);
+    public List<ProfessorScheduleDTO> setSchedulesProfessor(Long id, List<ProfessorScheduleDTO> professorSchedulesDTO) {
+        professorConstrain.validateTimeSlotsByProfessorSubject(professorSchedulesDTO);
+        professorConstrain.validateWeeklyHours(id, professorSchedulesDTO);
+        return professorDAO.setSchedulesProfessor(id, professorSchedulesDTO);
     }
 
-
+    /**
+     * This Java function deletes a professor's schedule based on the provided ID.
+     * 
+     * @param idSchedule The parameter "idSchedule" is a Long data type that represents the unique
+     * identifier of a schedule for a professor. This method is used to delete a schedule for a
+     * professor based on the provided idSchedule.
+     * @return The method `deleteScheduleProfessor` is being called from the `professorDAO` object with
+     * the parameter `idSchedule`, and the result of this method call is being returned as a
+     * `ProfessorScheduleDTO` object.
+     */
     @Override
     public ProfessorScheduleDTO deleteScheduleProfessor(Long idSchedule) {
         return professorDAO.deleteScheduleProfessor(idSchedule);

@@ -1,0 +1,30 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: none;
+	height: 100vh; 
+	width: 100%; 
+}
+
+.main-container {
+	flex-grow: 1;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	background-color: #ebebeb;
+	border-radius: 3em;
+	justify-content: none;
+}
+.content {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: start;
+	align-items: auto;
+	align-content: start
+  }
+  .item {
+	flex: 0 0 auto;
+	margin: 10px;
+  }

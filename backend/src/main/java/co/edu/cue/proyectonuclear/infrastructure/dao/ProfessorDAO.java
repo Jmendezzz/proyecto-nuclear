@@ -16,6 +16,6 @@ public interface ProfessorDAO {
     Optional<ProfessorDTO> getProfessorBySubject(Long idSubject);
     ProfessorDTO deleteProfessor(Long id);
     ProfessorDTO updateProfessor(ProfessorDTO professor);
-    ProfessorScheduleDTO setScheduleProfessor(Long id, ProfessorScheduleDTO professorScheduleDTO);
+    List<ProfessorScheduleDTO> setSchedulesProfessor(Long id, List<ProfessorScheduleDTO> professorScheduleDTO);
     ProfessorScheduleDTO deleteScheduleProfessor(Long idSchedule);
 }

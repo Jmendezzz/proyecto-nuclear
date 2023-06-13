@@ -6,7 +6,9 @@ import Swal from "sweetalert2";
 import { IoIosTrash } from "react-icons/io";
 
 const reformatDay = (schedule) => {
-    const foundDay = days.find((day) => day.value === schedule.day);
+    console.log(schedule);
+    const foundDay = days.find((day) => day.value == schedule.day);
+    console.log(foundDay)
     return foundDay ? foundDay.name : "";
 }
 const succesResponseAlert = (response) => {
@@ -40,14 +42,16 @@ export const ScheduleDays = (props) => {
     return (
         <Flex>
             <div className={style["card-container"]}>
-                {sortedSchedule.map((schedule, index) => (
+                {sortedSchedule.map((sc, index) => (
                     <div key={index} className={style.card}>
-                        <h2>{reformatDay(schedule)}</h2>
-                        {schedule.timeSlots.map((ts, index) => (
+                        {console.log(reformatDay(sc))}
+                        {console.log(sc)}
+                        <h2>{reformatDay(sc)}</h2>
+                        {sc.timeSlots.map((ts, index) => (
                             <h3 key={index}>{ts.startTime} - {ts.endTime}</h3>
                         ))}
                         {props.isProfessor && (
-                            <IoIosTrash className={style["delete_btn"]} onClick={deleteScheduleHandler.bind(null, schedule.id)} />
+                            <IoIosTrash className={style["delete_btn"]} onClick={deleteScheduleHandler.bind(null, sc.id)} />
                         )}
                     </div>
                 ))}

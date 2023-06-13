@@ -25,6 +25,7 @@ import { roles } from "./enums/Roles";
 import { ErrorResponse } from "./UI/error/ErrorResponse";
 import { UserConfiguration } from "./components/user/UserConfiguration";
 import { UserCalendar } from "./components/user/UserCalendar";
+import { Dashboard } from "./components/dashboard/Dashboard";
 
 
 
@@ -87,6 +88,8 @@ function App() {
             <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.PROFESSOR, roles.STUDENT]}/>} >
             <Route path="/horario" element={<UserCalendar/>}></Route>
             </Route>
+
+            <Route path="/estadisticas" element={<Dashboard/>}></Route>
 
           </Routes>
 

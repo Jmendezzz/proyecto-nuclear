@@ -11,4 +11,5 @@ export const updateProfessors = (professorUpdated) => api.put("/professors/updat
 export const deleteProfessorById = (id) => api.delete(`/professors/delete/${id}`);
 
 export const setScheduleProfessor = (id, professorSchedule) => api.put(`/professors/${id}/schedule`, professorSchedule);
-export const deleteScheduleProfessor = (idSchedule) => api.delete(`professors/delete/shedule/${idSchedule}`);
+
+export const deleteScheduleProfessor = (idSchedule) => api.delete(`professors/delete/schedule/${idSchedule}`);
