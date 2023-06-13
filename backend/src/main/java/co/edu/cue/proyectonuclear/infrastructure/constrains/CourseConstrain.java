@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -109,12 +111,22 @@ public class CourseConstrain {
 
         int totalHours =  courseSchedule
                 .stream()
+                .filter(Objects::nonNull)
                 .map(cs-> TimeSlotUtil.between(cs.timeSlot()))
                 .reduce(0,(total,current)-> total+current);
 
 
         return totalHours >= weeklyHours;
 
+    }
+
+    public boolean validateCrossingDayAlternativeCourseSchedule(GenerateCourseScheduleDTO alternativeCourseSchedule, List<GenerateCourseScheduleDTO> courseSchedulesGenerated) {
+
+        return courseSchedulesGenerated.
+                stream()
+                .filter(Objects::nonNull)
+                .anyMatch(cs->alternativeCourseSchedule.day().equals(cs.day())
+                );
     }
     public boolean validateClassroomLocation(DayOfWeek day, ClassroomDTO classroom, TimeSlot timeSlot, List<StudentDTO> students) {
 
@@ -123,8 +135,22 @@ public class CourseConstrain {
                 .flatMap(c -> c.stream())
                 .flatMap(c -> c.courseSchedule().stream())
                 .filter(cs-> cs.day().equals(day))
-                .filter(cs-> cs.timeSlot().getEndTime().getHour() == timeSlot.getStartTime().getHour())
+                .filter(cs-> cs.timeSlot().getEndTime().getHour() == timeSlot.getStartTime().getHour() && cs.classroom()!=null)
                 .noneMatch(cs-> cs.classroom().location().equals(classroom.location()));
+    }
+
+    public boolean validateLunchTime(GenerateCourseScheduleDTO courseSchedule){
+        TimeSlot lunchTime = new TimeSlot(LocalTime.of(12,0), LocalTime.of(14,0) );
+
+        List<LocalTime> hoursCourseSchedule = TimeSlotUtil.getHoursOfTimeSlot(courseSchedule.timeSlot());
+
+        return hoursCourseSchedule.stream().anyMatch( h -> {
+            System.out.println(h.getHour());
+            System.out.println(h.getHour() == lunchTime.getStartTime().plusHours(1).getHour() );
+           return h.getHour() == lunchTime.getStartTime().plusHours(1).getHour();
+
+        });
+
 
     }
 }
