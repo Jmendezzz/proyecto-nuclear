@@ -5,7 +5,6 @@ import { saveProfessor } from "../../api/ProfessorApiService";
 import { useNavigate } from "react-router-dom";
 import { UserForm } from "../user/UserForm";
 
-
 //Alerts
 const succesResponseAlert = (response) => {
 	Swal.fire({
@@ -35,6 +34,7 @@ export const ProfessorCreate = () => {
 			name: values.name,
 			lastName: values.lastName,
 			email: values.email,
+			
 			subjects: values.subjects.map((subject) => {return {id: subject.id, name: subject.name}} )
 		};
 		saveProfessor(professor)
@@ -51,6 +51,8 @@ export const ProfessorCreate = () => {
 			alignItems={"center"}
 			justifyContent={"none"}
 		>
+			
+
 			<Header>
 				<h2 style={{fontSize: "60px"}}>CREAR PROFESOR</h2>
 			</Header>
