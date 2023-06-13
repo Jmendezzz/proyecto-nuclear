@@ -37,9 +37,9 @@ VALUES("admin@example.com", "", "Admin", "105454449", "$2a$10$EWHE8s6qdqQe/70bXm
 ```
 This will create a admin user 
 <br>
-**Username*: admin
+**Username**: admin
 <br>
-**Password*: admin123 
+**Password**: admin123 
 
 ## Initializing  React
 
