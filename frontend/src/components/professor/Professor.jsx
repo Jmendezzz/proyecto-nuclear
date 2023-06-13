@@ -59,12 +59,12 @@ export const Professor = () => {
 //
     const [ScheduleModal, setScheduleModal] = useState(undefined);
    
-    const showScheduleModalHandler2 = (professor) => {
+    const showScheduleModal = (professor) => {
         setProfessor(professor);
         setScheduleModal(true);
     }
     
-    const hideScheduleModalHandler2 = () => {
+    const hideScheduleModal = () => {
         setScheduleModal(undefined)
     }
 
@@ -123,7 +123,7 @@ export const Professor = () => {
             {ScheduleModal &&(
                 <SubjectModal  
                 professor = {professor}
-                onClick={hideScheduleModalHandler2}/>
+                onClick={hideScheduleModal}/>
             )}
 
             
@@ -169,14 +169,8 @@ export const Professor = () => {
                                     <td>{professor.lastName}</td>
                                     <td>{professor.email}</td>
                                     <td >
-                                    {/* <ul>
-                                        {professor.subjects.map((subject)=>(
-                                            <li key={subject.id}>{subject.name}</li>
-                                        ))}
-                                    </ul> */}
-                               
                                   
-                                    <BiBookBookmark className={style["schedule__icon"]} onClick={showScheduleModalHandler2.bind(null,professor)}/>
+                                    <BiBookBookmark className={style["schedule__icon"]} onClick={showScheduleModal.bind(null,professor)}/>
                                     </td>
                                     <td>
                                         <IoIosListBox className={style["schedule__icon"]} onClick={showScheduleModalHandler.bind(null, professor)} />

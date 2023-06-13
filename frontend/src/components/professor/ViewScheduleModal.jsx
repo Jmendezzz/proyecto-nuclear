@@ -4,7 +4,6 @@ import { Flex } from "../../UI/flex/Flex";
 import { ScheduleDays } from "./professorSchedule/ScheduleDays";
 
 export const ViewScheduleModal = (props) => {
-    
 
     return (
         <div className={style.backdrop}>
