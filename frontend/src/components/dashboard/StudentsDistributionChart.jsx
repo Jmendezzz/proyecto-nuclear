@@ -14,7 +14,7 @@ export const StudentDistributionChart = ({ students }) => {
           labels: careers,
           datasets: [
             {
-              label: 'Number of Students',
+              label: 'Número de estudiantes por carrera',
               data: careers.map(career =>
                 students.filter(student => student.career === career).length
               ),
@@ -28,7 +28,7 @@ export const StudentDistributionChart = ({ students }) => {
           labels: semesters,
           datasets: [
             {
-              label: 'Number of Students',
+              label: 'Número de estudiantes por semestre',
               data: semesters.map(semester =>
                 students.filter(student => student.semester === semester).length
               ),
@@ -42,7 +42,7 @@ export const StudentDistributionChart = ({ students }) => {
   return (
     <>
       <button onClick={() => setGrouping(grouping === 'career' ? 'semester' : 'career')}>
-        Group by {grouping === 'career' ? 'Semester' : 'Career'}
+        Group by {grouping === 'career' ? 'Semestre' : 'Carrera'}
       </button>
       <Bar data={data} />
     </>

@@ -4,15 +4,14 @@ import Chart from 'chart.js/auto';
 
 
 export const CoursesByLocationChart = ({ courses }) => {
-    const locationValues = location.map(location => location.value)
     const data = {
-        labels: locationValues,
+        labels: location.map(location => location.name),
         datasets: [{
-            label: 'numero de cursos',
-            data: locationValues.map(location =>
+            label: 'Numero de cursos por ubicación',
+            data: location.map(location =>
                 courses.filter(course =>
                     course.courseSchedule.some(
-                        schedule => schedule.classroom.location === location
+                        schedule => schedule.classroom.location === location.value
                     )).length
             ),
             backgroundColor: 'rgba(255,99,132,0.2)',

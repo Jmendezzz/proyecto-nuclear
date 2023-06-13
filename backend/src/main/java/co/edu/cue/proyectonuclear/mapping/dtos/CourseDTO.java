@@ -14,6 +14,5 @@ public record CourseDTO(
         List<StudentDTO>students,
         List<CourseScheduleDTO> courseSchedule
 
-
 ) {
 }
