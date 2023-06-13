@@ -53,3 +53,19 @@ To initialize the React frontend for the CUE Schedule Management System, follow 
 Make sure you have npm installed on your system before running the `npm install` command. If you don't have npm installed, please refer to the official npm documentation for instructions on how to install it.
 
 After completing these steps, you can proceed with the "Getting Started" section to run the CUE Schedule Management System.
+
+## Getting Started
+To run the CUE Schedule Management System, follow these steps:
+
+Clone this repository.
+Open a terminal and navigate to the project's root directory.
+Start the Spring backend application:
+Build and run the backend module using your preferred IDE.
+Once the backend application is running, open your web browser and type http://localhost:3000/login to access the login page.
+Use the following credentials to log in as an admin user:
+Username: admin
+Password: [password you set for the admin user during database initialization]
+After logging in, you will have access to the admin dashboard, where you can start creating students and professors, manage courses, and generate schedules.
+Note: Make sure to replace [password you set for the admin user during database initialization] with the actual password you set for the admin user when running the database initialization query.
+
+Feel free to explore the application and start managing schedules efficiently!
