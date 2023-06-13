@@ -84,8 +84,9 @@ function App() {
 
             </Route>
 
-
+            <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.PROFESSOR, roles.STUDENT]}/>} >
             <Route path="/horario" element={<UserCalendar/>}></Route>
+            </Route>
 
           </Routes>
 
