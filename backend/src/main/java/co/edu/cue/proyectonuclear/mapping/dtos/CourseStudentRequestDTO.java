@@ -1,6 +1,6 @@
 package co.edu.cue.proyectonuclear.mapping.dtos;
 
-import co.edu.cue.proyectonuclear.domain.entities.CourseSchedule;
+
 import co.edu.cue.proyectonuclear.domain.entities.Professor;
 import co.edu.cue.proyectonuclear.domain.entities.Subject;
 
