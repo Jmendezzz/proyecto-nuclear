@@ -24,6 +24,9 @@ import { ProtectedAuthorizationRoutes } from "./components/routes/ProtectedAutho
 import { roles } from "./enums/Roles";
 import { ErrorResponse } from "./UI/error/ErrorResponse";
 import { UserConfiguration } from "./components/user/UserConfiguration";
+import { UserCalendar } from "./components/user/UserCalendar";
+
+
 
 function App() {
   return (
@@ -82,8 +85,10 @@ function App() {
             </Route>
 
 
+            <Route path="/horario" element={<UserCalendar/>}></Route>
+
           </Routes>
-          
+
         </Sidebar>
       </AuthProvider>
     </BrowserRouter>
