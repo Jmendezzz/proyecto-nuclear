@@ -27,6 +27,18 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 spring.jpa.show-sql=true
 spring.jpa.hibernate.ddl-auto=update
 ```
+
+## Initializing Data Base
+
+To create a user admin, follow these query:
+```
+INSERT INTO user(email, last_name, name, nid, password, role, username) 
+VALUES("admin@example.com", "", "Admin", "105454449", "$2a$10$EWHE8s6qdqQe/70bXmxb4OkQOCux.Cn.56ot/C63lQhlsfBuSAQf2", "ADMIN", "admin");
+```
+This will create a admin user 
+*Username*: admin
+*Password*: admin123 
+
 ## Initializing  React
 
 To initialize the React frontend for the CUE Schedule Management System, follow these steps:
