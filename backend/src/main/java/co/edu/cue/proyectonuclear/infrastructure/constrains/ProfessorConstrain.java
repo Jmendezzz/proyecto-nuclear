@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -61,6 +62,13 @@ public class ProfessorConstrain {
                 .mapToInt(SubjectDTO::academicHours)
                 .sum();
 
+        //
+        long totalDuration = professorSchedulesDTOS.stream()
+                .flatMap(schedule -> schedule.timeSlots().stream())
+                .map(slot-> Duration.between(slot.getStartTime(), slot.getEndTime()))
+                .reduce(Duration.ZERO, Duration::plus).toHours();
+
+
         // Calcular el número mínimo de días requeridos según el período y las horas académicas
         int minimumRequiredDays;
         if (subjects.stream().anyMatch(subject -> subject.period() == Period.TRIMESTRAL && subject.academicHours() == 96)) {
@@ -71,7 +79,18 @@ public class ProfessorConstrain {
         } else {
             minimumRequiredDays = 1;
         }
+        System.out.println(totalDuration );
+        System.out.println(professorSchedulesDTOS.toArray().length);
+        System.out.println(minimumRequiredDays > professorSchedulesDTOS.toArray().length);
+        System.out.println(totalDuration > totalWeeklyHours);
+        System.out.println(minimumRequiredDays > professorSchedulesDTOS.toArray().length ||  totalDuration > totalWeeklyHours);
+        if (!( minimumRequiredDays > professorSchedulesDTOS.toArray().length ||  totalDuration < totalWeeklyHours)){
+            System.out.println("Por gueba");
+            System.out.println(minimumRequiredDays > professorSchedulesDTOS.toArray().length ||  totalDuration > totalWeeklyHours);
+            throw new ProfessorException("No hay suficientes horas para dictar sus materias", HttpStatus.BAD_REQUEST);
+        }
 
+/*
         // Calcular la suma de los time slots en días diferentes
         int totalSlotsPerDay = professorSchedulesDTOS.stream()
                 .flatMap(schedule -> schedule.timeSlots().stream())
@@ -82,7 +101,7 @@ public class ProfessorConstrain {
         if (totalSlotsPerDay < minimumRequiredDays ) {
             // La suma de los time slots en días diferentes es menor que los días requeridos
             throw new ProfessorException("Los horarios ingresados no son suficientes para dictar las materias asignadas",HttpStatus.BAD_REQUEST);
-        }
+        }*/
     }
 
     public void validateEqualTimeSlots(List<TimeSlot> timeSlots){
