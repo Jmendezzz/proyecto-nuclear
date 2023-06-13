@@ -40,7 +40,6 @@ export const Dashboard = () =>{
 
   <div className={style["main-container"]}>
     <div className={style["content"]}>
-
       <div className={style["item"]}>
         <h3>Cursos por profesores </h3>
         {courses !== [] ? (

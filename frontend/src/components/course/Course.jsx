@@ -50,7 +50,7 @@ export const Course = () => {
         setCourses(res.data);
     };
 
-    const coursesPerPage = 7;
+    const coursesPerPage = 5;
     const lastCourseIndex = currentPage * coursesPerPage;
     const firstCourseIndex = lastCourseIndex - coursesPerPage;
     let currentCourses = courses.slice(firstCourseIndex, lastCourseIndex);
@@ -171,7 +171,7 @@ export const Course = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {courses.length > 8 && (
+                        {courses.length >=5 && (
                             <Pagination
                                 totalItems={courses.length}
                                 itemsPerPage={coursesPerPage}

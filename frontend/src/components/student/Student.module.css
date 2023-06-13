@@ -10,8 +10,6 @@
     border-collapse:collapse !important;
     flex: 1;
     overflow: auto;
-    table-layout: fixed;
-
 }
 .table thead >tr > th{
     font-size: 30px;
