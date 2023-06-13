@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
           config.headers.Authorization = `Bearer ${res.data.token}`; // Add the token to all the requests.
           return config;
         });
-        navigate(  res.data.role == roles.ADMIN ?  "/dashboard" : "/horario");
+        navigate(  res.data.role == roles.ADMIN ?  "/estadisticas" : "/horario");
 
         return true;
       })

@@ -28,3 +28,14 @@
 	flex: 0 0 auto;
 	margin: 10px;
   }
+
+  .table-row {
+	opacity: 0;
+	transform: translateY(-10px);
+	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  .table-row.visible {
+	opacity: 1;
+	transform: translateY(0);
+  }
