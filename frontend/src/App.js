@@ -58,10 +58,6 @@ function App() {
                 <Route path="/salones/crear" element={<ClassroomCreate />}/>
                 <Route path="salones/editar/:classroomId" element={<ClassroomEdit />} />
 
-            <Route path="/salones/crear" element={<ClassroomCreate/>}></Route>
-            <Route path="/asignaturas/crear" element={<SubjectCreate/>} ></Route>
-            <Route path="/estudiantes/crear" element={<StudentCreate/>} ></Route>
-            <Route path="/profesores/crear" element={<ProfessorCreate/>} ></Route>
 
                 <Route path="/estudiantes" element={<Student />}/>
                 <Route path="/estudiantes/crear" element={<StudentCreate />}/>
@@ -71,7 +67,6 @@ function App() {
                 <Route path="/profesores" element={<Professor />}/>
                 <Route path="/profesores/crear" element={<ProfessorCreate />}/>
                 <Route path="profesores/editar/:professorId"element={<ProfessorEdit />}/>
-            <Route path="/profesores/disponibilidad" element={<ProfessorSchedule />}></Route>
 
                 <Route path="/cursos" element={<Course />}/>
                 <Route path="/cursos/generar" element={<GenerateCourse />}/>
@@ -90,8 +85,9 @@ function App() {
 
             </Route>
 
-
+            <Route element={<ProtectedAuthorizationRoutes rolesProvided={[roles.PROFESSOR, roles.STUDENT]}/>} >
             <Route path="/horario" element={<UserCalendar/>}></Route>
+            </Route>
 
             <Route path="/estadisticas" element={<Dashboard/>}></Route>
 

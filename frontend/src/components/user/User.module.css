@@ -21,6 +21,21 @@
 	z-index: 100;
 	overflow: hidden;
 }
+.modalSubject {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	height: 400px;
+	width: 400px;
+	background-color: white;
+	border-radius: 10px;
+	z-index: 100;
+	overflow: hidden;
+}
+.modalSubject p{
+	font-size: 20px;
+}
 .modal p {
 	font-size: 20px;
 }
@@ -87,10 +102,10 @@
     background-color: #ebebeb;
     border-radius: 3em;
 	}
-	
 
 
-/*AFECTA*/
+
+
 .actions {
 	padding: 1rem;
 	display: flex;
@@ -265,5 +280,11 @@
 .subjects-container{
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+}
+.container{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }

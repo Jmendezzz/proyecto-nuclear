@@ -57,6 +57,7 @@
     transform: scale(1.1); 
 
 }
+
 .icon__delete:hover{
     transform: scale(1.1); 
 }
@@ -122,3 +123,16 @@
     color: darkblue; 
     transform: scale(1.1); 
 }
+.header {
+    text-align: center;
+    width: 100%;
+    background: rgba(52, 91, 175, 1);
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .header h2 {
+    margin: 0;
+    color: white;
+  }
+  
