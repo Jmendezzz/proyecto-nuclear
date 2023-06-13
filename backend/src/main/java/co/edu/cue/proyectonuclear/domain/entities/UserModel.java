@@ -9,7 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public class User {
+@Table(name = "user")
+public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +33,5 @@ public class User {
 
     @Column(length = 50)
     private String email;
-
-    @Column(length = 50)
     private String password;
-
-    private Boolean active;
 }

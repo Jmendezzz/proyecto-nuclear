@@ -20,7 +20,7 @@ const errorResponseAlert = (error) => {
 	Swal.fire({
 		icon: "error",
 		title: "Oops...",
-		text: error.response.data.message,
+		text: error,
 		confirmButtonColor: "red",
 		confirmButtonText: "Aceptar",
 	});
@@ -40,7 +40,7 @@ export const ProfessorCreate = () => {
 		saveProfessor(professor)
 			.then((response) => succesResponseAlert(response))
 			.then(() => navigate("/profesores"))
-			.catch((error) => console.log(error));
+			.catch((error) => errorResponseAlert(error.response.data.message));
 	};
 
 	return (

@@ -29,6 +29,7 @@ export const TimeSlots = ( {onStartTimeChange, onEndTimeChange } ) => {
     return (
         <div className={style.TimeSlots}>
             <input className={style.slotsInp} type="time" step="3600000" onChange={handleStartTimeChange}/>
+            - 
             <input className={style.slotsInp} type="time" step="3600000" onChange={handleEndTimeChange} />
             <div>
             {!isTimeValid && ( <div style={{ color: "red" }}> El horario ingresado para la hora no es válido </div> ) }

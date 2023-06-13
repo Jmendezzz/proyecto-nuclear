@@ -47,14 +47,16 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseDTO> getCoursesByProfessorId(Long professorId) {
+    public List<CourseUserRequestDTO> getCoursesByProfessorId(Long professorId) {
         return courseDAO.getCoursesByProfessorId(professorId);
     }
 
     @Override
-    public List<CourseDTO> getCoursesByStudentId(Long id) {
+    public List<CourseUserRequestDTO> getCoursesByStudentId(Long id) {
         return courseDAO.getCoursesByStudentId(id);
     }
+
+
 
     @Override
     public List<GenerateCourseDTO> generateCourses(List<SubjectDTO> subjects) {
@@ -138,6 +140,11 @@ public class CourseServiceImpl implements CourseService {
         return courseSchedules;
     }
 
+    //This function will be called if the course schedule generated does not fill the hours of a subject
+    private GenerateCourseScheduleDTO generateAlternativeCourseSchedule(List<StudentDTO> students, ProfessorDTO professor, SubjectDTO subject){
+        return  null;
+    }
+
     private ClassroomDTO findAvailableClassroom(DayOfWeek day, TimeSlot timeSlot, List<StudentDTO> students) {
 
         int studentsSize = students.size();
@@ -162,12 +169,13 @@ public class CourseServiceImpl implements CourseService {
         int maxAcceptableDifference = 0;
 
         //Set the max acceptable difference to choose the best classroom option.
-
-        if (studentsNumber <= 10) maxAcceptableDifference = 15;
+        if (studentsNumber <= 20) maxAcceptableDifference = 8;
 
         if (studentsNumber <= 15) maxAcceptableDifference = 10;
 
-        if (studentsNumber <= 20) maxAcceptableDifference = 8;
+        if ( studentsNumber <= 10) maxAcceptableDifference = 15;
+
+
 
         int finalMaxAcceptableDifference = maxAcceptableDifference;
 
@@ -191,6 +199,7 @@ public class CourseServiceImpl implements CourseService {
     private LocalDate generateCourseEndDate(LocalDate startDate){
         return LocalDate.of(startDate.getYear(), startDate.getMonth().getValue() + 5, startDate.getDayOfMonth()+15 );
     }
+
 
 
 }

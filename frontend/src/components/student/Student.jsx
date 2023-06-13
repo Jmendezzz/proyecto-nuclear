@@ -8,8 +8,15 @@ import { MdDeleteForever } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { Pagination } from "../pagination/Pagination";
 import { useNavigate } from "react-router-dom";
+import { careers } from "../../enums/Career";
 import { getStudents, deleteStudentById } from "../../api/StudentApiService";
 import Swal from "sweetalert2";
+import { AiOutlineFileSearch, AiOutlineSearch } from "react-icons/ai";
+
+const reformatSubjectCareer = (subject) => {
+  const foundCareer = careers.find((career) => career.value == subject);
+  return foundCareer ? foundCareer.name : "";
+}
 
 
 const succesResponseAlert= (response)=>{
@@ -120,6 +127,8 @@ export const Student = () => {
               input={{ placeholder: "Nombre del estudiante" , onChange:searchHandler}}
               style={{ height: "20px" }}
             ></Input>
+            <AiOutlineSearch style={{ fontSize: "40px", color: "red" }} />
+
           </Flex>
           {currentStudents.length > 0 ?
             <>
@@ -140,7 +149,7 @@ export const Student = () => {
                     <tr key={student.id}>
                       <td className={style.id}>{student.id}</td>
                       <td>{student.name}</td>
-                      <td>{student.career}</td>
+                      <td>{reformatSubjectCareer(student.career)}</td>
                       <td>{student.semester}</td>
                       <td>
                         <ul style={{textAlign:"left"}}> 

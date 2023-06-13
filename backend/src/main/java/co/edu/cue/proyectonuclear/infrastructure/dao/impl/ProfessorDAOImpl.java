@@ -13,8 +13,13 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,10 +28,12 @@ import java.util.Optional;
 @Repository
 @Transactional
 @AllArgsConstructor
+
 public class ProfessorDAOImpl implements ProfessorDAO {
     @PersistenceContext
     EntityManager entityManager;
     ProfessorMapper mapper;
+    PasswordEncoder passwordEncoder;
     @Override
     public List<ProfessorDTO> getAllProfessors() {
         String query = "FROM Professor";
@@ -38,6 +45,7 @@ public class ProfessorDAOImpl implements ProfessorDAO {
     public ProfessorDTO createProfessor(CreateProfessorRequestDTO professor) {
         Professor professorEntity = mapper.mapFromDTO(professor);
         Professor professorSaved =  entityManager.merge(professorEntity);
+        professorSaved.setPassword(passwordEncoder.encode(professorSaved.getPassword()));
         return mapper.mapFrom(professorSaved);
     }
 
@@ -90,10 +98,19 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 
     @Override
     public ProfessorDTO updateProfessor(ProfessorDTO professor) {
-        validateProfessorExisting(professor.id());
-        Professor professorEntity = mapper.mapFrom(professor);
-        Professor professorSaved =  entityManager.merge(professorEntity);
-        return mapper.mapFrom(professorSaved);
+        try {
+            Professor professorEntity = entityManager.find(Professor.class, professor.id());
+            Professor professorUpdated = mapper.mapFrom(professor);
+            professorEntity.setSubjects(professorUpdated.getSubjects());
+            professorEntity.setName(professorUpdated.getName());
+            professorEntity.setEmail(professorUpdated.getEmail());
+            professorEntity.setLastName(professor.lastName());
+
+            Professor professorSaved = entityManager.merge(professorEntity);
+            return mapper.mapFrom(professorSaved);
+        }catch (NullPointerException e){
+            throw new ProfessorException("No se pudo actualizar el profesor id invalido", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override

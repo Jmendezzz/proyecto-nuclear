@@ -14,7 +14,6 @@ import { careers } from "../../enums/Career";
 
 export const UserForm = ({user, role, onSubmit}) => {
 	const validateForm = (values) => {
-		console.log(values);
 		const errors = {};
 		if (role === "PROFESSOR") {
 			if (isEmpty(values.nid)) errors.nid = "El nid no puede ser vacío";

@@ -10,11 +10,11 @@ import { BiEdit } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import Swal from "sweetalert2";
 import { HiUserGroup } from "react-icons/hi";
-import {AiOutlineSchedule} from "react-icons/ai";
+import { AiOutlineSchedule } from "react-icons/ai";
 import { CourseStudentsModal } from "./CourseStudentsModal";
 import { Pagination } from "../pagination/Pagination";
 import { CourseScheduleModal } from "./CourseScheduleModal";
-
+import {AiOutlineSearch} from "react-icons/ai";
 
 
 const succesResponseAlert = (response) => {
@@ -89,18 +89,18 @@ export const Course = () => {
 
 
     }
-    const showStudentsModalHandler = (students)=>{
+    const showStudentsModalHandler = (students) => {
         setCourseStudents(students);
         setShowStudentsModal(true);
     }
-    const hideStudentsModalHandler = () =>{
+    const hideStudentsModalHandler = () => {
         setShowStudentsModal(undefined);
     }
-    const showCourseScheduleModalHandler = (courseSchedule)=>{
+    const showCourseScheduleModalHandler = (courseSchedule) => {
         setCourseSchedule(courseSchedule);
         setShowCourseScheduleModal(true);
     }
-    const hideCourseScheduleModalHandler = ()=>{
+    const hideCourseScheduleModalHandler = () => {
         setShowCourseScheduleModal(undefined);
     }
     const searchHandler = (event) => {
@@ -145,12 +145,7 @@ export const Course = () => {
                         input={{ placeholder: "Nombre de la asginatura", onChange: searchHandler }}
                         style={{ height: "20px" }}
                     ></Input>
-                    <Button
-                        inLineStyle={{ width: "120px", height: "60px", margin: "10px" }}
-                    >
-                        Buscar
-                    </Button>
-
+                    <AiOutlineSearch style={{ fontSize: "40px", color: "red" }} />
                 </Flex>
                 {currentCourses.length > 0 ?
                     <>
@@ -171,11 +166,11 @@ export const Course = () => {
                                         <td className={style.id}>{course.id}</td>
                                         <td>{course.subject.name}</td>
                                         <td style={{ width: "10px" }}>{course.professor.name}</td>
-                                        <td><HiUserGroup  className={style["students__icon"]} onClick={showStudentsModalHandler.bind(null,course.students)} /></td>
-                                        <td><AiOutlineSchedule className={style["schedule__icon"]} onClick={showCourseScheduleModalHandler.bind(null,course.courseSchedule)}/></td>
+                                        <td><HiUserGroup className={style["students__icon"]} onClick={showStudentsModalHandler.bind(null, course.students)} /></td>
+                                        <td><AiOutlineSchedule className={style["schedule__icon"]} onClick={showCourseScheduleModalHandler.bind(null, course.courseSchedule)} /></td>
                                         <td className={style["actions__container"]}>
-                                                <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/asignaturas/editar/${course.id}`)} />
-                                                <MdDeleteForever className={style["icon__delete"]} onClick={deleteCourseHandler.bind(null, course.id)} />
+                                            <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/asignaturas/editar/${course.id}`)} />
+                                            <MdDeleteForever className={style["icon__delete"]} onClick={deleteCourseHandler.bind(null, course.id)} />
                                         </td>
                                     </tr>
                                 ))}

@@ -2,7 +2,7 @@ package co.edu.cue.proyectonuclear.mapping.mappers;
 
 import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseUserRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
 import org.mapstruct.Mapper;
 
@@ -18,8 +18,8 @@ public interface CourseMapper {
 
     List<CourseDTO> mapFromEntity(List<Course> courses);
 
-    CourseStudentRequestDTO mapStudentRequestFromEntity(Course course);
-
     Course mapFromGenerateDTO(GenerateCourseDTO course);
+
+    List<CourseUserRequestDTO> mapFromEntityUserRequest(List<Course> courses);
 
 }
