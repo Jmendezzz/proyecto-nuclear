@@ -78,7 +78,7 @@ public class ProfessorController {
     public List<ProfessorScheduleDTO> setSchedulesProfessor(@PathVariable Long id, @Valid @RequestBody List<ProfessorScheduleDTO> professorSchedule) {
         return professorService.setSchedulesProfessor(id, professorSchedule);
     }
-    @DeleteMapping("professors/delete/shedule/{idSchedule}")
+    @DeleteMapping("professors/delete/schedule/{idSchedule}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ProfessorScheduleDTO deleteScheduleProfessor(@PathVariable Long idSchedule) {
         return professorService.deleteScheduleProfessor(idSchedule);

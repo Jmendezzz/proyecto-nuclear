@@ -65,13 +65,13 @@ export const ScheduleModal = (props) => {
 
     const handleSubmit = () => {
         if (!handleError(slots)) {
-            const professorSchedule = slots.map((slot) => ({
+            const professorSchedule = {
                 day: day,
-                timeSlots: [{
+                timeSlots: slots.map((slot) => ({
                     startTime: slot.startTime,
                     endTime: slot.endTime
-                }]
-            }));
+                }))
+            };
             props.updateSchedulesProfessor(professorSchedule);
             props.onClick();
         }

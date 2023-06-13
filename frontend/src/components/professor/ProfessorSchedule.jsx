@@ -78,7 +78,7 @@ export const ProfessorSchedule = () => {
 		);
 	}
 	const handleSubmit = () => {
-            setScheduleProfessor(props.professor.id, schedule)
+            setScheduleProfessor(userId, schedule)
                 .then((response) => {
                     succesResponseAlert(response);
                 })
@@ -116,12 +116,13 @@ export const ProfessorSchedule = () => {
 				}
 			{
 				schedule ? <>
-				{console.log(schedule)}
 					<div>
 						<ScheduleDays schedule={schedule} isProfessor={true} reload={value => setReload(value)} />
 					</div>
 				<Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
-				<Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={handleSubmit}>Confirmar</Button>
+				{
+					schedule.length > 0 && <Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={handleSubmit}>Confirmar</Button>
+				}
 				</> : <>
 				<Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				</>
