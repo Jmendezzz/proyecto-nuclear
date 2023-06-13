@@ -18,7 +18,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private Professor professor;
 
     @OneToOne
@@ -30,7 +30,7 @@ public class Course {
 
     private LocalDate endDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private List<CourseSchedule> courseSchedule;
 

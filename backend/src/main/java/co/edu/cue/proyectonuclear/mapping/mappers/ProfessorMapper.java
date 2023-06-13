@@ -17,6 +17,8 @@ public interface ProfessorMapper {
     List<ProfessorDTO> mapFrom(List<Professor> professors);
     @Mapping(target = "password", source = "professorRequestDTO.nid")
     @Mapping(target = "role", expression = "java(co.edu.cue.proyectonuclear.domain.enums.Role.PROFESSOR)")
+    @Mapping(target = "username", source = "professorRequestDTO.nid")
     Professor mapFromDTO(CreateProfessorRequestDTO professorRequestDTO);
     ProfessorSchedule mapFrom(ProfessorScheduleDTO professorScheduleDTO);
+    ProfessorScheduleDTO mapFrom(ProfessorSchedule professorSchedule);
 }

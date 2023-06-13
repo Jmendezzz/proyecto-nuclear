@@ -6,6 +6,7 @@ import co.edu.cue.proyectonuclear.mapping.dtos.ClassroomDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import co.edu.cue.proyectonuclear.services.ClassroomService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class ClassroomController {
         return classroomService.getAllClassroom();
     }
     @PostMapping("/classrooms/create")
-    public ResponseEntity<ClassroomDTO> createClassroom(@RequestBody ClassroomDTO classroomDTO){
+    public ResponseEntity<ClassroomDTO> createClassroom(@Valid @RequestBody ClassroomDTO classroomDTO){
      ClassroomDTO classroomDTOCreated=classroomService.saveClassroom(classroomDTO);
       return new ResponseEntity<>(classroomDTOCreated,HttpStatus.CREATED);
     }
@@ -49,11 +50,11 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomDTO, HttpStatus.OK);
     }
 
-    @GetMapping("classrooms/capability/{capability}")
+    @GetMapping("/classrooms/capability/{capability}")
     public List<ClassroomDTO>searchByCapacity(@PathVariable Integer capability){
        return classroomService.searchByCapacity(capability);
     }
-    @GetMapping("classrooms/location/{location}")
+    @GetMapping("/classrooms/location/{location}")
     public List<ClassroomDTO>searchByLocation(@PathVariable Location location){
         return classroomService.searchByLocation(location);
     }

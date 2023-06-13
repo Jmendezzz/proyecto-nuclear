@@ -1,0 +1,170 @@
+.timeSlots {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    font-weight: 100px;
+}
+.slotsInp {
+    margin: 10px;
+    font-size: 18px;
+}
+
+.startTime{
+    display: inline-block;
+    
+}
+.endTime {
+    display: inline-block;
+    
+}
+
+/*modal*/
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 300px;
+    max-height: 580px;
+    max-width: 350px;
+    background-color: rgb(236, 236, 236);
+    border-radius: 10px;
+    z-index: 20;
+    overflow: hidden;
+}
+.close__modal {
+	color: white;
+	position: absolute;
+	font-size: 30px;
+	top: 30%;
+	right: 1rem;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+.header {
+	text-align: center;
+	width: 100%;
+	background: rgba(52, 91, 175, 1);
+	padding: 1rem;
+	position: relative;
+}
+.header h2 {
+    margin: 0;
+    color: white;
+}
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+}
+.btnAdd {
+    height: 30px;
+    font-size: 24px;
+    cursor: pointer;
+    color: rgba(52, 91, 175, 1);
+    align-self: flex-end;
+    margin-bottom: 0.5rem;
+}
+.timeSlotContainer {
+    display: flex;
+    align-items: center;
+}
+.timeSlots {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.timeSlots p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    flex: 1;
+}
+.timeSlots p:first-child {
+    margin-right: 1rem;
+}
+@media (min-width: 600px) {
+    .modal {
+        width: 55%;
+        max-width: 900px;
+    }
+}
+.removeButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+.removeButton svg {
+    color: red;
+    font-size: 24px;
+}
+
+/*card*/
+.card {
+    width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    margin-top: 0;
+}
+.card h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+@media (max-width: 600px) {
+    .card {
+        width: 100%;
+    }
+}
+.delete_btn{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: red;
+    font-size: 30px;
+    transition: all .2s ease-in-out; 
+}
+.delete_btn:hover {
+    color: darkred;
+    transform: scale(1.1);
+}
+.select_modal{
+    height: auto;
+    width: 150px;
+    border-radius: 1px;
+    font-size: large;
+    margin-bottom: 50px;
+}

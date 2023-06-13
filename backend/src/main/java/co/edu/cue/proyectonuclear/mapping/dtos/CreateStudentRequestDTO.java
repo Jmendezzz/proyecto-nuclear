@@ -17,5 +17,5 @@ public record CreateStudentRequestDTO(
         String lastName,
         Career career,
         Integer semester,
-        List<Subject> subjects){ // TODO: Preguntar si es mejor crearlos con un DTO dónde se mande el id y el nombre de la asignatura.
+        List<Subject> subjects){
 }

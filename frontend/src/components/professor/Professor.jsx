@@ -10,6 +10,8 @@ import { MdDeleteForever } from "react-icons/md";
 import style from "./Professor.module.css";
 import Swal from "sweetalert2";
 import { deleteProfessorById, getProfessors } from "../../api/ProfessorApiService";
+import { IoIosListBox } from "react-icons/io";
+import { ViewScheduleModal } from "./ViewScheduleModal";
 
 const succesResponseAlert = (response) => {
     Swal.fire(
@@ -37,6 +39,19 @@ export const Professor = () => {
     const succesResponse = (res) => {
         setProfessors(res.data);
     };
+    const [search, setSearch] = useState("");
+
+    //modal view schedule
+    const [viewScheduleModal, setViewScheduleModal] = useState(undefined);
+    const [professor, setProfessor] = useState();
+    const showScheduleModalHandler = (professor) => {
+        setProfessor(professor);
+        setViewScheduleModal(true);
+    }
+    const hideScheduleModalHandler = () => {
+        setViewScheduleModal(undefined)
+    }
+
     useEffect(()=>{
         getProfessors()
         .then((response) => succesResponse(response))
@@ -46,7 +61,7 @@ export const Professor = () => {
 
     const lastProfessorIndex = currentPage * professorsxPage;
     const firstProfessorIndex = lastProfessorIndex -professorsxPage;
-    const currentProfessors = professors.slice(firstProfessorIndex, lastProfessorIndex);
+    let currentProfessors = professors.slice(firstProfessorIndex, lastProfessorIndex);
 
     const navigate = useNavigate();
     const deleteProfessorHandler = (id) => {
@@ -72,9 +87,21 @@ export const Professor = () => {
             }
         })
     }
+
+    const searchHandler = (event) => {
+        setSearch(event.target.value);
+    }
+    if (search.trim() !== ""){
+        currentProfessors = professors.filter(professor => professor.name.toLowerCase().includes(search))
+    };
     
     return(
         <Flex height={"100%"} width={"100%"} direction={"column"} alignItems={"center"} justifyContent={"none"}>
+            {viewScheduleModal && (
+                <ViewScheduleModal
+                professor = {professor}
+                onClick={hideScheduleModalHandler} />
+            )}
             <Header>
                 <h2 style={ {fontSize:"60px"} }>Profesores</h2>
             </Header>
@@ -85,9 +112,12 @@ export const Professor = () => {
                             Crear profesor
                         </Button>
                     </div>
-                    <Input input={ {placeholder: "Nombre del Profesor"} } style={ {height: "20px"} }></Input>
-                    <Button inLineStyle={ {width: "120px", height: "60px", margin: "10px"} }>Buscar</Button>
+                    <Input input={ {placeholder: "Nombre del Profesor", onChange:searchHandler} } style={ {height: "20px"} }></Input>
                 </Flex>
+                {
+                    currentProfessors.length === 0 ? <>
+                    <p style={{ fontSize: "30px" }}>No hay profesores por mostrar</p>
+                    </> :<>
                 <table className={style.table}>
                     <thead>
                         <tr>
@@ -95,7 +125,8 @@ export const Professor = () => {
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Correo</th>
-                            <th>Asignaturas</th>                            
+                            <th>Asignaturas</th>   
+                            <th>Disponibilidad</th>                         
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -114,13 +145,12 @@ export const Professor = () => {
                                         ))}
                                     </ul>
                                     </td>
+                                    <td>
+                                        <IoIosListBox className={style["schedule__icon"]} onClick={showScheduleModalHandler.bind(null, professor)} />
+                                    </td>
                                     <td className={style["actions__container"]}>
-                                        <div className={style["icon__edit"]}>
-                                            <BiEdit onClick={()=>navigate(`/profesores/editar/${professor.id}`)}/>
-                                        </div>
-                                        <div className={style["icon__delete"]}>
-                                            <MdDeleteForever onClick={deleteProfessorHandler.bind(null, professor.id)}/>
-                                        </div>
+                                            <BiEdit className={style["icon__edit"]} onClick={()=>navigate(`/profesores/editar/${professor.id}`)}/>
+                                            <MdDeleteForever className={style["icon__delete"]} onClick={deleteProfessorHandler.bind(null, professor.id)}/>
                                     </td>
                                 </tr>
                             ))
@@ -132,6 +162,8 @@ export const Professor = () => {
                         <Pagination totalItems={professors.length} itemsPerPage={professorsxPage} setCurrentPage={setCurrentPage} currentPage={currentPage}>
                         </Pagination>
                     )
+                }
+                </>
                 }
             </Flex>
         </Flex>

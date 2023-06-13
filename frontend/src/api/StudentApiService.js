@@ -1,5 +1,7 @@
 import axios from "axios";
-const api = axios.create({baseURL:"http://localhost:8080"});
+const api = axios.create(
+    {baseURL:"http://localhost:8080"}
+    );
 export const getStudents = () => api.get("/students");
 export const saveStudent = (student) =>api.post("/students/create",student);
 export const getStudentById = (id) => api.get(`/students/${id}`);

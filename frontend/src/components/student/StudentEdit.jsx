@@ -12,7 +12,7 @@ import {ErrorResponse} from "../../UI/error/ErrorResponse";
 const succesResponseAlert = (response) => {
     Swal.fire({
         title: "Estudiante editado",
-        text: "Se ha editado rl estudiante " + response.data.name,
+        text: "Se ha editado el estudiante " + response.data.name,
         icon: "success",
         confirmButtonColor: "green",
         confirmButtonText: "Aceptar"
@@ -49,10 +49,11 @@ export const StudentEdit = () => {
 		window.scrollTo(0, 0);
 		getStudentById(studentId)
 			.then((response) => {
+				console.log(student);
 				setStudent(response.data);
 				setIsLoading(false);
 			})
-			.catch((error) => console.log(error));
+			.catch((error) =>errorResponseAction(error));
 	}, []);
 
     if (error) {
@@ -65,6 +66,7 @@ export const StudentEdit = () => {
 	}
 
     const editStudentHandler = (values) => {
+		console.log(values);
         const studentUpdated = {
             id: student.id,
             nid: student.nid,
@@ -73,13 +75,13 @@ export const StudentEdit = () => {
             email: values.email,
             career: values.career,
             semester: values.semester,
-            subjects: subjectsAdded.map((subject) => {return {id: subject.id, name: subject.name}} ),
+            subjects: values.subjects.map((subject) => {return {id: subject.id, name: subject.name}} ),
 
         }
         updateStudent(studentUpdated)
             .then(response => succesResponseAlert(response))
             .then(() => navigate("/estudiantes"))
-            .catch(error => errorResponseAlert(error))
+            .catch(error => console.log(error))
 
     }
 

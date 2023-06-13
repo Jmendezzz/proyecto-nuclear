@@ -53,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO saveStudent(CreateStudentRequestDTO createStudentRequestDTO) {return studentDao.saveStudent(createStudentRequestDTO);}
 
     @Override
-    public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);}
+    public List<StudentDTO> getBySemester(Integer semester) {return studentDao.getBySemester(semester);} //TODO:documentar
 
     /**
      * This function updates a StudentDTO object using the updateStudent method from the
