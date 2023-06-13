@@ -12,6 +12,8 @@ import { careers } from "../../enums/Career";
 import { getStudents, deleteStudentById } from "../../api/StudentApiService";
 import Swal from "sweetalert2";
 import { AiOutlineFileSearch, AiOutlineSearch } from "react-icons/ai";
+import {SubjectModal} from "../user/SubjectModal"
+import {BiBookBookmark} from "react-icons/bi"
 
 const reformatSubjectCareer = (subject) => {
   const foundCareer = careers.find((career) => career.value == subject);
@@ -46,6 +48,18 @@ export const Student = () => {
     const succesResponses = (res) => {
       setStudents(res.data);
     };
+
+    const [ScheduleModal, setScheduleModal] = useState(undefined);
+
+    const [student, setStudent] = useState();
+    const showScheduleModal = (student) => {
+        setStudent(student);
+        setScheduleModal(true);
+    }
+    
+    const hideScheduleModal = () => {
+        setScheduleModal(undefined)
+    }
 
     useEffect(() => {
       getStudents()
@@ -104,6 +118,11 @@ export const Student = () => {
         alignItems={"center"}
         justifyContent={"none"}
       >
+        {ScheduleModal &&(
+            <SubjectModal  
+            student = {student}
+            onClick={hideScheduleModal}/>
+         )}
         <Header>
           <h2 style={{ fontSize: "60px" }}>ESTUDIANTES</h2>
         </Header>
@@ -152,11 +171,7 @@ export const Student = () => {
                       <td>{reformatSubjectCareer(student.career)}</td>
                       <td>{student.semester}</td>
                       <td>
-                        <ul style={{textAlign:"left"}}> 
-                          {student.subjects.map((subject) => (
-                            <li key={subject.id} >{subject.name} </li>
-                          ))}
-                        </ul>
+                        <BiBookBookmark className={style["schedule__icon"]} onClick={showScheduleModal.bind(null,student)}/>
                       </td>
                       <td>{student.email}</td>
                       <td className={style["actions__container"]}>

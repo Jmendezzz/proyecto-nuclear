@@ -13,6 +13,8 @@ import { deleteProfessorById, getProfessors } from "../../api/ProfessorApiServic
 import { IoIosListBox } from "react-icons/io";
 import { ViewScheduleModal } from "./ViewScheduleModal";
 import { AiOutlineSearch } from "react-icons/ai";
+import {SubjectModal} from "../user/SubjectModal"
+import {BiBookBookmark} from "react-icons/bi"
 
 const succesResponseAlert = (response) => {
     Swal.fire(
@@ -33,6 +35,7 @@ const errorResponseAlert = (error) => {
 }
 
 export const Professor = () => {
+   
     const [professors, setProfessors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [professorsChange, setProfessorsChange] = useState(false);
@@ -49,8 +52,20 @@ export const Professor = () => {
         setProfessor(professor);
         setViewScheduleModal(true);
     }
+    
     const hideScheduleModalHandler = () => {
         setViewScheduleModal(undefined)
+    }
+//
+    const [ScheduleModal, setScheduleModal] = useState(undefined);
+   
+    const showScheduleModal = (professor) => {
+        setProfessor(professor);
+        setScheduleModal(true);
+    }
+    
+    const hideScheduleModal = () => {
+        setScheduleModal(undefined)
     }
 
     useEffect(()=>{
@@ -95,7 +110,9 @@ export const Professor = () => {
     if (search.trim() !== ""){
         currentProfessors = professors.filter(professor => professor.name.toLowerCase().includes(search))
     };
-    
+
+   
+
     return(
         <Flex height={"100%"} width={"100%"} direction={"column"} alignItems={"center"} justifyContent={"none"}>
             {viewScheduleModal && (
@@ -103,6 +120,15 @@ export const Professor = () => {
                 professor = {professor}
                 onClick={hideScheduleModalHandler} />
             )}
+            {ScheduleModal &&(
+                <SubjectModal  
+                professor = {professor}
+                onClick={hideScheduleModal}/>
+            )}
+
+            
+
+        
             <Header>
                 <h2 style={ {fontSize:"60px"} }>Profesores</h2>
             </Header>
@@ -136,17 +162,15 @@ export const Professor = () => {
                     <tbody>
                         {
                             currentProfessors.map((professor) => (
+                                
                                 <tr key={professor.id}>
                                     <td className={style.id}>{professor.id}</td>
                                     <td>{professor.name}</td>
                                     <td>{professor.lastName}</td>
                                     <td>{professor.email}</td>
                                     <td >
-                                    <ul>
-                                        {professor.subjects.map((subject)=>(
-                                            <li key={subject.id} >{subject.name}</li>
-                                        ))}
-                                    </ul>
+                                  
+                                    <BiBookBookmark className={style["schedule__icon"]} onClick={showScheduleModal.bind(null,professor)}/>
                                     </td>
                                     <td>
                                         <IoIosListBox className={style["schedule__icon"]} onClick={showScheduleModalHandler.bind(null, professor)} />
