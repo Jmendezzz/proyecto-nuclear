@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "student")
-public class Student extends User {
+public class Student extends UserModel {
     @JoinTable(name = "student_subjects")
     @ManyToMany
     private List<Subject> subjects;

@@ -1,12 +1,20 @@
 .timeSlots {
     display: flex;
     flex-direction: row;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 10px;
     margin-right: 10px;
+    font-weight: 100px;
 }
 .slotsInp {
     margin: 10px;
-    font-size: 18px;
+    height: 40px;
+    width: 100px;
+    font-size: 20px;
+    border: 1px solid rgb(196, 196, 196);
+    border-radius: 10px;
 }
 
 .startTime{
@@ -37,12 +45,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    min-height: 360px;
+    min-height: 300px;
     max-height: 580px;
-    max-width: 500px;
-    background-color: white;
+    max-width: 350px;
+    background-color: rgb(236, 236, 236);
     border-radius: 10px;
-    z-index: 100;
+    z-index: 20;
     overflow: hidden;
 }
 .close__modal {
@@ -72,11 +80,10 @@
     padding: 3rem;
 }
 .btnAdd {
-    font-size: 24px;
+    font-size: 30px;
     cursor: pointer;
     color: rgba(52, 91, 175, 1);
     align-self: flex-end;
-    margin-bottom: 0.5rem;
 }
 .timeSlotContainer {
     display: flex;
@@ -158,4 +165,12 @@
 .delete_btn:hover {
     color: darkred;
     transform: scale(1.1);
+}
+.select_modal{
+    height: auto;
+    width: 200px;
+    border-radius: 1px;
+    font-size: large;
+    margin-bottom: 50px;
+    color:black;
 }

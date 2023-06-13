@@ -1,8 +1,7 @@
 package co.edu.cue.proyectonuclear.infrastructure.dao;
 
-import co.edu.cue.proyectonuclear.domain.entities.Course;
 import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
-import co.edu.cue.proyectonuclear.mapping.dtos.CourseStudentRequestDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseUserRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.GenerateCourseDTO;
 
 import java.util.List;
@@ -13,7 +12,8 @@ public interface CourseDAO {
     CourseDTO saveCourse(GenerateCourseDTO course);
     List<CourseDTO> getAllCourses();
     CourseDTO findCourseById(Long id);
-    List<CourseDTO> getCoursesByProfessorId(Long professorId);
-    List<CourseDTO> getCoursesByStudentId(Long id);
+    List<CourseUserRequestDTO> getCoursesByProfessorId(Long professorId);
+    List<CourseUserRequestDTO> getCoursesByStudentId(Long id);
     List<CourseDTO> getCoursesByClassroomId(Long classroomId);
+
 }

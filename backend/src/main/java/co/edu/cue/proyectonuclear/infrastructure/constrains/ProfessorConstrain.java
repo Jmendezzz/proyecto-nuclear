@@ -62,6 +62,10 @@ public class ProfessorConstrain {
                 timeSlots.stream().anyMatch(otherTimeSlot ->
                         !currentTimeSlot.equals(otherTimeSlot) &&
                                 currentTimeSlot.getStartTime().isAfter(otherTimeSlot.getStartTime()) &&
+                                currentTimeSlot.getStartTime().isBefore(otherTimeSlot.getEndTime()) ||
+                                currentTimeSlot.getEndTime().isAfter(otherTimeSlot.getEndTime()) &&
+                                currentTimeSlot.getEndTime().isBefore(otherTimeSlot.getStartTime()) ||
+                                currentTimeSlot.getStartTime().isAfter(otherTimeSlot.getStartTime()) &&
                                 currentTimeSlot.getEndTime().isBefore(otherTimeSlot.getEndTime())
                 )
         );
