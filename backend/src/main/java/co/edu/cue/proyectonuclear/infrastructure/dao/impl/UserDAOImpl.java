@@ -79,7 +79,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void updatePassword(Long id, UserChangePasswordRequestDTO changePasswordRequestDTO) {
         try{
-            UserModel user = entityManager.find(Professor.class, id);
+            UserModel user = entityManager.find(UserModel.class, id);
             if(passwordEncoder.matches(changePasswordRequestDTO.currentPassword(), user.getPassword())){
                 String newPasswordEncode = passwordEncoder.encode(changePasswordRequestDTO.newPassword());
                 user.setPassword(newPasswordEncode);

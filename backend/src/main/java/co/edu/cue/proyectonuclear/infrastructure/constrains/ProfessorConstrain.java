@@ -1,12 +1,13 @@
 package co.edu.cue.proyectonuclear.infrastructure.constrains;
 
 
-import co.edu.cue.proyectonuclear.domain.entities.Subject;
+
 import co.edu.cue.proyectonuclear.domain.entities.TimeSlot;
-import co.edu.cue.proyectonuclear.domain.enums.Period;
 import co.edu.cue.proyectonuclear.exceptions.ProfessorException;
 import co.edu.cue.proyectonuclear.exceptions.UserException;
 import co.edu.cue.proyectonuclear.infrastructure.dao.ProfessorDAO;
+import co.edu.cue.proyectonuclear.infrastructure.utils.SubjectUtil;
+import co.edu.cue.proyectonuclear.infrastructure.utils.TimeSlotUtil;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateProfessorRequestSubjectDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.ProfessorScheduleDTO;
@@ -14,15 +15,10 @@ import co.edu.cue.proyectonuclear.mapping.dtos.SubjectDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.time.Duration;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Component
 @AllArgsConstructor
@@ -58,38 +54,37 @@ public class ProfessorConstrain {
         List<SubjectDTO> subjects = professorDTO.subjects();
 
         // Calcular la suma total de las horas semanales de las materias asignadas al profesor
-        int totalWeeklyHours = subjects.stream()
-                .mapToInt(SubjectDTO::academicHours)
+        int totalWeeklyHours = subjects.
+                stream()
+                .mapToInt(SubjectUtil::getWeeklyHours)
                 .sum();
 
         //
-        long totalDuration = professorSchedulesDTOS.stream()
-                .flatMap(schedule -> schedule.timeSlots().stream())
-                .map(slot-> Duration.between(slot.getStartTime(), slot.getEndTime()))
-                .reduce(Duration.ZERO, Duration::plus).toHours();
+        System.out.println(totalWeeklyHours);
+        int professorScheduleTotalTimeSlots =
+                professorSchedulesDTOS
+                        .stream()
+                        .flatMap(schedule -> schedule.timeSlots().stream())
+                        .mapToInt(ts-> TimeSlotUtil.between(ts))
+                        .sum();
 
+        System.out.println("TOTAL SLOTS "+ professorScheduleTotalTimeSlots);
 
         // Calcular el número mínimo de días requeridos según el período y las horas académicas
-        int minimumRequiredDays;
-        if (subjects.stream().anyMatch(subject -> subject.period() == Period.TRIMESTRAL && subject.academicHours() == 96)) {
-            minimumRequiredDays = 3;
-        } else if (subjects.stream().anyMatch(subject -> subject.period() == Period.SEMESTRAL && subject.academicHours() == 96)
-                || subjects.stream().anyMatch(subject -> subject.period() == Period.TRIMESTRAL && subject.academicHours() == 64)) {
-            minimumRequiredDays = 2;
-        } else {
-            minimumRequiredDays = 1;
-        }
-        System.out.println(totalDuration );
-        System.out.println(professorSchedulesDTOS.toArray().length);
-        System.out.println(minimumRequiredDays > professorSchedulesDTOS.toArray().length);
-        System.out.println(totalDuration > totalWeeklyHours);
-        System.out.println(minimumRequiredDays > professorSchedulesDTOS.toArray().length ||  totalDuration > totalWeeklyHours);
-        if (!( minimumRequiredDays > professorSchedulesDTOS.toArray().length ||  totalDuration < totalWeeklyHours)){
-            System.out.println("Por gueba");
-            System.out.println(minimumRequiredDays > professorSchedulesDTOS.toArray().length ||  totalDuration > totalWeeklyHours);
-            throw new ProfessorException("No hay suficientes horas para dictar sus materias", HttpStatus.BAD_REQUEST);
+
+        for (SubjectDTO subject : subjects){
+            int minimumRequiredDays = SubjectUtil.getMinimumRequiredDays(subject);
+            int subjectWeeklyHours =  SubjectUtil.getWeeklyHours(subject);
+            if( subjectWeeklyHours > professorScheduleTotalTimeSlots  && minimumRequiredDays > professorSchedulesDTOS.size()){
+                throw new ProfessorException("No hay suficientes horas para dictar la materia: "
+                        + subject.name() + "\n"
+                        + "Horas semanales necesarias: " + subjectWeeklyHours + "\n"
+                        + "Días semanales necesarios:  " + minimumRequiredDays, HttpStatus.BAD_REQUEST);
+            }
+            professorScheduleTotalTimeSlots -= subjectWeeklyHours;
         }
     }
+
 
     public void validateEqualTimeSlots(List<TimeSlot> timeSlots){
         for (int i = 1; i < timeSlots.size(); i++) {
