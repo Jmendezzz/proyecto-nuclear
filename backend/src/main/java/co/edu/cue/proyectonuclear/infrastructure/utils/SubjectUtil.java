@@ -8,4 +8,21 @@ public class SubjectUtil {
     public static Integer getWeeklyHours(SubjectDTO subject){
         return (int) Math.floor(subject.academicHours() / (subject.period().equals(Period.TRIMESTRAL) ? 10 : 20));
     }
+    public static Integer getMinimumRequiredDays(SubjectDTO subject){
+        Integer minimumRequiredDays;
+
+        if(subject.period().equals(Period.TRIMESTRAL) && subject.academicHours() == 96){
+            minimumRequiredDays = 3;
+        }
+        else if(subject.period().equals(Period.TRIMESTRAL) && subject.academicHours()==64){
+            minimumRequiredDays = 3;
+        }
+        else if (subject.period().equals(Period.TRIMESTRAL) && subject.academicHours()==32){
+            minimumRequiredDays = 1;
+        }
+        else{
+            minimumRequiredDays = 2;
+        }
+        return minimumRequiredDays;
+    }
 }
