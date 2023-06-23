@@ -66,7 +66,7 @@ To run the CUE Schedule Management System, follow these steps:
 Use the following credentials to log in as an admin user:
 Username: admin
 Password: admin123
-After logging in, you will have access to the admin dashboard, where you can start creating students and professors, manage subjects adn classrooms, and generate schedules(courses).
+After logging in, you will have access to the admin dashboard, where you can start creating students and professors, manage subjects and classrooms, and generate schedules(courses).
 Note: you can change the password in the profile settings.
 
 Feel free to explore the application and start managing schedules efficiently!
