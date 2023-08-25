@@ -236,7 +236,8 @@ Se utiliza para realizar un seguimiento de los elementos añadidos a un aula. */
                   className={style["form__item"]}
                 >
 
-                  <label style={{ fontSize: "20px" }}></label>
+                <label style={{ fontSize: "20px",}}>Sede</label>
+
                   <Select
                     onChange={selectLocationHandler}
                     defaultValue={{ label: location[0].name, value: location[0].value }}

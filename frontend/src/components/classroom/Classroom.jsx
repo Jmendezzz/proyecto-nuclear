@@ -200,9 +200,9 @@ export const Classroom = () => {
                     <td>{classroom.capability}</td>
                     <td style={{ textAlign: "left" }}>
                       <ul>
-                        {classroom.elements.map((element, index) => (
-                          <li style={{ fontSize: "20px" }} key={index}>{reformatElement(element)}</li>
-                        ))}
+                        {classroom.elements.length > 0 ?  classroom.elements.map((element, index) => (
+                          <li style={{ fontSize: "20px" }} key={index}>{reformatElement(element) | 'Sin elementos'}</li>
+                        )): <li style={{ fontSize: "20px" }}>Sin elementos</li> } 
 
                       </ul>
                     </td>

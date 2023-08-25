@@ -1,11 +1,10 @@
 import { Bar } from "react-chartjs-2";
-import { location } from "../../enums/Location"
-import Chart from 'chart.js/auto';
+import { location } from "../../enums/Location";
 
 
 export const CoursesByLocationChart = ({ courses }) => {
     const data = {
-        labels: location.map(location => location.name),
+        labels: location.map(l => l.name),
         datasets: [{
             label: 'Numero de cursos por ubicación',
             data: location.map(location =>

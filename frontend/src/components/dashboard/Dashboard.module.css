@@ -39,12 +39,22 @@
 	flex-wrap: wrap;
 	margin-top: 10px;
   }
-  /*
-  
-  .chart-table-container > * {
-	flex: 0 0 calc(60% - 10px);  Establece el tamaño fijo para cada gráfico y tabla, ajusta según tus necesidades 
-	margin-bottom: 10px;
-}*/
+
+.dashboard__general-information{
+	padding: 30px;
+	display:flex;
+	gap:4px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.general-information__item{
+	padding: 0px 10px 0px 10px;
+	background-color: white;
+	border-radius: 5px;
+	max-width: 400px;
+	width: 20%;
+}
   
   
   
