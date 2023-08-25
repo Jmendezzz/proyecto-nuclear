@@ -50,7 +50,7 @@ export const Course = () => {
         setCourses(res.data);
     };
 
-    const coursesPerPage = 7;
+    const coursesPerPage = 5;
     const lastCourseIndex = currentPage * coursesPerPage;
     const firstCourseIndex = lastCourseIndex - coursesPerPage;
     let currentCourses = courses.slice(firstCourseIndex, lastCourseIndex);
@@ -157,7 +157,6 @@ export const Course = () => {
                                     <th>Profesor</th>
                                     <th>Estudiantes</th>
                                     <th>Horario</th>
-                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,15 +167,11 @@ export const Course = () => {
                                         <td style={{ width: "10px" }}>{course.professor.name}</td>
                                         <td><HiUserGroup className={style["students__icon"]} onClick={showStudentsModalHandler.bind(null, course.students)} /></td>
                                         <td><AiOutlineSchedule className={style["schedule__icon"]} onClick={showCourseScheduleModalHandler.bind(null, course.courseSchedule)} /></td>
-                                        <td className={style["actions__container"]}>
-                                            <BiEdit className={style["icon__edit"]} onClick={() => navigate(`/asignaturas/editar/${course.id}`)} />
-                                            <MdDeleteForever className={style["icon__delete"]} onClick={deleteCourseHandler.bind(null, course.id)} />
-                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                        {courses.length > 8 && (
+                        {courses.length >=5 && (
                             <Pagination
                                 totalItems={courses.length}
                                 itemsPerPage={coursesPerPage}

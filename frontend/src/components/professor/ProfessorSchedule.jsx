@@ -68,7 +68,8 @@ export const ProfessorSchedule = () => {
 	}, [reload]);
 
 	const updateSchedulesProfessor = (professorSchedules) => {
-		setSchedule([...schedule, professorSchedules]);
+		const updatedSchedule = schedule.filter(sc => sc.day !== professorSchedules.day);
+  		setSchedule([...updatedSchedule, professorSchedules]);
 	}
 
 	if (error) {
@@ -81,6 +82,7 @@ export const ProfessorSchedule = () => {
             setScheduleProfessor(userId, schedule)
                 .then((response) => {
                     succesResponseAlert(response);
+					setReload(true);
                 })
                 .catch((error) => {
                     errorResponseAlert(error);
@@ -108,7 +110,8 @@ export const ProfessorSchedule = () => {
 						justifyContent={"none"}
 						alignItems={"center"}>
 				{
-					professor.schedule.length === 0 ? <h3>No se le han asignado materias</h3> :
+					professor.subjects.length === 0 ? <h3>No se le han asignado materias</h3>
+					 :
 					subjectThreeHours.length !== 0 ?
 					<h3>Recuerde ingresar al menos tres intervalos de 3 horas para las materias {subjectThreeHours.map(s=> s.name)} </h3>
 					: 
@@ -117,7 +120,7 @@ export const ProfessorSchedule = () => {
 			{
 				schedule ? <>
 					<div>
-						<ScheduleDays schedule={schedule} isProfessor={true} reload={value => setReload(value)} />
+						<ScheduleDays schedule={schedule} isProfessor={true} reload={value => setReload(value)} delete/>
 					</div>
 				<Button inLineStyle={ {width: "200px", height: "50px", margin: "30px"} } onClick={showScheduleModalHandler}>Ingrese su horario</Button>
 				{

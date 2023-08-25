@@ -17,7 +17,7 @@ const validateForm = (values) => {
 
     if (isEmpty(values.credits.toString())) errors.credits = 'El número de créditos no debe estar vacío';
 
-    if (values.academicHours <= 0) errors.academicHours = 'El número de horas de trabajo academico debe ser válido'
+    if (values.academicHours <= 0  || values.academicHours<32) errors.academicHours = 'El número de horas de trabajo academico debe ser válido'
 
     if (isEmpty(values.academicHours.toString())) errors.academicHours = 'El número de horas de trabajo academico no debe estar vacío'
 

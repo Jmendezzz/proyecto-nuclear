@@ -3,11 +3,11 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: none;
-	height: 100vh; 
-	width: 100%; 
-}
-
-.main-container {
+	height: 100vh;
+	width: 100%;
+  }
+  
+  .main-container {
 	flex-grow: 1;
 	width: 80%;
 	display: flex;
@@ -15,27 +15,36 @@
 	background-color: #ebebeb;
 	border-radius: 3em;
 	justify-content: none;
-}
-.content {
+  }
+  
+  .content {
+	margin-left: 40px;
+	margin-bottom: 20px;
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
-	justify-content: start;
-	align-items: auto;
-	align-content: start
-  }
-  .item {
-	flex: 0 0 auto;
-	margin: 10px;
-  }
-
-  .table-row {
-	opacity: 0;
-	transform: translateY(-10px);
-	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+	justify-content: space-between;
+	align-items: flex-start;
   }
   
-  .table-row.visible {
-	opacity: 1;
-	transform: translateY(0);
+  .item {
+	font-size: 20px;
+	flex: 0 0 12.5%; /* Establece un tamaño fijo para cada elemento, ajusta según tus necesidades */
+	margin: 10px;
   }
+  .chart-table-container {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin-top: 10px;
+  }
+  /*
+  
+  .chart-table-container > * {
+	flex: 0 0 calc(60% - 10px);  Establece el tamaño fijo para cada gráfico y tabla, ajusta según tus necesidades 
+	margin-bottom: 10px;
+}*/
+  
+  
+  

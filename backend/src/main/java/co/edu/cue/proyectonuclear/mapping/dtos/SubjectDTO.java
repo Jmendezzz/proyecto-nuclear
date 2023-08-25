@@ -2,6 +2,7 @@ package co.edu.cue.proyectonuclear.mapping.dtos;
 
 import co.edu.cue.proyectonuclear.domain.enums.Career;
 import co.edu.cue.proyectonuclear.domain.enums.Period;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +13,8 @@ public record SubjectDTO(
         @NotNull
         Career career,
         @NotNull
-        @Min(value=1)
+        @Min(value=32)
+        @Max(value = 96)
         Integer academicHours,
         @NotNull
         Period period,

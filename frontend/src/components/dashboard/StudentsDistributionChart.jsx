@@ -42,7 +42,7 @@ export const StudentDistributionChart = ({ students }) => {
   return (
     <>
       <button onClick={() => setGrouping(grouping === 'career' ? 'semester' : 'career')}>
-        Group by {grouping === 'career' ? 'Semestre' : 'Carrera'}
+        Agrupar por {grouping === 'career' ? 'Semestre' : 'Carrera'}
       </button>
       <Bar data={data} />
     </>

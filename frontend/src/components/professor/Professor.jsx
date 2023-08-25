@@ -130,7 +130,7 @@ export const Professor = () => {
 
         
             <Header>
-                <h2 style={ {fontSize:"60px"} }>Profesores</h2>
+                <h2 style={ {fontSize:"60px"} }>PROFESORES</h2>
             </Header>
             <Flex height={"auto"} width={"80%"} direction={"column"} alignItems={"center"} justifyContent={"none"} className={style["main-container"]}>
                 <Flex height={"200px"} width={"100%"} direction={"row"} gap={"30px"}>

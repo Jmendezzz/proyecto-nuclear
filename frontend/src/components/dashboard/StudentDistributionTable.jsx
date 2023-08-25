@@ -19,16 +19,10 @@ export const StudentDistributionTable = ({ students }) => {
           value: students.filter(student => student.semester === semester).length,
         }));
 
-  useEffect(() => {
-    setVisibleRows([]);
-    const timeoutId = setTimeout(() => setVisibleRows(data.map(row => row.label)), 300);
-    return () => clearTimeout(timeoutId);
-  }, [data]);
-
   return (
     <>
       <button onClick={() => setGrouping(grouping === 'career' ? 'semester' : 'career')}>
-        Group by {grouping === 'career' ? 'Semestre' : 'Carrera'}
+        Agrupar por {grouping === 'career' ? 'Semestre' : 'Carrera'}
       </button>
       <table>
         <thead>
