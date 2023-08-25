@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
 
 export const StudentDistributionChart = ({ students }) => {
   const [grouping, setGrouping] = useState('career');
