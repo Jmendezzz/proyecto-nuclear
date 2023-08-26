@@ -19,7 +19,7 @@ public class Professor extends UserModel {
     private List<ProfessorSchedule> schedule;
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "professor_subjects")
     private List<Subject> subjects;
 

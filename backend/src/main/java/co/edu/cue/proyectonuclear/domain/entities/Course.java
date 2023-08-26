@@ -18,12 +18,12 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Professor professor;
 
     @OneToOne
     private Subject subject;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Student> students;
 
     private LocalDate startDate;
