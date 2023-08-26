@@ -3,7 +3,10 @@ package co.edu.cue.proyectonuclear.infrastructure.dao.impl;
 import co.edu.cue.proyectonuclear.domain.entities.Student;
 import co.edu.cue.proyectonuclear.exceptions.StudentException;
 import co.edu.cue.proyectonuclear.exceptions.SubjectException;
+import co.edu.cue.proyectonuclear.infrastructure.dao.CourseDAO;
 import co.edu.cue.proyectonuclear.infrastructure.dao.StudentDAO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseDTO;
+import co.edu.cue.proyectonuclear.mapping.dtos.CourseUserRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.CreateStudentRequestDTO;
 import co.edu.cue.proyectonuclear.mapping.dtos.StudentDTO;
 import co.edu.cue.proyectonuclear.mapping.mappers.StudentMapper;
@@ -13,6 +16,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -84,8 +88,12 @@ public class StudentDAOImpl implements StudentDAO {
     @Override
     public StudentDTO deleteStudent(Long id) {
         Student studentEntity = entityManager.find(Student.class,id);
-        if(studentEntity == null) throw new  SubjectException("Can not delete, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
+        if(studentEntity == null) throw new StudentException("Can not delete the student, the id:" + id + " does not exists", HttpStatus.BAD_REQUEST);
+
+        deleteStudentFromCourses(id);
+        deleteStudentFromSubjects(id);
         entityManager.remove(studentEntity);
+
         return studentMapper.mapFromEntity(studentEntity);
     }
 
@@ -125,4 +133,30 @@ public class StudentDAOImpl implements StudentDAO {
             throw new StudentException("No se encontraron estudiantes registrados en la asignatura identificada por el id:" + subjectId ,HttpStatus.BAD_REQUEST);
         }
     }
+
+    private void deleteStudentRelationship(String tableName, Long studentId){
+
+        String query = "DELETE FROM "+ tableName +" WHERE students_id = :studentId";
+
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("studentId", studentId);
+
+        try {
+            nativeQuery.executeUpdate();
+
+        }catch (NoResultException e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private void deleteStudentFromCourses(Long studentId){
+       deleteStudentRelationship("course_students", studentId);
+    }
+
+    private void deleteStudentFromSubjects(Long studentId){
+        deleteStudentRelationship("student_subjects", studentId);
+    }
+
+
 }
