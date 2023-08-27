@@ -21,6 +21,8 @@ export const UserForm = ({user, role, onSubmit}) => {
 				errors.name = "El nombre no puede ser vacío";
 			if (isEmpty(values.lastName))
 				errors.lastName = "El apellido no puede ser vacío";
+			if(!values.email.includes("@")) 
+				errors.email = "El email debe ser valido.";
 			if (isEmpty(values.email))
 				errors.email = "El email no puede ser vacío";
 
@@ -34,6 +36,8 @@ export const UserForm = ({user, role, onSubmit}) => {
 				errors.semester = "El semestre deber ser válido";
 			if (isEmpty(values.semester.toString()))
 				errors.semester = "El semestre no debe estar vacío";
+			if(!values.email.includes("@")) 
+				errors.email = "El email debe ser valido.";
 			if (isEmpty(values.email))
 				errors.email = "El email no debe estar vacío";
 			if(values.nid.length < 8) errors.nid = "El nid debe ser valido."
