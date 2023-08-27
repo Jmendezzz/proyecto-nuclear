@@ -1,6 +1,7 @@
 .main-container{
     background-color: #ebebeb;
     border-radius: 3em;
+    overflow-x:scroll;
 }
 .table{
     width: 95%;
@@ -8,23 +9,26 @@
     background-color: white !important;
     border-collapse:collapse !important;
     flex: 1;
-    overflow: auto;
 }
+
+.table thead >tr:nth-of-type(2n){
+    background-color: gray;
+}
+
 .table thead >tr > th{
-    font-size: 30px;
-    padding: 20px;
+    text-align: left;
+    font-size: 25px;
+    padding: 10px 0px 10px 20px;
 
 
 }
 .table tbody>  tr > td{
-    font-size: 25px;
-    text-align: center;
-    padding: 3px;
+    font-size: 20px;
+    text-align: left;
+    padding: 15px;
 
 }
-.table tbody > tr{
-    height: 100px;
-}
+
 .id{
     text-align: center;
     width: 20px;
@@ -35,21 +39,20 @@
 .actions__container{
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
-    height: 100px;
+    height: 40px;
     gap: 20px;
 }
 .icon__edit{
     color: rgba(52, 91, 175, 1);
-    font-size: 50px;
+    font-size: 35px;
     cursor: pointer;
     transition: all .2s ease-in-out; 
 
 }
 .icon__delete{
     color: rgb(255, 0, 0);
-    font-size: 50px;
+    font-size: 35px;
     cursor: pointer;
     transition: all .2s ease-in-out; 
 }
@@ -114,7 +117,7 @@
 }
 .schedule__icon {
     color: rgba(52, 91, 175, 1);
-    font-size: 50px;
+    font-size: 35px;
     cursor: pointer; 
     transition: all .2s ease-in-out; 
 }
